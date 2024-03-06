@@ -11,13 +11,13 @@ It presents the functionality of a simple diary with features for adding and rem
 Understanding the majority of basic structures in C++, such as constructors, inheritance, and polymorphism, as well as creating a binary database in this project. <br/>
 
 ## How it works 🤪?
-First of all you can start applicaiton on 2 ways, with command line parameter '0' and without parameters. If u start with '0' it will return list of all users. <br/>
-![](ReadmePhotos/AllUsers.png) <br/>
-Without parameter application will start and you will see main window. </br>
+###First of all you can start applicaiton on 2 ways, with command line parameter '0' and without parameters. Without parameter application will start and you will see main window. </br>
 ![](ReadmePhotos/MainWindow.png) <br/>
-You can register here: <br/>
+###If u start with '0' it will return list of all users. <br/>
+![](ReadmePhotos/AllUsers.png) <br/>
+###You can register here: <br/>
 ![](ReadmePhotos/RegisterWindow.png) <br/>
-You can login here: <br/>
+###You can login here: <br/>
 ![](ReadmePhotos/LoginWindow.png) <br/>
 You can login as a teacher or as a student. Here is teacher window. <br/>
 ![](ReadmePhotos/TeacherWinow.png) <br/>
