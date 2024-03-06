@@ -4,7 +4,7 @@
 ### This project was an assignment for the JIPP (Introduction to Programming) course in the third semester of studies. It presents the functionality of a simple diary with features for adding and removing grades and behavior as well as calculating the average of grades. <br/>
 
 ## 💻 Tech Stack:
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)  ![MySQL](https://img.shields.io/badge/mysql-%2300000f.svg?style=for-the-badge&logo=mysql&logoColor=white) <br/>
+![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Qt](https://img.shields.io/badge/Qt-%23217346.svg?style=for-the-badge&logo=Qt&logoColor=white)
 
 ## 🤴 Project requirements: 
 ### Understanding the majority of basic structures in C++, such as constructors, inheritance, and polymorphism, as well as creating a binary database in this project. <br/>
