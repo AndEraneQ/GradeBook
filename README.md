@@ -2,7 +2,7 @@
 
 ## About the project 😊:
 ### This project was an assignment for the JIPP (Introduction to Programming) course in the third semester of studies.
-### It presents the functionality of a simple diary with features for adding and removing grades and behavior as well as calculating the average of grades. <br/>
+It presents the functionality of a simple diary with features for adding and removing grades and behavior as well as calculating the average of grades. <br/>
 
 ## 💻 Tech Stack:
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)  ![MySQL](https://img.shields.io/badge/mysql-%2300000f.svg?style=for-the-badge&logo=mysql&logoColor=white) <br/>
