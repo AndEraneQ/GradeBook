@@ -19,12 +19,12 @@
 ### You can login here: <br/>
 ![](ReadmePhotos/LoginWindow.png) <br/> 
 ### You can login as a teacher or as a student. Here is teacher window. <br/>
-![](ReadmePhotos/TeacherWinow.png) <br/> 
+![](ReadmePhotos/TeacherWindow.png) <br/> 
 ### Next you have 4 options here: <br/> 
 ### 1 - Add Grade <br/>
 ![](ReadmePhotos/AddGrade.png) <br/> 
 ### 2 - Add Behavior <br/>
-![](ReadmePhotos/AllBehavior.png) <br/> 
+![](ReadmePhotos/AddBehavior.png) <br/> 
 ### 3 - Show Student Data <br/>
 ![](ReadmePhotos/ShowDataWindow.png) <br/> 
 ### If you choose student to show his data you can mark if u want see grades or behavior. <br/>
