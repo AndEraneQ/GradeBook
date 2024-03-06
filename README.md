@@ -12,7 +12,7 @@ Understanding the majority of basic structures in C++, such as constructors, inh
 
 ## How it works 🤪?
 First of all you can start applicaiton on 2 ways, with command line parameter '0' and without parameters. Without parameter application will start and you will see main window. </br>
-![](ReadmePhotos/MainWindow.png) <br/>
+![](ReadmePhotos/MainWindow.png) <br/> <br/>
 If u start with '0' it will return list of all users. <br/>
 ![](ReadmePhotos/AllUsers.png) <br/> <br/>
 You can register here: <br/>
@@ -21,22 +21,22 @@ You can login here: <br/>
 ![](ReadmePhotos/LoginWindow.png) <br/> <br/>
 You can login as a teacher or as a student. Here is teacher window. <br/>
 ![](ReadmePhotos/TeacherWinow.png) <br/> <br/>
-Next you have 4 options here: <br/>
+Next you have 4 options here: <br/> 
 1 - Add Grade <br/>
-![](ReadmePhotos/AddGrade.png) <br/>
+![](ReadmePhotos/AddGrade.png) <br/> <br/>
 2 - Add Behavior <br/>
-![](ReadmePhotos/AllBehavior.png) <br/>
+![](ReadmePhotos/AllBehavior.png) <br/> <br/>
 3 - Show Student Data <br/>
-![](ReadmePhotos/ShowDataWindow.png) <br/>
+![](ReadmePhotos/ShowDataWindow.png) <br/> <br/>
 If you choose student to show his data you can mark if u want see grades or behavior. <br/>
 - Behavior Window: <br/>
-![](ReadmePhotos/ShowBehavior.png) <br/>
+![](ReadmePhotos/ShowBehavior.png) <br/> <br/>
 - Grades Window: <br/>
-![](ReadmePhotos/ShowGrades.png) <br/>
+![](ReadmePhotos/ShowGrades.png) <br/> <br/>
 4 - Delete Student Data <br/>
-![](ReadmePhotos/DeleteData.png) <br/>
+![](ReadmePhotos/DeleteData.png) <br/> <br/>
 If u login as a student you will get that window: <br/>
-![](ReadmePhotos/UserWindow.png) <br/>
+![](ReadmePhotos/UserWindow.png) <br/> <br/>
 If u want check grades or behavior it will automaticly open correct side for your data. <br/>
 You can also check your data in this app <br/>
-![](ReadmePhotos/ShowUserData.png) <br/>
+![](ReadmePhotos/ShowUserData.png) <br/> <br/>
