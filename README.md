@@ -13,14 +13,14 @@ Understanding the majority of basic structures in C++, such as constructors, inh
 ## How it works 🤪?
 First of all you can start applicaiton on 2 ways, with command line parameter '0' and without parameters. Without parameter application will start and you will see main window. </br>
 ![](ReadmePhotos/MainWindow.png) <br/>
-###If u start with '0' it will return list of all users. <br/>
-![](ReadmePhotos/AllUsers.png) <br/>
-###You can register here: <br/>
-![](ReadmePhotos/RegisterWindow.png) <br/>
-###You can login here: <br/>
-![](ReadmePhotos/LoginWindow.png) <br/>
+If u start with '0' it will return list of all users. <br/>
+![](ReadmePhotos/AllUsers.png) <br/> <br/>
+You can register here: <br/>
+![](ReadmePhotos/RegisterWindow.png) <br/> <br/>
+You can login here: <br/>
+![](ReadmePhotos/LoginWindow.png) <br/> <br/>
 You can login as a teacher or as a student. Here is teacher window. <br/>
-![](ReadmePhotos/TeacherWinow.png) <br/>
+![](ReadmePhotos/TeacherWinow.png) <br/> <br/>
 Next you have 4 options here: <br/>
 1 - Add Grade <br/>
 ![](ReadmePhotos/AddGrade.png) <br/>
