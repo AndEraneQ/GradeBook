@@ -39,3 +39,7 @@
 ### If you want to check grades or behavior, it will automatically open the correct side for your data. <br/>
 ### You can also check your data by clicking the button in the top right corner. <br/>
 ![](ReadmePhotos/ShowUserData.png) <br/>
+
+## Sum up 🤗
+###  By creating a simple diary application with features such as grade management and behavior tracking, it provides hands-on experience in programming fundamentals. The project not only demonstrates technical skills but also emphasizes the importance of proper program structure and user interaction in software development. <br/>
+## Thanks for watching 😜
