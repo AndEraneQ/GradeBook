@@ -11,7 +11,7 @@ It presents the functionality of a simple diary with features for adding and rem
 Understanding the majority of basic structures in C++, such as constructors, inheritance, and polymorphism, as well as creating a binary database in this project. <br/>
 
 ## How it works 🤪?
-First of all you can start applicaiton on 2 ways, with command line parameter '0' and without parameters. Without parameter application will start and you will see main window. </br>
+### First of all you can start applicaiton on 2 ways, with command line parameter '0' and without parameters. Without parameter application will start and you will see main window. </br>
 ![](ReadmePhotos/MainWindow.png) <br/> <br/>
 If u start with '0' it will return list of all users. <br/>
 ![](ReadmePhotos/AllUsers.png) <br/> <br/>
@@ -30,9 +30,9 @@ Next you have 4 options here: <br/>
 ![](ReadmePhotos/ShowDataWindow.png) <br/> <br/>
 If you choose student to show his data you can mark if u want see grades or behavior. <br/>
 - Behavior Window: <br/>
-![](ReadmePhotos/ShowBehavior.png) <br/> <br/>
+![](ReadmePhotos/ShowBehavior.png) <br/> 
 - Grades Window: <br/>
-![](ReadmePhotos/ShowGrades.png) <br/> <br/>
+![](ReadmePhotos/ShowGrades.png) <br/>
 4 - Delete Student Data <br/>
 ![](ReadmePhotos/DeleteData.png) <br/> <br/>
 If u login as a student you will get that window: <br/>
