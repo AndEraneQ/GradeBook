@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ShowDataTeacherWindow</class>
+ <widget class="QDialog" name="ShowDataTeacherWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>449</width>
+    <height>203</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(90, 90, 90);</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QRadioButton" name="gradesRadioButton">
+         <property name="styleSheet">
+          <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Pokaż Oceny</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="behaviorRadioButton">
+         <property name="styleSheet">
+          <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Pokaż Zachowanie</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="personLabel">
+         <property name="styleSheet">
+          <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Osoba:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="personComboBox">
+         <property name="styleSheet">
+          <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>68</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelPushButton">
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Anuluj</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="nextPushButton">
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Dalej</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

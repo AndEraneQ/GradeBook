@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ShowUsersWindow</class>
+ <widget class="QDialog" name="ShowUsersWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>324</width>
+    <height>285</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(90, 90, 90);</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="allUsersLabel">
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Wszyscy użytkownicy: </string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::AutoText</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPlainTextEdit" name="showUsersPlainTextEdit">
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: italic 11pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

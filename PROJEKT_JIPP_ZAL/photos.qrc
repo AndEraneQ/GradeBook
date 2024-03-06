@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/1">
+        <file>a/mainWindowPicture.png</file>
+        <file>a/loginWindowPicture.jpg</file>
+        <file>a/registerWindowPicture.png</file>
+        <file>a/adminWindowPicture.png</file>
+        <file>a/removePersonWindowPicture.png</file>
+    </qresource>
+</RCC>

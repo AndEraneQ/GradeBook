@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddBehavio</class>
+ <widget class="QDialog" name="AddBehavio">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>343</width>
+    <height>309</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(90, 90, 90);</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="personLabel">
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Osoba:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="personComboBox">
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QRadioButton" name="posOrNegRadioButton">
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Pozytywna lub negatywna</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="gradeRadioButton">
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Ocena</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QComboBox" name="gradeOrPosOrNegCommComboBox">
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Komentarz: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="descriptionLineEdit">
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="cancelPushButton">
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Anuluj</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addPushButton">
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: italic 14pt &quot;Trebuchet MS&quot;;
+color: &quot;white&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Dodaj</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
