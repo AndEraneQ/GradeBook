@@ -1,0 +1,8 @@
+.header-container{
+    font-family: Arial, sans-serif;
+    color: #ecf0f1; 
+    font-size: 2em; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* cień tekstu */
+    text-align: center;
+    justify-content: center;
+}
