@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +25,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SecurityConfig{
 
     @Autowired
     private DataSource dataSource;
@@ -42,11 +43,39 @@ public class SecurityConfig {
         return new UserDetailsServiceImpl();
     }
 
+
+
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
+//        return userDetailsManager;
+//    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration builder)
+            throws Exception {
+        return builder.getAuthenticationManager();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(userDetailsServiceimpl());
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) ->
                 requests
-                        .requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
         );
         http.sessionManagement(session ->
@@ -65,24 +94,8 @@ public class SecurityConfig {
         );
         http.addFilterBefore(authenticationJwtTokenFilter(),
                 UsernamePasswordAuthenticationFilter.class);
+        http.authenticationProvider(authenticationProvider());
 
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(){
-        JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-        return userDetailsManager;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration builder)
-            throws Exception {
-        return builder.getAuthenticationManager();
     }
 }
