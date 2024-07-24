@@ -1,51 +1,35 @@
 package com.troja.GradeBook.security.UserDetails;
 
+import com.troja.GradeBook.entity.Role;
 import com.troja.GradeBook.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
+
 @AllArgsConstructor
-@Getter
-@Setter
 public class UserDetailsImpl implements UserDetails {
 
-    private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private Collection<? extends GrantedAuthority> authorities;
-
-    public static UserDetailsImpl build(User user){
-        return new UserDetailsImpl(
-                user.getId(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getFirstName(),
-                user.getLastName(),
-                Collections.singletonList(user.getRole())
-        );
-    }
+    private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        Role role = user.getRole();
+        return Collections.singletonList(new SimpleGrantedAuthority(role.getName()));
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return user.getEmail();
     }
 
     @Override

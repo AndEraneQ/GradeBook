@@ -1,13 +1,11 @@
 package com.troja.GradeBook.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class LoginDto {
+public class LoginUserDto {
     private String email;
     private String password;
 }

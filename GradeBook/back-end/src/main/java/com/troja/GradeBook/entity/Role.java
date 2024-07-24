@@ -1,26 +1,23 @@
 package com.troja.GradeBook.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.*;
 
-@NoArgsConstructor
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name = "role")
-public class Role implements GrantedAuthority {
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "roles")
+public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long id;
     @Enumerated(EnumType.STRING)
-    private RoleEnum name;
+    private RoleEnum role;
 
-    @Override
-    public String getAuthority() {
-        return String.valueOf(name);
+    public String getName(){
+        return String.valueOf(role);
     }
 }
