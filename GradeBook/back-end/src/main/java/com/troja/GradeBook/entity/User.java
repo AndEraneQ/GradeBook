@@ -1,15 +1,10 @@
 package com.troja.GradeBook.entity;
 
-
-import com.troja.GradeBook.security.UserDetails.UserDetailsImpl;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
