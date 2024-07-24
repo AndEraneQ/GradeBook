@@ -21,18 +21,18 @@ import com.troja.GradeBook.security.jwt.JwtUtils;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
-    private final JwtUtils jwtUtils;
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(passwordEncoder.encode("12345678"));
-        User authenticatedUser = authService.authenticate(loginUserDto);
-        UserDetails userDetails = new UserDetailsImpl(authenticatedUser);
-
-        String jwtToken = jwtUtils.generateToken(userDetails);
-        LoginResponse loginResponse = new LoginResponse(jwtToken,jwtUtils.getExpirationTime());
-
-        return ResponseEntity.ok(loginResponse);
+//    @PostMapping("/login")
+//    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+//        User authenticatedUser = authService.authenticate(loginUserDto);
+//        UserDetails userDetails = new UserDetailsImpl(authenticatedUser);
+//
+//        String jwtToken = jwtUtils.generateToken(userDetails);
+//        LoginResponse loginResponse = new LoginResponse(jwtToken,authenticatedUser.getFirstName(),authenticatedUser.getLastName());
+//
+//        return ResponseEntity.ok(loginResponse);
+//    }
+@PostMapping("/login")
+public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDto loginUserDto) {
+    return authService.login(loginUserDto);
     }
 }
