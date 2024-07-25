@@ -15,8 +15,9 @@ class AuthService {
           }
         };
       
-    logout() {
+    logout(navigate) {
         localStorage.removeItem("user_data");
+        navigate('/login', { state: { message: 'Logged out successfully!' } });
     }
 }
 

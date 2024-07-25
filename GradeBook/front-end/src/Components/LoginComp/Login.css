@@ -90,4 +90,24 @@
     margin: auto;
   }
 
+  .logged-out-message {
+    color: white;
+    background-color: rgb(5, 71, 116);
+    font-weight: bold;
+    text-align: center;
+    width: 80%; /* Możesz dostosować szerokość */
+    max-width: 600px; /* Maksymalna szerokość dla większych ekranów */ /* Padding wokół tekstu */
+    border-radius: 10px;
+    margin: 20px auto; /* Centrowanie na stronie */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Cień wokół elementu */
+    font-size: 1.1em; /* Rozmiar czcionki */
+    line-height: 1.4; /* Wysokość linii dla lepszej czytelności */
+    transition: opacity 0.3s ease; /* Płynne zanikanie */
+}
+
+.logged-out-message.hidden {
+    opacity: 0;
+    visibility: hidden; /* Ukryj wiadomość */
+}
+
 
