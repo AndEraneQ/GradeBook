@@ -88,7 +88,6 @@ function Login() {
                             value={password} 
                         />
                         {errors.password && <div className='text-danger'>{errors.password}</div>}
-                        {errors.general && <div className='text-danger'>{errors.general}</div>}
                     </div>
                     <div className='button-link-container'>
                         <button 
