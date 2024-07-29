@@ -3,24 +3,22 @@ import WelcomeHeader from "../WelcomeHeaderComp/WelcomeHeader";
 import Card from "../CardComp/Card";
 import { useNavigate } from 'react-router-dom';
 import AuthService from "../../Services/AuthService";
-import { getUserDataFromLocalStorage } from "../../utils/localStorageUtils";
 import NavBarService from "../../Services/NavBarService";
+import { getUser } from "../../utils/userUtils";
 
-function AdminHomepage() {
+
+const AdminHomepage = () => {
     const navigate = useNavigate();
-    const user = getUserDataFromLocalStorage();
-    const name = user
-        ? `${user.firstName || ''} ${user.lastName || ''}`
-        : 'User';
-
-    function handleLogout(){
+    const user = getUser();
+    const name = `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'User';
+    
+    const handleLogout = () => {
         AuthService.logout(navigate);
-    }
-
-    function handleCheckData(){
-        NavBarService.getUserDataFromDatabase(navigate)
-
-    }
+    };
+    
+    const handleCheckData = () => {
+        navigate('/user-data');
+    };
 
     return (
         <div className="admin-homepage-container">

@@ -2,6 +2,7 @@ package com.troja.GradeBook.services;
 
 import com.troja.GradeBook.dto.LoginUserDto;
 import com.troja.GradeBook.entity.User;
+import com.troja.GradeBook.exception.MyCustomException;
 import com.troja.GradeBook.repository.UserRepository;
 import com.troja.GradeBook.security.LoginResponse;
 import com.troja.GradeBook.security.UserDetails.UserDetailsImpl;
@@ -31,9 +32,9 @@ public class AuthService {
                     )
             );
             authenticatedUser = userRepository.findByEmail(loginUserDto.getEmail())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new MyCustomException("email", "User not found"));
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Invalid credentials", e);
+            throw new MyCustomException("password", "Invalid credentials");
         }
 
         UserDetails userDetails = new UserDetailsImpl(authenticatedUser);

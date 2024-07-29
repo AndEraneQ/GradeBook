@@ -1,21 +1,11 @@
 import axios from "axios";
-import { getUserDataFromLocalStorage } from "../utils/localStorageUtils";
-import { getJwtTokenFromLocalStorage } from "../utils/localStorageUtils";
+import { authHeader } from "./UserService";
 
-const API_URL = "http://localhost:8080/user"
-const user_data = getUserDataFromLocalStorage();
+const API_URL = "http://localhost:8080/user/";
 
-class NavBarService{
-    async getUserDataFromDatabase(navigate, id){
-        try {
-            const response = await axios.post("user/getData", {
-              id
-            });
-            return response; 
-          } catch (error) {
-            throw error;
-          }
-        };
-    }
-
+class NavBarService {
+    async getUserData(id) {
+       return axios.get(API_URL + id, {headers: authHeader()});
+  }
+}
 export default new NavBarService();
