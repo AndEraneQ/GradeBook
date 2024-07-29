@@ -22,7 +22,7 @@ class AuthService {
         return response; 
     } catch (error) {
       const errorData = error.response.data;
-      if (error.response.status === 401) {
+      if (error.response.status === 400) {
         throw { errors: { general: errorData.message || 'Invalid credentials' } };
       } else {
         throw new Error('An error occurred. Please try again later.');
