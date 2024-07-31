@@ -11,5 +11,13 @@ class NavBarService {
     async getUserResidence(id){
       return axios.get(API_URL + "residence/" + id, {headers: authHeader()});
     }
+
+    async getSubjects(){
+      return axios.get(API_URL + "subjects", {headers: authHeader()});
+    }
+
+    async getAllUsers() {
+      return axios.get(API_URL + "users", {headers: authHeader()});
+   }
 }
 export default new NavBarService();

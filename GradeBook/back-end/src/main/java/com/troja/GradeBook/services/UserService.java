@@ -1,6 +1,8 @@
 package com.troja.GradeBook.services;
 
+import com.troja.GradeBook.dto.RoleDto;
 import com.troja.GradeBook.dto.UserDto;
+import com.troja.GradeBook.entity.RoleEnum;
 import com.troja.GradeBook.entity.User;
 import com.troja.GradeBook.exception.MyCustomException;
 import com.troja.GradeBook.mapper.UserMapper;
@@ -8,6 +10,11 @@ import com.troja.GradeBook.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -21,5 +28,26 @@ public class UserService {
         User currentUser = userRepository.findById(id)
                 .orElseThrow(() -> new MyCustomException("error","couldn't find user"));
         return ResponseEntity.ok(userMapper.toDto(currentUser));
+    }
+
+    public ResponseEntity<List<UserDto>> getAllUsers(){
+        return ResponseEntity.ok(userRepository.findAll().stream()
+                .map(user -> userMapper.toDto(user))
+                .collect(Collectors.toList()));
+    }
+
+    public ResponseEntity<?> getAllUsersByRole(RoleDto roleDto){
+        RoleEnum roleEnum;
+        try {
+            roleEnum = RoleEnum.valueOf(roleDto.getName().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Invalid role: " + roleDto.getName());
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+        List<User> allUsersByRole = userRepository.findByRole_Role(roleEnum);
+        return ResponseEntity.ok(allUsersByRole.stream()
+                .map(user -> userMapper.toDto(user))
+                .collect(Collectors.toList()));
     }
 }

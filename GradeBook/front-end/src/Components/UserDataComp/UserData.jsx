@@ -38,7 +38,7 @@ function UserData() {
     }
 
     if (!user) {
-        return <div className="error-message"><h1>Server error, try again later</h1></div>;
+        return <div className="error-message"><h1>Try login one more time.</h1></div>;
     }
 
     const userRole = user.role.name.substring(5).toLowerCase();

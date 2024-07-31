@@ -8,3 +8,9 @@ export function authHeader() {
       return {};
     }
 }
+
+class UserService{
+    
+}
+
+export default new UserService();

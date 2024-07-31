@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from "./Components/LoginComp/Login";
 import AdminHomepage from "./Components/AdminHomepageComp/AdminHomepage";
 import UserData from "./Components/UserDataComp/UserData";
+import SubjectsPage from "./Components/SubjectsComp/SubjectsPage";
+import AllUsersPage from "./Components/AllUsersComp/AllUsersPage";
+import RegisterPage from "./Components/RegisterComp/RegisterPage";
+import AddSubjectPage from "./Components/AddSubjectComp/AddSubjectPage";
 
 function App() {
   return (
@@ -12,6 +16,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin-homepage" element={<AdminHomepage />} />
           <Route path="/user-data" element={<UserData />} />
+          <Route path="/subjects" element={<SubjectsPage />} />
+          <Route path="/users" element={<AllUsersPage />} />
+          <Route path="/register-user" element={<RegisterPage />} />
+          <Route path="/add-subject" element={<AddSubjectPage />} />
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </div>

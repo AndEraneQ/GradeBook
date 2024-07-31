@@ -20,13 +20,21 @@ const AdminHomepage = () => {
         navigate('/user-data');
     };
 
+    const handleManageSubjects = () => {
+        navigate('/subjects');
+    }
+
+    const handleManageUsers = () => {
+        navigate('/users');
+    }
+
     return (
         <div className="admin-homepage-container">
             <WelcomeHeader name={name} />
             <div className="cards">
                 <Card imagePath="src/assets/manageClasses.png" text="Manage Class"/>
-                <Card imagePath="src/assets/managePersons.png" text="Manage Persons"/>
-                <Card imagePath="src/assets/manageSubjects.png" text="Manage Subjects"/>
+                <Card imagePath="src/assets/managePersons.png" text="Manage Persons" onClick={handleManageUsers}/>
+                <Card imagePath="src/assets/manageSubjects.png" text="Manage Subjects" onClick={handleManageSubjects}/>
                 <Card imagePath="src/assets/checkYourData.png" text="Check Your Data" onClick={handleCheckData}/>
                 <Card imagePath="src/assets/Logout.png" text="Logout" onClick={handleLogout}/>
             </div>
