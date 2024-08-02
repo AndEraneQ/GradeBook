@@ -3,13 +3,16 @@ package com.troja.GradeBook.services;
 import com.troja.GradeBook.dto.RoleDto;
 import com.troja.GradeBook.dto.UserDto;
 import com.troja.GradeBook.entity.RoleEnum;
+import com.troja.GradeBook.entity.Subject;
 import com.troja.GradeBook.entity.User;
 import com.troja.GradeBook.exception.MyCustomException;
 import com.troja.GradeBook.mapper.UserMapper;
+import com.troja.GradeBook.repository.SubjectRepository;
 import com.troja.GradeBook.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +24,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final SubjectRepository subjectRepository;
 
     public ResponseEntity<UserDto> getCurrentUser(Long id){
         User currentUser = userRepository.findById(id)
@@ -47,7 +51,22 @@ public class UserService {
         }
         List<User> allUsersByRole = userRepository.findByRole_Role(roleEnum);
         return ResponseEntity.ok(allUsersByRole.stream()
-                .map(user -> userMapper.toDto(user))
+                .map(userMapper::toDto)
                 .collect(Collectors.toList()));
+    }
+
+    public ResponseEntity<List<UserDto>> getAllTeachersBySubject(String name) {
+        // TODO: FIND SUBJECT OBJECT
+        Subject subject = subjectRepository.findByName(name);
+        // TODO: TAKE ALL TEACHERS
+        List<User> teachers = userRepository.findBySubjects_Id(subject.getId());
+        // TODO: IF LIST IS EMPTY RETURN CODE 204
+        if (teachers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(
+                teachers.stream()
+                        .map(userMapper::toDto)
+                        .collect(Collectors.toList()));
     }
 }

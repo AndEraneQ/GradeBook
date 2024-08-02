@@ -3,20 +3,27 @@
     flex-direction: column; 
     align-items: center; 
     padding: 20px;
-    min-height: 100vh; 
+    min-height: 100vh;
+    color: white;
 }
 
 .add-subject-page {
-    max-width: 400px;
+    max-width: 700px;
     width: 100%; 
     border-radius: 8px; 
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
     padding: 20px; 
+    background-color: #2b2a2a;
+    display: flex; /* Flexbox to center items */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
 }
 
 .add-subject-page input {
     color: white; 
-    width: 100%; 
+    width: 80%;
+    text-align: center;
+
     padding: 10px 20px; 
     font-size: 16px; 
     border: 2px solid #ddd; 
@@ -47,7 +54,8 @@
 }
 
 .add-subject-button {
-    background-color: #357e37; 
+    font-weight: bold;
+    background-color: #19811d; 
     color: white; 
     border: none; 
     border-radius: 25px; 
@@ -57,6 +65,7 @@
     transition: background-color 0.3s ease, transform 0.3s ease; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     width: 200px;
+    margin-right: 40px;
 }
 
 .add-subject-button:hover {
@@ -94,3 +103,87 @@
     color: #aaacaa; 
     transition: color 0.3s; 
 }
+
+.selected-teachers {
+    margin: 10px 0;
+    margin-bottom: 20px;
+}
+
+.remove-button {
+    margin-left: 10px;
+    background-color: #c0392b; 
+    border: none; 
+    border-radius: 5px; 
+    color: white; 
+    padding: 5px 10px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+}
+
+.remove-button:hover {
+    background-color: #e74c3c; 
+}
+
+.add-teacher-container {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px; 
+}
+
+.add-teacher-container input{
+    width: 400px;
+}
+
+.add-teacher-button {
+    background-color: #3498db; 
+    color: white; 
+    border: none; 
+    border-radius: 25px; 
+    padding: 13px 40px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+    margin-bottom: 12px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.add-teacher-button:hover {
+    background-color: #2980b9; 
+}
+
+.error-container {
+    font-weight: bold;
+    background-color: #e63623; 
+    color: white; 
+    padding: 10px; 
+    border-radius: 20px; 
+    margin-top: 10px; 
+    text-align: center;
+    width: 60%;
+}
+
+.correct-message {
+    background-color: #109ec2;
+    border: 1px solid #00acc1;
+    color: #ffffff;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 25px;
+    width: 200px;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+    font-weight: bold;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+

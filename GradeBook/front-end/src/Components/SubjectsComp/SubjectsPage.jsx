@@ -15,6 +15,7 @@ function SubjectsPage(){
         try {
             const response = await NavBarService.getSubjects();
             setSubjects(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error('There was an error fetching the subjects!', error);
             setError("Failed to fetch subjects. Please try again later.");
@@ -28,6 +29,10 @@ function SubjectsPage(){
     useEffect(() => {
         getSubjects();
     }, []);
+
+    const handleSubjectDetails = (subject) => {
+        navigate('/subject-details', { state: { subject } });
+    }
 
     return (
         <div className="subjects-page">
@@ -43,7 +48,7 @@ function SubjectsPage(){
                         </div>
                         <ul>
                             {subjects.map((subject, index) => (
-                                <li key={subject.id} className="subject-item">
+                                <li key={subject.id} className="subject-item" onClick={() => handleSubjectDetails(subject)}>
                                     {index + 1}. {subject.name}
                                 </li>
                             ))}

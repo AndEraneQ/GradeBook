@@ -16,6 +16,7 @@ function AllUsersPage(){
         try {
             const response = await NavBarService.getAllUsers();
             setUsers(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error('There was an error fetching the subjects!', error);
             setError("Failed to fetch subjects. Please try again later.");
@@ -50,7 +51,7 @@ function AllUsersPage(){
                                     First name: <b> { user.firstName}</b>&nbsp;
                                     Last name: <b>{ user.lastName}</b>  &nbsp;
                                     Email: <b>{ user.email}</b> &nbsp;
-                                    Role: <b>{ user.role.name.substring(5).toLowerCase()}</b>
+                                    Role: <b>{ user.role.role.substring(5).toLowerCase()}</b>
                                 </li>
                             ))}
                         </ul>

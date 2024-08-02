@@ -3,6 +3,8 @@ package com.troja.GradeBook.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -10,7 +12,6 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "roles")
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

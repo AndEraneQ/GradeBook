@@ -7,6 +7,7 @@ import SubjectsPage from "./Components/SubjectsComp/SubjectsPage";
 import AllUsersPage from "./Components/AllUsersComp/AllUsersPage";
 import RegisterPage from "./Components/RegisterComp/RegisterPage";
 import AddSubjectPage from "./Components/AddSubjectComp/AddSubjectPage";
+import SubjectDetails from "./Components/SubjectDetailsComp/SubjectDetails";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path="/users" element={<AllUsersPage />} />
           <Route path="/register-user" element={<RegisterPage />} />
           <Route path="/add-subject" element={<AddSubjectPage />} />
+          <Route path="/subject-details" element={<SubjectDetails />} />
+
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </div>

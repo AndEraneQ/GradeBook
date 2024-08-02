@@ -29,8 +29,13 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/users/byRoles")
+    @PostMapping("/users/byRoles")
     public ResponseEntity<List<UserDto>> getAllUsersByRole(@RequestBody RoleDto roleDto){
         return (ResponseEntity<List<UserDto>>) userService.getAllUsersByRole(roleDto);
+    }
+
+    @GetMapping("/teacher/{subjectName}")
+    public ResponseEntity<List<UserDto>> getAllTeachersBySubject(@PathVariable String subjectName){
+        return userService.getAllTeachersBySubject(subjectName);
     }
 }

@@ -19,5 +19,9 @@ class NavBarService {
     async getAllUsers() {
       return axios.get(API_URL + "users", {headers: authHeader()});
    }
+   
+    async getAllUsersByRole(role){
+      return axios.post(API_URL + "users/byRoles", {name: role}, {headers: authHeader()});
+    }
 }
 export default new NavBarService();

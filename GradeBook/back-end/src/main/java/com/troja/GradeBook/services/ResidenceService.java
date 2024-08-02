@@ -18,7 +18,7 @@ public class ResidenceService {
     private ResidenceMapper residenceMapper;
 
     public ResponseEntity<ResidenceDto> getUserResidence(Long userId) {
-        Residence residence = residenceRepository.findById(userId)
+        Residence residence = residenceRepository.findByUserId(userId)
                 .orElseThrow(() -> new MyCustomException("error","couldn't find residence"));
         return ResponseEntity.ok(residenceMapper.toDto(residence));
     }

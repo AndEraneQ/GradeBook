@@ -9,6 +9,8 @@ import java.util.Optional;
 @Component
 public class UserMapper {
 
+    private RoleMapper roleMapper;
+
     public UserDto toDto(User user) {
         if (user == null) {
             return null;
