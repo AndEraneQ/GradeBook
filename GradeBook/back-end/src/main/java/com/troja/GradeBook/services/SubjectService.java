@@ -1,6 +1,7 @@
 package com.troja.GradeBook.services;
 
 import com.troja.GradeBook.dto.AddSubjectRequest;
+import com.troja.GradeBook.dto.EditSubjectRequest;
 import com.troja.GradeBook.dto.SubjectDto;
 import com.troja.GradeBook.dto.UserDto;
 import com.troja.GradeBook.entity.Subject;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,5 +73,49 @@ public class SubjectService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
         return ResponseEntity.ok("Added subject correctly");
+    }
+
+    public ResponseEntity<?> editSubjectData(EditSubjectRequest editSubjectRequest) {
+        List<UserDto> teachersToDelete = editSubjectRequest.getDeletedTeachers();
+        List<UserDto> teachersToAdd = editSubjectRequest.getAddedTeachers();
+        Subject subjectDataFromUser = editSubjectRequest.getSubject();
+        //TODO: TAKE FROM DATABASE OUR SUBJECT
+        Subject subject = subjectRepository
+                .findById(subjectDataFromUser.getId())
+                .orElseThrow(() -> new NoSuchElementException("Subject not found"));
+        //TODO: CHECK IF NAME OF SUBJECT WAS CHANGED
+        if(!subject.getName().equals(subjectDataFromUser.getName())){
+            // TODO: UPDATE NEW SUBJECT NAME
+            subject.setName(subjectDataFromUser.getName());
+        }
+        //TODO: UPDATE TEACHERS IN THE SUBJECT
+        if(!teachersToAdd.isEmpty()){
+            for (UserDto teacherDto : teachersToAdd) {
+                User teacher = userRepository.findById(teacherDto.getId())
+                        .orElseThrow(() -> new NoSuchElementException("Teacher not found"));
+                boolean exists = subject.getTeachers().stream()
+                        .anyMatch(existingTeacher -> existingTeacher.getId().equals(teacher.getId()));
+                if (!exists) {
+                    subject.getTeachers().add(teacher);
+                    teacher.getSubjects().add(subject);
+                }
+            }
+
+        }
+        if(!teachersToDelete.isEmpty()){
+            for (UserDto teacherDto : teachersToDelete) {
+                User teacher = userRepository.findById(teacherDto.getId())
+                        .orElseThrow(() -> new NoSuchElementException("Teacher not found"));
+                boolean exists = subject.getTeachers().stream()
+                        .anyMatch(existingTeacher -> existingTeacher.getId().equals(teacher.getId()));
+                if (exists) {
+                    subject.getTeachers().remove(teacher);
+                    teacher.getSubjects().remove(subject);
+                }
+            }
+        }
+        //TODO: SAVE NEW SUBJECT DATA
+        subjectRepository.save(subject);
+        return ResponseEntity.ok("The data for the subject has been updated successfully.");
     }
 }

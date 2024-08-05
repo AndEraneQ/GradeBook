@@ -9,6 +9,23 @@ class SubjectService{
                         {name: name, listOfTeachers: listOfTeachers},
                         {headers: authHeader()});
       }
+
+      async editSubjectData(newSubject, teachersToRemove, teachersToAdd) {
+        try {
+            const response = await axios.post(API_URL + "edit/subjectData", {
+                subject: newSubject,
+                deletedTeachers: teachersToRemove,
+                addedTeachers: teachersToAdd
+            }, {
+                headers: authHeader()
+            });
+            return response; 
+        } catch (error) {
+            
+            throw error; 
+        }
+    }
+    
 }
 
 export default new SubjectService;

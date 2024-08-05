@@ -1,6 +1,7 @@
 package com.troja.GradeBook.controllers;
 
 import com.troja.GradeBook.dto.AddSubjectRequest;
+import com.troja.GradeBook.dto.EditSubjectRequest;
 import com.troja.GradeBook.dto.SubjectDto;
 import com.troja.GradeBook.entity.Subject;
 import com.troja.GradeBook.services.SubjectService;
@@ -26,5 +27,10 @@ public class SubjectController {
     @PostMapping("/add/subject")
     public ResponseEntity<?> addSubject(@RequestBody AddSubjectRequest addSubjectRequest){
         return subjectService.addSubject(addSubjectRequest);
+    }
+
+    @PostMapping("/edit/subjectData")
+    public ResponseEntity<?> editSubjectData(@RequestBody EditSubjectRequest editSubjectRequest){
+        return subjectService.editSubjectData(editSubjectRequest);
     }
 }
