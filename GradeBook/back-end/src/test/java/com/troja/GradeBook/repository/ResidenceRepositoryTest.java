@@ -2,10 +2,10 @@ package com.troja.GradeBook.repository;
 
 import com.troja.GradeBook.entity.Residence;
 import net.bytebuddy.utility.dispatcher.JavaDispatcher;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -20,8 +20,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DataJpaTest
 @Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ResidenceRepositoryTest {
 
     @Autowired
@@ -31,19 +32,43 @@ class ResidenceRepositoryTest {
     @ServiceConnection
     static MySQLContainer mySQLContainer = new MySQLContainer("mysql:8.0");
 
+    @BeforeEach
+    void setUp(){
+        Residence residence = new Residence(1L,
+                "Cracow",
+                "Jana Matejki",
+                25L,
+                90L,
+                1L);
+        residenceRepository.save(residence);
+    }
+
+    @AfterEach
+    void tearDown(){
+        residenceRepository.deleteAll();
+    }
+
+    @Test
+    void canEstablishedConnection(){
+        assertThat(mySQLContainer.isCreated()).isTrue();
+        assertThat(mySQLContainer.isRunning()).isTrue();
+    }
+
     @Test
     void shouldReturnResidenceWhenFindByUserId() {
         //given
-        Residence residence = new Residence(22L,
-                "Cracow",
-                "Jana Matejki",
-                22L,
-                22L,
-                22L);
-        residenceRepository.save(residence);
         //when
-        Optional<Residence> residenceById = residenceRepository.findByUserId(22L);
+        Optional<Residence> residenceById = residenceRepository.findByUserId(1L);
         //then
-        assertThat(residenceById.isPresent());
+        assertThat(residenceById).isPresent();
+    }
+
+    @Test
+    void shouldNotReturnResidenceWhenFindByUserIdIsNotPresent() {
+        //given
+        //when
+        Optional<Residence> residenceById = residenceRepository.findByUserId(2L);
+        //then
+        assertThat(residenceById).isNotPresent();
     }
 }
