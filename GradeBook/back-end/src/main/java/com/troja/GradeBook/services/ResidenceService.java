@@ -19,7 +19,7 @@ public class ResidenceService {
 
     public ResponseEntity<ResidenceDto> getUserResidence(Long userId) {
         Residence residence = residenceRepository.findByUserId(userId)
-                .orElseThrow(() -> new MyCustomException("error","couldn't find residence"));
+                .orElseThrow(() -> new MyCustomException("error","Couldn't find residence"));
         return ResponseEntity.ok(residenceMapper.toDto(residence));
     }
 }

@@ -57,7 +57,9 @@ public class SubjectService {
             // TODO: SAVE NEW SUBJECT
             subjectRepository.save(subject);
             // TODO: TAKE SUBJECT FROM DATABASE TO GET SUBJECT ID
-            subject = subjectRepository.findByName(name);
+            subject = subjectRepository
+                    .findByName(name)
+                    .orElseThrow();
             // TODO: ADD TO TABLE SUBJECT_USER RELATION FOR ALL USERS
             for (UserDto userDto : listOfTeachers) {
                 //TODO: CHECK IF TEACHER DON'T LEARN THIS SUBJECT

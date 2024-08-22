@@ -20,45 +20,33 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
-@Testcontainers
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ResidenceRepositoryTest {
+
+class ResidenceRepositoryTest extends BaseTest{
 
     @Autowired
-    private ResidenceRepository residenceRepository;
-
-    @Container
-    @ServiceConnection
-    static MySQLContainer mySQLContainer = new MySQLContainer("mysql:8.0");
+    private ResidenceRepository underTest;
 
     @BeforeEach
-    void setUp(){
+    void setData(){
         Residence residence = new Residence(1L,
                 "Cracow",
                 "Jana Matejki",
                 25L,
                 90L,
                 1L);
-        residenceRepository.save(residence);
+        underTest.save(residence);
     }
 
     @AfterEach
-    void tearDown(){
-        residenceRepository.deleteAll();
-    }
-
-    @Test
-    void canEstablishedConnection(){
-        assertThat(mySQLContainer.isCreated()).isTrue();
-        assertThat(mySQLContainer.isRunning()).isTrue();
+    void removeData(){
+        underTest.deleteAll();
     }
 
     @Test
     void shouldReturnResidenceWhenFindByUserId() {
         //given
         //when
-        Optional<Residence> residenceById = residenceRepository.findByUserId(1L);
+        Optional<Residence> residenceById = underTest.findByUserId(1L);
         //then
         assertThat(residenceById).isPresent();
     }
@@ -67,7 +55,7 @@ class ResidenceRepositoryTest {
     void shouldNotReturnResidenceWhenFindByUserIdIsNotPresent() {
         //given
         //when
-        Optional<Residence> residenceById = residenceRepository.findByUserId(2L);
+        Optional<Residence> residenceById = underTest.findByUserId(2L);
         //then
         assertThat(residenceById).isNotPresent();
     }

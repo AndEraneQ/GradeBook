@@ -57,7 +57,7 @@ public class UserService {
 
     public ResponseEntity<List<UserDto>> getAllTeachersBySubject(String name) {
         // TODO: FIND SUBJECT OBJECT
-        Subject subject = subjectRepository.findByName(name);
+        Subject subject = subjectRepository.findByName(name).orElseThrow();
         // TODO: TAKE ALL TEACHERS
         List<User> teachers = userRepository.findBySubjects_Id(subject.getId());
         // TODO: IF LIST IS EMPTY RETURN CODE 204
