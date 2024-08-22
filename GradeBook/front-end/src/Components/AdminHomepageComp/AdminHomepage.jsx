@@ -1,10 +1,10 @@
 import React from "react";
-import WelcomeHeader from "../WelcomeHeaderComp/WelcomeHeader";
 import Card from "../CardComp/Card";
 import { useNavigate } from 'react-router-dom';
 import AuthService from "../../Services/AuthService";
 import NavBarService from "../../Services/NavBarService";
 import { getUser } from "../../utils/userUtils";
+import './AdminHomepage.css';
 
 
 const AdminHomepage = () => {
@@ -30,7 +30,7 @@ const AdminHomepage = () => {
 
     return (
         <div className="admin-homepage-container">
-            <WelcomeHeader name={name} />
+            <h1>Welcome {name}</h1>
             <div className="cards">
                 <Card imagePath="src/assets/manageClasses.png" text="Manage Class"/>
                 <Card imagePath="src/assets/managePersons.png" text="Manage Persons" onClick={handleManageUsers}/>

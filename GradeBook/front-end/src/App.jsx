@@ -22,7 +22,6 @@ function App() {
           <Route path="/register-user" element={<RegisterPage />} />
           <Route path="/add-subject" element={<AddSubjectPage />} />
           <Route path="/subject-details" element={<SubjectDetails />} />
-
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </div>
