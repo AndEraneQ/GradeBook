@@ -1,5 +1,6 @@
 package com.troja.GradeBook.security;
 
+import com.troja.GradeBook.entity.Role;
 import lombok.*;
 
 @Getter
@@ -14,5 +15,5 @@ public class LoginResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private String role;
+    private Role role;
 }

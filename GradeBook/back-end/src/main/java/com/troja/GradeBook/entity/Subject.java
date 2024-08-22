@@ -19,8 +19,8 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    //@ManyToMany(mappedBy = "subjects")
-    //private List<User> teachers;
+    @ManyToMany(mappedBy = "subjects")
+    private Set<Teacher> teachers;
 
     public Subject(String name) {
         this.name = name;

@@ -31,6 +31,8 @@ public class User {
     @JoinColumn(name = "classroom_id", nullable = true)
     private ClassRoom classRoom;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Teacher teacher;
 //    @ManyToMany
 //    @JoinTable(
 //            name = "teacher_subject",

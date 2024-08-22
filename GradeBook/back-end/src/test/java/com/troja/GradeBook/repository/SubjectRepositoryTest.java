@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +20,7 @@ class SubjectRepositoryTest extends BaseTest{
 
     @BeforeEach
     void setData(){
-        Subject subject = new Subject(1L,"Mathematic");
+        Subject subject = new Subject(1L,"Mathematic",new HashSet<>());
         underTest.save(subject);
     }
 
