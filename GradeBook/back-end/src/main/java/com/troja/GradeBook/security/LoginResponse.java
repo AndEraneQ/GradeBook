@@ -1,9 +1,6 @@
 package com.troja.GradeBook.security;
 
-import com.troja.GradeBook.entity.Role;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter

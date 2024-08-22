@@ -9,7 +9,7 @@ import java.util.Optional;
 @Component
 public class UserMapper {
 
-    private RoleMapper roleMapper;
+    //private RoleMapper roleMapper;
 
     public UserDto toDto(User user) {
         if (user == null) {
@@ -21,7 +21,7 @@ public class UserMapper {
         userDto.setEmail(user.getEmail());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
-        userDto.setRole(user.getRole());
+        //userDto.setRole(user.getRole());
 
         return userDto;
     }
@@ -36,7 +36,7 @@ public class UserMapper {
         user.setEmail(userDto.getEmail());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setRole(userDto.getRole());
+//        user.setRole(userDto.getRole());
 
         return user;
     }

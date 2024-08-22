@@ -1,6 +1,7 @@
 package com.troja.GradeBook.repository;
 
 import com.troja.GradeBook.entity.Subject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,15 @@ class SubjectRepositoryTest extends BaseTest{
 
     @BeforeEach
     void setData(){
-        Subject subject = new Subject(1L,"Mathematic", new ArrayList<>());
+        Subject subject = new Subject(1L,"Mathematic");
         underTest.save(subject);
     }
+
+    @AfterEach
+    void removeData(){
+        underTest.deleteAll();
+    }
+
     @Test
     void shouldReturnTrueWhenExistByNameIsPresent(){
         //given
@@ -56,6 +63,5 @@ class SubjectRepositoryTest extends BaseTest{
         //then
         assertThat(subjectByName).isNotPresent();
     }
-
 
 }

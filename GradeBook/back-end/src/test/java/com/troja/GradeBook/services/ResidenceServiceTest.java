@@ -66,7 +66,7 @@ class ResidenceServiceTest {
         MyCustomException exception = assertThrows(MyCustomException.class, () -> residenceService.getUserResidence(userId));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo("Couldn't find residence");
+        assertThat(exception.getMessage()).isEqualTo("Couldn't find residence. Try again later");
         verify(residenceRepository).findByUserId(userId);
         verify(residenceMapper, never()).toDto(any());
     }

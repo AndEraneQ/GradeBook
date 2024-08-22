@@ -1,6 +1,5 @@
 package com.troja.GradeBook.dto;
 
-import com.troja.GradeBook.entity.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +10,5 @@ public class UserDto {
     private String email;
     private String firstName;
     private String lastName;
-    private Role role;
+    //private Role role;
 }

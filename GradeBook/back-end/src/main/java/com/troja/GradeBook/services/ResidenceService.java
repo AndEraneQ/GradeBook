@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 
 @Service
 @AllArgsConstructor
@@ -19,7 +21,7 @@ public class ResidenceService {
 
     public ResponseEntity<ResidenceDto> getUserResidence(Long userId) {
         Residence residence = residenceRepository.findByUserId(userId)
-                .orElseThrow(() -> new MyCustomException("error","Couldn't find residence"));
+                .orElseThrow(() -> new NoSuchElementException("Couldn't find residence. Try again later"));
         return ResponseEntity.ok(residenceMapper.toDto(residence));
     }
 }
