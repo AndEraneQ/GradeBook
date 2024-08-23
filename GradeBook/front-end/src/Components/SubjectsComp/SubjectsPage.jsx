@@ -36,7 +36,7 @@ function SubjectsPage(){
 
     return (
         <div className="subjects-page">
-            <GoBackButton path='/admin-homepage'/>
+            <GoBackButton path='/home'/>
             <div className="subjects-container">
                 {error ? (
                     <div className="error-message">{error}</div>

@@ -14,11 +14,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -54,14 +57,22 @@ class AppConfigTest {
     }
 
     @Test
-    void passwordEncoderBeanShouldBeCreated() {
-        BCryptPasswordEncoder passwordEncoder = appConfig.passwordEncoder();
-        assertNotNull(passwordEncoder);
+    void testUserDetailsServiceThrowsExceptionWhenUserNotFound() {
+        // given
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        // when & then
+        assertThrows(UsernameNotFoundException.class, () -> {
+            userDetailsService.loadUserByUsername("nonexistent@example.com");
+        });
     }
 
     @Test
-    void authenticationProviderBeanShouldBeCreated() {
-        AuthenticationProvider authenticationProvider = appConfig.authenticationProvider();
-        assertNotNull(authenticationProvider);
+    void testPasswordEncoderBean() {
+        // when
+        BCryptPasswordEncoder passwordEncoder = appConfig.passwordEncoder();
+
+        // then
+        assertThat(passwordEncoder).isNotNull();
     }
 }

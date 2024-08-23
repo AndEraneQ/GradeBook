@@ -1,5 +1,6 @@
 package com.troja.GradeBook.dto.requests;
 
+import com.troja.GradeBook.dto.TeacherDto;
 import com.troja.GradeBook.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,5 +15,5 @@ import java.util.List;
 @NoArgsConstructor
 public class AddSubjectRequest {
     private String name;
-    private List<UserDto> listOfTeachers;
+    private List<TeacherDto> listOfTeachers;
 }

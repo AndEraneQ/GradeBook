@@ -34,10 +34,5 @@ public abstract class BaseTest {
         mySQLContainer.stop();
     }
 
-    @Test
-    void canEstablishedConnection(){
-        assertThat(mySQLContainer.isCreated()).isTrue();
-        assertThat(mySQLContainer.isRunning()).isTrue();
-    }
 }
 

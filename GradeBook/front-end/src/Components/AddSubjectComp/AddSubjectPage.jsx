@@ -22,8 +22,9 @@ function AddSubjectPage() {
     useEffect(() => {
         const fetchTeachers = async () => {
             try {
-                const response = await NavBarService.getAllUsersByRole("role_teacher");
+                const response = await NavBarService.getAllTeachers();
                 setTeachers(response.data);
+                console.log(response);
             } catch (err) {
                 console.error('Error fetching teachers:', err);
             }
@@ -101,12 +102,12 @@ function AddSubjectPage() {
 
         try {
             const resp = await SubjectService.addSubject(subject, selectedTeachers);
+            console.log(resp.data);
             setSubject('');
         setSelectedTeachers([]);
         setSelectedTeacherData('');
         setResponse(resp.data);
         } catch (error) {
-            console.log(error.response.data);
             setError(error.response.data);
         }
     };

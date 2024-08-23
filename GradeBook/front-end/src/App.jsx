@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Components/LoginComp/Login";
-import AdminHomepage from "./Components/AdminHomepageComp/AdminHomepage";
+import Homepage from "./Components/HomepageComp/Homepage";
 import UserData from "./Components/UserDataComp/UserData";
 import SubjectsPage from "./Components/SubjectsComp/SubjectsPage";
 import AllUsersPage from "./Components/AllUsersComp/AllUsersPage";
@@ -15,7 +15,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/admin-homepage" element={<AdminHomepage />} />
+          <Route path="/home" element={<Homepage />} />
           <Route path="/user-data" element={<UserData />} />
           <Route path="/subjects" element={<SubjectsPage />} />
           <Route path="/users" element={<AllUsersPage />} />

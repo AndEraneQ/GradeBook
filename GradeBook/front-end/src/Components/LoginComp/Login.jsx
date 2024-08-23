@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AuthService from '../../Services/AuthService';
-import {useLocation} from 'react-router-dom';
-import useNavBarNavigation from '../../utils/navBarNavigation';
+import {useLocation, useNavigate} from 'react-router-dom';
 import './Login.css';
 
 function Login() {
@@ -10,7 +9,7 @@ function Login() {
     const [errors, setErrors] = useState({ email: "", password: "", general: ""});
     const location = useLocation();
     const [logOutMessage,setLogOutMessage] = useState(location.state?.message);
-    const navBarNavigation = useNavBarNavigation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (logOutMessage) {
@@ -35,14 +34,12 @@ function Login() {
         try {
             const response = await AuthService.login(email, password);
             localStorage.setItem('user_data', JSON.stringify(response.data));
-            const userRole = response.data.role;
-            navBarNavigation(userRole);
+            navigate("/home");
         } catch (error) {
             if (error.errors) {
                 resetLogOutCorrectlyMessage();
                 setErrors(error.errors);
             } else {
-                console.error('Error during login:', error);
                 setErrors({ general: 'An error occurred. Please try again later.' });
             }
         }

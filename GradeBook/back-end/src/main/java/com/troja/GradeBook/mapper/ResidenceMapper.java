@@ -5,7 +5,7 @@ import com.troja.GradeBook.entity.Residence;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ResidenceMapper {
 
     ResidenceMapper INSTANCE = Mappers.getMapper(ResidenceMapper.class);

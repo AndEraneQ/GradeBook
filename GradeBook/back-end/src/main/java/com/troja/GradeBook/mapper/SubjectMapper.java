@@ -5,7 +5,7 @@ import com.troja.GradeBook.entity.Subject;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SubjectMapper {
 
     SubjectMapper INSTANCE = Mappers.getMapper(SubjectMapper.class);

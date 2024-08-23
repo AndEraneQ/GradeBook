@@ -12,7 +12,6 @@ function SubjectDetails() {
     const [newTeachersOfSubject, setNewTeachersOfSubject] = useState([]);
     const [removedTeachersFromSubject, setRemovedTeachersOfSubject] = useState([]);
     const [subject, setSubject] = useState(location.state?.subject || {});
-    const [newSubjectName,setNewSubjectName] = useState(location.state?.subject.name || '');
     const [wantChangeData, setWantChangeData] = useState(false);
     const [selectedTeacherData, setSelectedTeacherData] = useState('');
     const [filteredTeachers, setFilteredTeachers] = useState([]);
@@ -22,8 +21,8 @@ function SubjectDetails() {
     const fetchData = async () => {
         try {
             const [teachersResponse, allTeachersResponse] = await Promise.all([
-                NavBarService.getAllTeachersOfSubject(subject.name),
-                NavBarService.getAllUsersByRole("role_teacher")
+                NavBarService.getAllTeachersOfSubject(subject.id),
+                NavBarService.getAllTeachers()
             ]);
     
             const fetchedTeachers = Array.isArray(teachersResponse.data) ? teachersResponse.data : [];
@@ -40,11 +39,7 @@ function SubjectDetails() {
     
     useEffect(() => {
         fetchData();
-    }, [subject]);
-
-    useEffect(() => {
-        console.log(subject);
-    }, [subject]);
+    }, []);
 
     const handleEditData = () => {
         setWantChangeData(prev => !prev);
@@ -120,21 +115,14 @@ function SubjectDetails() {
     };
 
     const handleUpdateData = async () => {
-        const trimmedNewSubjectName = newSubjectName.trim();
     
-        if (trimmedNewSubjectName === '') {
+        if (subject.name === '') {
             setError("You need to type a subject name");
             return;
         }
     
-        if (subject.name !== trimmedNewSubjectName) {
-            setSubject(prevSubject => ({
-                ...prevSubject,
-                name: trimmedNewSubjectName
-            }));
-        }
-    
         try {
+            console.log(subject)
             const response = await SubjectService.editSubjectData(subject,removedTeachersFromSubject, newTeachersOfSubject);
             handleEditData();
             fetchData();
@@ -194,13 +182,17 @@ function SubjectDetails() {
                                 <h1>Edit name</h1>
                                 <input 
                                     type="text" 
-                                    value={newSubjectName} 
-                                    onChange={(e) => setNewSubjectName(e.target.value)}
+                                    value={subject.name} 
+                                    onChange={(e) => setSubject(prevSubject => ({
+                                        ...prevSubject,
+                                        name: e.target.value.trim()
+                                    }))
+                                }
                                 />
                             </div>
                             {newTeachersOfSubject.length > 0 ? (
                                 <div className="teachers-container">
-                                    <h1>Teachers of {newSubjectName}:</h1>
+                                    <h1>Teachers of {subject.name}:</h1>
                                     <ul>
                                         {newTeachersOfSubject.map((teacher, index) => (
                                             <li key={teacher.id} className="user-item">

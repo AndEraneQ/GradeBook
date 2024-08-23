@@ -32,6 +32,7 @@ class ResidenceServiceTest {
     @Mock
     private ResidenceMapper residenceMapper;
 
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

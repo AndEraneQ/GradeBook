@@ -14,5 +14,4 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findById(Long id);
     List<User> findByRole(Role role);
     boolean existsById(Long id);
-    //List<User> findBySubjects_Id(Long subjectId);
 }

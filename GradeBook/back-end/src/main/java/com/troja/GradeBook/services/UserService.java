@@ -1,6 +1,7 @@
 package com.troja.GradeBook.services;
 
 import com.troja.GradeBook.dto.UserDto;
+import com.troja.GradeBook.entity.Role;
 import com.troja.GradeBook.entity.Subject;
 import com.troja.GradeBook.entity.User;
 import com.troja.GradeBook.exception.MyCustomException;
@@ -12,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -35,21 +38,6 @@ public class UserService {
                 .map(user -> userMapper.toDto(user))
                 .collect(Collectors.toList()));
     }
-
-//    public ResponseEntity<?> getAllUsersByRole(RoleDto roleDto){
-//        Role role;
-//        try {
-//            role = Role.valueOf(roleDto.getName().toUpperCase());
-//        } catch (IllegalArgumentException e) {
-//            Map<String, String> errorResponse = new HashMap<>();
-//            errorResponse.put("message", "Invalid role: " + roleDto.getName());
-//            return ResponseEntity.badRequest().body(errorResponse);
-//        }
-//        List<User> allUsersByRole = userRepository.findByRole(role);
-//        return ResponseEntity.ok(allUsersByRole.stream()
-//                .map(userMapper::toDto)
-//                .collect(Collectors.toList()));
-//    }
 
     public ResponseEntity<List<UserDto>> getAllTeachersBySubject(String name) {
         // TODO: FIND SUBJECT OBJECT

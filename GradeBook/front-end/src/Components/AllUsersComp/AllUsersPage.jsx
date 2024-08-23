@@ -33,7 +33,7 @@ function AllUsersPage(){
     
     return (
         <div className="all-users-page">
-            <GoBackButton path='/admin-homepage'/>
+            <GoBackButton path='/home'/>
             <h1>Users:</h1>
             <div className="all-users-container">
                 {error ? (
@@ -51,7 +51,7 @@ function AllUsersPage(){
                                     First name: <b> { user.firstName}</b>&nbsp;
                                     Last name: <b>{ user.lastName}</b>  &nbsp;
                                     Email: <b>{ user.email}</b> &nbsp;
-                                    Role: <b>{ user.role.role.substring(5).toLowerCase()}</b>
+                                    Role: <b>{ user.role}</b>
                                 </li>
                             ))}
                         </ul>

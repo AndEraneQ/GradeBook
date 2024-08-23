@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import AuthService from "../../Services/AuthService";
 import NavBarService from "../../Services/NavBarService";
 import { getUser } from "../../utils/userUtils";
-import './AdminHomepage.css';
+import './Homepage.css';
 
 
-const AdminHomepage = () => {
+const Homepage = () => {
     const navigate = useNavigate();
     const user = getUser();
     const name = `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'User';
@@ -43,4 +43,4 @@ const AdminHomepage = () => {
     );
 }
 
-export default AdminHomepage;
+export default Homepage;

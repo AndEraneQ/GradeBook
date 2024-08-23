@@ -1,5 +1,6 @@
 package com.troja.GradeBook.dto.requests;
 
+import com.troja.GradeBook.dto.TeacherDto;
 import com.troja.GradeBook.dto.UserDto;
 import com.troja.GradeBook.entity.Subject;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class EditSubjectRequest {
     private Subject subject;
-    private List<UserDto> deletedTeachers;
-    private List<UserDto> addedTeachers;
+    private List<TeacherDto> deletedTeachers;
+    private List<TeacherDto> addedTeachers;
 }
