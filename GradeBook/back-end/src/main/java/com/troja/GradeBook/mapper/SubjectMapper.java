@@ -2,16 +2,15 @@ package com.troja.GradeBook.mapper;
 
 import com.troja.GradeBook.dto.SubjectDto;
 import com.troja.GradeBook.entity.Subject;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
-@Component
-public class SubjectMapper {
+@Mapper
+public interface SubjectMapper {
 
-    public SubjectDto toDto(Subject subject){
-        return new SubjectDto(subject.getId(), subject.getName());
-    }
+    SubjectMapper INSTANCE = Mappers.getMapper(SubjectMapper.class);
+
+    SubjectDto toDto(Subject subject);
+
+    Subject toEntity(SubjectDto subjectDto);
 }

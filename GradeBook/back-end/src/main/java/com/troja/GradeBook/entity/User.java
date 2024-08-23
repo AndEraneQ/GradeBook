@@ -30,14 +30,6 @@ public class User {
     @ManyToOne(optional = true)
     @JoinColumn(name = "classroom_id", nullable = true)
     private ClassRoom classRoom;
-
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Teacher teacher;
-//    @ManyToMany
-//    @JoinTable(
-//            name = "teacher_subject",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "subject_id")
-//    )
-//    private List<Subject> subjects = new ArrayList<>();
 }

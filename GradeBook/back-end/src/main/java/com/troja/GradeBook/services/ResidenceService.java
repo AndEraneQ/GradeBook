@@ -2,7 +2,6 @@ package com.troja.GradeBook.services;
 
 import com.troja.GradeBook.dto.ResidenceDto;
 import com.troja.GradeBook.entity.Residence;
-import com.troja.GradeBook.exception.MyCustomException;
 import com.troja.GradeBook.mapper.ResidenceMapper;
 import com.troja.GradeBook.repository.ResidenceRepository;
 import lombok.AllArgsConstructor;
