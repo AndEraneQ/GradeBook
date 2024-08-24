@@ -10,7 +10,7 @@ class SubjectService{
                         {headers: authHeader()});
       }
 
-      async editSubjectData(newSubject, teachersToRemove, teachersToAdd) {
+    async editSubjectData(newSubject, teachersToRemove, teachersToAdd) {
         try {
             const response = await axios.post(API_URL + "edit/subjectData", {
                 subject: newSubject,
@@ -21,9 +21,13 @@ class SubjectService{
             });
             return response; 
         } catch (error) {
-            
             throw error; 
         }
+    }
+
+    async deleteSubject(id){
+        return axios.delete(API_URL + "remove/subject/" + id,
+                            {headers: authHeader()});
     }
     
 }

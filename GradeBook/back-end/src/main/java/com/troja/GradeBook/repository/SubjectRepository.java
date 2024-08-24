@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface SubjectRepository extends JpaRepository<Subject,Long> {
     Optional<Subject> findByName(String name);
     boolean existsByName(String name);
+    void deleteById(Long id);
 }

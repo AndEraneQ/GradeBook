@@ -4,18 +4,19 @@ import GoBackButton from "../GoBackButtonComp/GoBackButton";
 import { useEffect } from "react";
 import './SubjectsPage.css';
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function SubjectsPage(){
-
+    const location = useLocation();
     const [subjects,setSubjects] = useState([]);
     const [error, setError] = useState(null);
+    const [deletedSubjectMessage, setDeletedSubjectMessage] = useState(location.state?.responseData || null);
     const navigate = useNavigate();
 
     const getSubjects = async () => {
         try {
             const response = await NavBarService.getSubjects();
             setSubjects(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error('There was an error fetching the subjects!', error);
             setError("Failed to fetch subjects. Please try again later.");
@@ -38,9 +39,14 @@ function SubjectsPage(){
         <div className="subjects-page">
             <GoBackButton path='/home'/>
             <div className="subjects-container">
-                {error ? (
+                {error && (
                     <div className="error-message">{error}</div>
-                ) : (
+                )}
+                {deletedSubjectMessage && (
+                    <div className="response-message">
+                        {deletedSubjectMessage}
+                    </div>
+                )}
                     <div>
                         <div className="search-and-add-container">
                             <input className="search-input" type="text" placeholder="🔍 Search:"/>
@@ -54,7 +60,6 @@ function SubjectsPage(){
                             ))}
                         </ul>
                     </div>
-                )}
             </div>
         </div>
     );

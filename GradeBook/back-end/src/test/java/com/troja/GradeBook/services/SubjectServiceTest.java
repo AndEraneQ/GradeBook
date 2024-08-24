@@ -22,12 +22,15 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.testcontainers.shaded.org.bouncycastle.cert.DeltaCertificateTool.subject;
 
 @ExtendWith(MockitoExtension.class)
 class SubjectServiceTest {
@@ -225,5 +228,59 @@ class SubjectServiceTest {
         // then
         assertThrows(NoSuchElementException.class, () -> underTest.editSubjectData(request));
     }
+    @Test
+    void testDeleteSubject_SubjectNotFound(){
+        //given
+        when(subjectRepository.findById(1L)).thenReturn(Optional.empty());
+        //when
+        Exception exception = assertThrows(RuntimeException.class,
+                () -> {underTest.deleteSubject(1L);
+        });
+        //then
+        assertThat(exception.getMessage()).isEqualTo("Couldn't find subject");
+    }
+
+    @Test
+    void testDeleteSubject_DeletedCorrectlyWithoutTeachers() {
+        // given
+        Subject subject = new Subject(1L,"Math",new HashSet<>());
+        when(subjectRepository.findById(1L)).thenReturn(Optional.of(subject));
+
+        // when
+        ResponseEntity<?> response = underTest.deleteSubject(1L);
+
+        // then
+        verify(subjectRepository, times(1)).delete(subject);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody()).isEqualTo("Deleted " + subject.getName() + " correctly!");
+    }
+
+    @Test
+    void testDeleteSubject_DeletedCorrectlyWithTeachers() {
+        // given
+        Subject subject = new Subject(1L,"Math",new HashSet<>());
+        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>());
+        teacher1.getSubjects().add(subject);
+        subject.getTeachers().add(teacher1);
+        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>());
+
+        teacher2.getSubjects().add(subject);
+        subject.getTeachers().add(teacher2);
+
+        when(subjectRepository.findById(1L)).thenReturn(Optional.of(subject));
+
+        // when
+        ResponseEntity<?> response = underTest.deleteSubject(1L);
+
+        // then
+        verify(subjectRepository, times(1)).delete(subject);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody()).isEqualTo("Deleted " + subject.getName() + " correctly!");
+
+        for (Teacher teacher : subject.getTeachers()) {
+            assertThat(teacher.getSubjects()).doesNotContain(subject);
+        }
+    }
 }
+
 

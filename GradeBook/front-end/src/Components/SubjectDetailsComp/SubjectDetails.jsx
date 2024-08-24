@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import './SubjectDetails.css';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GoBackButton from "../GoBackButtonComp/GoBackButton";
 import NavBarService from "../../Services/NavBarService";
 import SubjectService from "../../Services/SubjectService";
@@ -17,6 +17,8 @@ function SubjectDetails() {
     const [filteredTeachers, setFilteredTeachers] = useState([]);
     const [error, setError] = useState('');
     const [response, setResponse] = useState('');
+    const [wantRemoveSubject, setWantRemoveSubject] = useState(false);
+    const navigate = useNavigate();
 
     const fetchData = async () => {
         try {
@@ -132,6 +134,17 @@ function SubjectDetails() {
         }
     };
 
+    const handleRemoveSubject = async () => {
+        setWantRemoveSubject(false);
+        try{
+        const response = await SubjectService.deleteSubject(subject.id);
+        const responseData = response.data;
+        navigate('/subjects', { state: { responseData } });
+        } catch (err) {
+            setError(err.message || "Couldn't remove subject, try again later");
+        }
+    }
+
     return (
         <div className="add-subject-container">
             <div className="go-back-button">
@@ -169,17 +182,41 @@ function SubjectDetails() {
                                     </div>
                                 )}
                             </div>
-                            <div className="edit-data-button-container">
+                            {wantRemoveSubject && (
+                                <div className="confirm-delete-user-container">
+                                    <p>Are you sure?</p>
+                                    <div className="button-container">
+                                        <button
+                                            className="confirm-button"
+                                            onClick={handleRemoveSubject}>
+                                                Yes
+                                        </button>
+                                        <button 
+                                            className="cancel-button"
+                                            onClick={() => setWantRemoveSubject(false)}>
+                                                No
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="button-container">
                                 <button 
                                     className="edit-data-button"
-                                    onClick={handleEditData}>Edit Data
+                                    onClick={handleEditData}>
+                                        Edit Data
+                                </button>
+                                <button
+                                    className="remove-subject-button"
+                                    onClick={() => setWantRemoveSubject(true)}>
+                                        Delete Subject
                                 </button>
                             </div>
+                            
                         </div>
                     ) : (
                         <div className="edit-data-container">
                             <div className="subject-container">
-                                <h1>Edit name</h1>
+                                <h2>Edit name</h2>
                                 <input 
                                     type="text" 
                                     value={subject.name} 
@@ -192,7 +229,7 @@ function SubjectDetails() {
                             </div>
                             {newTeachersOfSubject.length > 0 ? (
                                 <div className="teachers-container">
-                                    <h1>Teachers of {subject.name}:</h1>
+                                    <h3>Teachers of {subject.name}:</h3>
                                     <ul>
                                         {newTeachersOfSubject.map((teacher, index) => (
                                             <li key={teacher.id} className="user-item">
@@ -217,7 +254,7 @@ function SubjectDetails() {
                             
                             <div className="add-teacher-container">
                                 <div className="add-teacher-header">
-                                    <h1>Add teacher</h1>
+                                    <h2>Add teacher</h2>
                                 </div>
                                 <div className="add-teacher-input">
                                 <input

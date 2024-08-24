@@ -33,4 +33,9 @@ public class SubjectController {
     public ResponseEntity<?> editSubjectData(@RequestBody EditSubjectRequest editSubjectRequest){
         return subjectService.editSubjectData(editSubjectRequest);
     }
+
+    @DeleteMapping("/remove/subject/{id}")
+    public ResponseEntity<?> deleteSubject(@PathVariable("id") Long subjectId){
+        return subjectService.deleteSubject(subjectId);
+    }
 }

@@ -2,25 +2,17 @@ package com.troja.GradeBook.services;
 
 import com.troja.GradeBook.dto.SubjectDto;
 import com.troja.GradeBook.dto.TeacherDto;
-import com.troja.GradeBook.dto.UserDto;
 import com.troja.GradeBook.dto.requests.AddSubjectRequest;
 import com.troja.GradeBook.dto.requests.EditSubjectRequest;
 import com.troja.GradeBook.entity.Subject;
 import com.troja.GradeBook.entity.Teacher;
-import com.troja.GradeBook.entity.User;
 import com.troja.GradeBook.mapper.SubjectMapper;
-import com.troja.GradeBook.mapper.TeacherMapper;
-import com.troja.GradeBook.mapper.UserMapper;
 import com.troja.GradeBook.repository.SubjectRepository;
-//import com.troja.GradeBook.repository.TeacherSubjectRepository;
 import com.troja.GradeBook.repository.TeacherRepository;
-import com.troja.GradeBook.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -117,5 +109,17 @@ public class SubjectService {
 
         subjectRepository.save(subject);
         return ResponseEntity.ok("Data for the subject has been updated successfully.");
+    }
+
+    public ResponseEntity<?> deleteSubject(Long subjectId){
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow( () -> new RuntimeException("Couldn't find subject"));
+
+        for (Teacher teacher : subject.getTeachers()){
+            teacher.getSubjects().remove(subject);
+        }
+        subjectRepository.delete(subject);
+
+        return ResponseEntity.ok("Deleted " + subject.getName() + " correctly!");
     }
 }

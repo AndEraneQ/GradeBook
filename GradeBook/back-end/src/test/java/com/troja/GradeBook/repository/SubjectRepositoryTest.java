@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,4 +66,23 @@ class SubjectRepositoryTest extends BaseTest{
         assertThat(subjectByName).isNotPresent();
     }
 
+    @Test
+    void shouldRemoveSubjectWhenDeleteById(){
+        //given
+        //when
+        underTest.deleteById(1L);
+        //then
+        Optional<Subject> deletedSubject = underTest.findById(1L);
+        assertThat(deletedSubject).isNotPresent();
+    }
+
+    @Test
+    void shouldRemoveNothingWhenDeleteById(){
+        //given
+        //when
+        underTest.deleteById(100L);
+        //then
+        List<Subject> subjects = underTest.findAll();
+        assertThat(subjects.size()).isEqualTo(1);
+    }
 }

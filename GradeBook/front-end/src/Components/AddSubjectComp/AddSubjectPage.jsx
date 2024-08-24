@@ -148,7 +148,7 @@ function AddSubjectPage() {
                                 <ul>
                                     {selectedTeachers.map((teacher) => (
                                         <li key={teacher.id}>
-                                            {teacher.firstName} {teacher.lastName}
+                                            {teacher.firstName} {teacher.lastName} {teacher.email}
                                             <button className="remove-button" onClick={() => handleRemoveTeacher(teacher.id)}>Remove</button>
                                         </li>
                                     ))}
