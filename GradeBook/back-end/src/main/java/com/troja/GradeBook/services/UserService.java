@@ -36,22 +36,7 @@ public class UserService {
     public ResponseEntity<List<UserDto>> getAllUsers(){
         return ResponseEntity.ok(userRepository.findAll()
                 .stream()
-                .map(user -> userMapper.toDto(user))
+                .map(userMapper::toDto)
                 .collect(Collectors.toList()));
-    }
-
-    public ResponseEntity<List<UserDto>> getAllTeachersBySubject(String name) {
-        // TODO: FIND SUBJECT OBJECT
-        Subject subject = subjectRepository.findByName(name).orElseThrow();
-        // TODO: TAKE ALL TEACHERS
-        List<User> teachers = new ArrayList<>();//userRepository.findBySubjects_Id(subject.getId());
-        // TODO: IF LIST IS EMPTY RETURN CODE 204
-        if (teachers.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(
-                teachers.stream()
-                        .map(userMapper::toDto)
-                        .collect(Collectors.toList()));
     }
 }

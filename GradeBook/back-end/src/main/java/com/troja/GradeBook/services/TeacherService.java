@@ -23,9 +23,6 @@ public class TeacherService {
 
     public ResponseEntity<?> getAllTeachers() {
         List<Teacher> teachers = teacherRepository.findAll();
-        ///if(teachers.isEmpty()){
-            //return ResponseEntity.noContent().build();
-        //}
         List<TeacherDto> teacherDtos = teachers
                 .stream()
                 .map(teacherMapper::toDto)

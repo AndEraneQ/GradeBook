@@ -1,6 +1,7 @@
 package com.troja.GradeBook.controllers;
 
 import com.troja.GradeBook.dto.AuthenticateDto;
+import com.troja.GradeBook.dto.requests.RegisterUserRequest;
 import com.troja.GradeBook.security.LoginResponse;
 import com.troja.GradeBook.services.AuthService;
 import lombok.AllArgsConstructor;
@@ -19,5 +20,10 @@ public class AuthController {
     @PostMapping("/auth")
     public ResponseEntity<LoginResponse> login(@RequestBody AuthenticateDto authenticateDto) {
         return authService.login(authenticateDto);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterUserRequest registerUserRequest){
+        return  authService.register(registerUserRequest);
     }
 }

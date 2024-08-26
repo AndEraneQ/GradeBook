@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,21 +24,18 @@ public class ClassroomService {
     private ClassroomMapper classroomMapper;
 
     public ResponseEntity<?> findAllClasses() {
-//        List<ClassroomDto> classes = classRepository.findAll()
-//        .stream()
-//        .map(classroomMapper::toDto)
-//        .collect(Collectors.toList());
-//        System.out.println(classes);
-//
-//        if(classes.isEmpty()){
-//            return ResponseEntity
-//                    .status(HttpStatus.NO_CONTENT)
-//                    .body("There are no classes available. You can add them.");
-//        }
-        return ResponseEntity.ok(classRepository.findAll()
+        List<ClassroomDto> classes = classRepository.findAll()
                 .stream()
                 .map(classroomMapper::toDto)
-                .collect(Collectors.toList()));
+                .sorted(Comparator.comparing(ClassroomDto::getName))
+                .collect(Collectors.toList());
+
+        if(classes.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body("There are no classes available. You can add them.");
+        }
+        return ResponseEntity.ok(classes);
     }
 }
 

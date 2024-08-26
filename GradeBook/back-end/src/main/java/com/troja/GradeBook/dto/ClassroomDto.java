@@ -13,5 +13,5 @@ import lombok.Setter;
 public class ClassroomDto {
     private Long id;
     private String name;
-    private Teacher teacher;
+    private TeacherDto teacherDto;
 }

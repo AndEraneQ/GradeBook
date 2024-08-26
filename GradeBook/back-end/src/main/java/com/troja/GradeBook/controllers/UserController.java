@@ -24,9 +24,4 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getAllUsers(){
         return userService.getAllUsers();
     }
-
-    @GetMapping("/teacher/{subjectName}")
-    public ResponseEntity<List<UserDto>> getAllTeachersBySubject(@PathVariable String subjectName){
-        return userService.getAllTeachersBySubject(subjectName);
-    }
 }

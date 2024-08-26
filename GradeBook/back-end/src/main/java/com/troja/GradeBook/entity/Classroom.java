@@ -21,7 +21,7 @@ public class Classroom {
     private String name;
     @OneToOne(optional = true)
     @JoinColumn(name = "teacher_id", nullable = true)
-    private User teacher;
+    private Teacher teacher;
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     private List<User> students;
 }
