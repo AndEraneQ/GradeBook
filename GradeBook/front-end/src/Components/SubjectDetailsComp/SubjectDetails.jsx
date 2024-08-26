@@ -124,7 +124,6 @@ function SubjectDetails() {
         }
     
         try {
-            console.log(subject)
             const response = await SubjectService.editSubjectData(subject,removedTeachersFromSubject, newTeachersOfSubject);
             handleEditData();
             fetchData();

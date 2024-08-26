@@ -29,7 +29,7 @@ public class SubjectController {
         return subjectService.addSubject(addSubjectRequest);
     }
 
-    @PostMapping("/edit/subjectData")
+    @PutMapping("/edit/subjectData")
     public ResponseEntity<?> editSubjectData(@RequestBody EditSubjectRequest editSubjectRequest){
         return subjectService.editSubjectData(editSubjectRequest);
     }

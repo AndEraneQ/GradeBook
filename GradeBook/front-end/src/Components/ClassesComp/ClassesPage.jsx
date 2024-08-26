@@ -1,53 +1,40 @@
-import React, { useState } from "react";
-import NavBarService from "../../Services/NavBarService";
+import React, { useEffect } from "react";
 import GoBackButton from "../GoBackButtonComp/GoBackButton";
-import { useEffect } from "react";
-import './SubjectsPage.css';
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import "./ClassesPage.css";
+import ClassService from "../../Services/ClassService";
 
-function SubjectsPage(){
-    const location = useLocation();
-    const [allSubjects,setAllSubjects] = useState([]);
-    const [filteredSubjects,setFilteredSubjects] = useState([]);
-    const [error, setError] = useState(null);
-    const [deletedSubjectMessage, setDeletedSubjectMessage] = useState(location.state?.responseData || null);
-    const navigate = useNavigate();
-    const getSubjects = async () => {
-        try {
-            const response = await NavBarService.getSubjects();
-            setAllSubjects(response.data);
-            setFilteredSubjects(response.data);
-        } catch (error) {
-            console.error('There was an error fetching the subjects!', error);
-            setError("Failed to fetch subjects. Please try again later.");
+function ClassesPage(){
+
+    const [error,setError] = useState("");
+    const [classes,setClasses] = useState([]);
+
+    const getAllClasses = async () => {
+        try{
+            const response = await ClassService.getAllClasses();
+            setClasses(response.data);
+        }   
+        catch(err){
+            setError("Failed to load classes, try again later");
         }
-    };
-
-    const handleAddSubject = () => {
-        navigate('/add-subject');
     }
 
     useEffect(() => {
-        getSubjects();
+        getAllClasses();
     }, []);
 
-    const handleSubjectDetails = (subject) => {
-        navigate('/subject-details', { state: { subject } });
-    }
-
-    const handleFilterSubject = (e) => {
-        const newSubjects = allSubjects.filter(subject =>
-            subject.name.toLowerCase().startsWith(e.target.value.toLowerCase())
-        )
-        setFilteredSubjects(newSubjects);
-    }
-
     return (
-        <div className="subjects-page">
+        <div className="classes-page">
             <GoBackButton path='/home'/>
-            <div className="subjects-container">
-                {error && (
+            <div className="classes-container">
+                <div className="header-container">
+                    <h1>All classes:</h1>
+                </div>
+                <button 
+                    className="add-subject-button">
+                        Add New Subject
+                </button>
+                {/* {error && (
                     <div className="error-message">{error}</div>
                 )}
                 {deletedSubjectMessage && (
@@ -87,10 +74,11 @@ function SubjectsPage(){
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    </div> */}
             </div>
         </div>
     );
 }
 
-export default SubjectsPage;
+
+export default ClassesPage;

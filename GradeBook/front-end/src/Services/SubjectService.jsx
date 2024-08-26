@@ -12,7 +12,7 @@ class SubjectService{
 
     async editSubjectData(newSubject, teachersToRemove, teachersToAdd) {
         try {
-            const response = await axios.post(API_URL + "edit/subjectData", {
+            const response = await axios.put(API_URL + "edit/subjectData", {
                 subject: newSubject,
                 deletedTeachers: teachersToRemove,
                 addedTeachers: teachersToAdd

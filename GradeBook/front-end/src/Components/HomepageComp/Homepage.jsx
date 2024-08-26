@@ -28,11 +28,15 @@ const Homepage = () => {
         navigate('/users');
     }
 
+    const handleClasses = () => {
+        navigate('/classes');
+    }
+
     return (
         <div className="admin-homepage-container">
             <h1>Welcome {name}</h1>
             <div className="cards">
-                <Card imagePath="src/assets/manageClasses.png" text="Manage Class"/>
+                <Card imagePath="src/assets/manageClasses.png" text="Manage Class" onClick={handleClasses}/>
                 <Card imagePath="src/assets/managePersons.png" text="Manage Persons" onClick={handleManageUsers}/>
                 <Card imagePath="src/assets/manageSubjects.png" text="Manage Subjects" onClick={handleManageSubjects}/>
                 <Card imagePath="src/assets/checkYourData.png" text="Check Your Data" onClick={handleCheckData}/>

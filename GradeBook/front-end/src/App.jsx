@@ -8,6 +8,7 @@ import AllUsersPage from "./Components/AllUsersComp/AllUsersPage";
 import RegisterPage from "./Components/RegisterComp/RegisterPage";
 import AddSubjectPage from "./Components/AddSubjectComp/AddSubjectPage";
 import SubjectDetails from "./Components/SubjectDetailsComp/SubjectDetails";
+import ClassesPage from "./Components/ClassesComp/ClassesPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/register-user" element={<RegisterPage />} />
           <Route path="/add-subject" element={<AddSubjectPage />} />
           <Route path="/subject-details" element={<SubjectDetails />} />
+          <Route path="/classes" element={<ClassesPage />} />
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </div>

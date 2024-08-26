@@ -34,7 +34,8 @@ public class UserService {
     }
 
     public ResponseEntity<List<UserDto>> getAllUsers(){
-        return ResponseEntity.ok(userRepository.findAll().stream()
+        return ResponseEntity.ok(userRepository.findAll()
+                .stream()
                 .map(user -> userMapper.toDto(user))
                 .collect(Collectors.toList()));
     }

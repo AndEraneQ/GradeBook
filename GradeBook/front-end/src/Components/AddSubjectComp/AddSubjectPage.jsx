@@ -24,6 +24,7 @@ function AddSubjectPage() {
             try {
                 const response = await NavBarService.getAllTeachers();
                 setTeachers(response.data);
+                setFilteredTeachers(response.data);
                 console.log(response);
             } catch (err) {
                 console.error('Error fetching teachers:', err);

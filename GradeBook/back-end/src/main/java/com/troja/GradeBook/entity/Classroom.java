@@ -13,7 +13,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClassRoom {
+@Table(name = "classroom")
+public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +22,6 @@ public class ClassRoom {
     @OneToOne(optional = true)
     @JoinColumn(name = "teacher_id", nullable = true)
     private User teacher;
-    @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     private List<User> students;
 }

@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 function AllUsersPage(){
 
-    const [users,setUsers] = useState([]);
+    const [allUsers,setAllUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     
@@ -15,7 +16,8 @@ function AllUsersPage(){
     const getAllUsers = async () => {
         try {
             const response = await NavBarService.getAllUsers();
-            setUsers(response.data);
+            setAllUsers(response.data);
+            setFilteredUsers(response.data);
             console.log(response.data);
         } catch (error) {
             console.error('There was an error fetching the subjects!', error);
@@ -30,22 +32,54 @@ function AllUsersPage(){
     useEffect(() => {
         getAllUsers();
     }, []);
+
+    const handleFilterUsers = (e) => {
+        const newUsers = allUsers.filter(user => {
+            const matchToInput = user.firstName.toLowerCase() + " " 
+                                 + user.lastName.toLowerCase() + " " 
+                                 + user.email.toLowerCase() + " " 
+                                 + user.role.toLowerCase();
+            
+            return matchToInput.startsWith(e.target.value);
+        });
+        setFilteredUsers(newUsers);
+    }
     
     return (
         <div className="all-users-page">
             <GoBackButton path='/home'/>
-            <h1>Users:</h1>
+            
             <div className="all-users-container">
+                <div className="header-container">
+                    <h1>Users:</h1>
+                </div>
                 {error ? (
                     <div className="error-message">{error}</div>
                 ) : (
                     <div>
                         <div className="search-and-add-container">
-                            <input className="search-input" type="text" placeholder="🔍 Search:"/>
-                            <button className="add-user-button" onClick={handleAddUser}> Add New User</button>
+                            <input 
+                                className="search-input" 
+                                type="text" 
+                                placeholder="🔍 Search:"
+                                onChange={handleFilterUsers}/>
+                            <button 
+                                className="add-user-button" 
+                                onClick={handleAddUser}>
+                                    Add New User
+                            </button>
                         </div>
+                        {filteredUsers.length===0 && (
+                            <div className="information-container">
+                                {allUsers.length!==0 ? (
+                                    <p>Type correct person.</p>
+                                ) : (
+                                    <p>There are no persons, you can add them now.</p>
+                                )}
+                            </div>
+                        )}
                             <ul>
-                            {users.map((user, index) => (
+                            {filteredUsers.slice(0,10).map((user, index) => (
                                 <li key={user.id} className="user-item">
                                     {index + 1}.
                                     First name: <b> { user.firstName}</b>&nbsp;

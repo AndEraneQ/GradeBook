@@ -8,6 +8,14 @@ h1{
     text-align: center;
 }
 
+.header-container {
+    padding-bottom: 5px;
+}
+
+.header-container h1{
+    font-size: 40px;
+}
+
 .all-users-container {
     max-width: 900px;
     margin: 0 auto;

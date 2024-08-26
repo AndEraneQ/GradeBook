@@ -23,7 +23,7 @@
     color: white; 
     width: 80%;
     text-align: center;
-
+    
     padding: 10px 20px; 
     font-size: 16px; 
     border: 2px solid #ddd; 
@@ -132,8 +132,8 @@
     margin-top: 10px; 
 }
 
-.add-teacher-container input{
-    width: 400px;
+.add-teacher-container input[type="text"] {
+    width: 175%;
 }
 
 .add-teacher-button {

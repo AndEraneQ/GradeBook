@@ -6,11 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -29,7 +24,7 @@ public class User {
     private Role role;
     @ManyToOne(optional = true)
     @JoinColumn(name = "classroom_id", nullable = true)
-    private ClassRoom classRoom;
+    private Classroom classroom;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Teacher teacher;
 }
