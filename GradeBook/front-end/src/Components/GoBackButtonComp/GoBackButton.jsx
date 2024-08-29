@@ -7,7 +7,6 @@ function GoBackButton({ path, state = null }) {
 
     const handleClick = () => {
         navigate(path, { state });
-        console.log(path, state);
     }
     
 

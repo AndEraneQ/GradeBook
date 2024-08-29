@@ -167,7 +167,6 @@ function AddSubjectPage() {
                             onChange={handleTeacherSearch}
                             autoComplete="off"
                         />
-                        
                             <datalist id="teachers">
                                 {console.log(filteredTeachers)}
                                 {filteredTeachers.slice(0, 5).map((teacher) => (

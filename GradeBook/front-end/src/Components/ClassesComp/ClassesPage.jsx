@@ -26,10 +26,6 @@ function ClassesPage(){
         getAllClasses();
     }, []);
 
-    const handleClassDetails = (classroom) => {
-        
-    };
-
     return (
         <div className="classes-page">
             <GoBackButton path='/home'/>
@@ -47,7 +43,7 @@ function ClassesPage(){
                 <div className="display-classes">
                     <ul>
                         {classes.map((classroom, index) => (
-                            <li key={classroom.id} className="classroom-item" onClick={() => handleClassDetails(classroom)}>
+                            <li key={classroom.id} className="classroom-item" onClick={() => navigate('/class-details', {state: {class: classroom}})}>
                                 {index + 1}. {classroom.name}. Class teacher: - 
                                 {classroom.teacherDto ? ` ${classroom.teacherDto.firstName} ${classroom.teacherDto.lastName}` : ' None'}
                             </li>
