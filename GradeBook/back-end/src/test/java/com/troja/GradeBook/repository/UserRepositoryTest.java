@@ -28,6 +28,7 @@ class UserRepositoryTest extends BaseTest{
                 "Deep",
                 Role.STUDENT,
                 null,
+                null,
                 null
                 );
         savedUserId = underTest.save(user).getId();
@@ -84,6 +85,7 @@ class UserRepositoryTest extends BaseTest{
                 "Deep",
                 Role.ADMIN,
                 null,
+                null,
                 null
         );
         User student = new User(null,
@@ -92,6 +94,7 @@ class UserRepositoryTest extends BaseTest{
                 "Cristiano",
                 "Ronaldo",
                 Role.STUDENT,
+                null,
                 null,
                 null
         );

@@ -1,6 +1,7 @@
 package com.troja.GradeBook.repository;
 
 import com.troja.GradeBook.entity.Residence;
+import com.troja.GradeBook.entity.User;
 import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ class ResidenceRepositoryTest extends BaseTest{
                 "Jana Matejki",
                 25L,
                 90L,
-                1L);
+                new User());
         underTest.save(residence);
     }
 

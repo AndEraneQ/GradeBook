@@ -1,6 +1,6 @@
 .user-data-container {
     color: white;
-    padding: 20px;
+    padding: 10px 20px;
     border: 1px solid #141414;
     border-radius: 15px;
     background-color: #2e2c2c;
@@ -44,6 +44,59 @@ li strong {
 .error-message{
     text-align: center;
     color: white;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center; 
+    align-items: end; 
+    gap: 20px;
+    margin-top: 20px;
+    height: 100%;
+}
+
+.edit-button, .delete-button {
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.delete-button {
+    background-color: red;
+}
+
+.edit-button {
+    background-color: green;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+    transform: scale(1.02);
+}
+
+.edit-button:hover{
+    background-color: darkgreen;
+    transform: scale(1.02);
+}
+
+.response-container{
+    background-color: #036ad8;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: white;
+    padding: 15px;
+    border-radius: 20px;
+    text-align: center;
+    margin: 20px 0;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
 }
 
 

@@ -3,13 +3,15 @@ import './AllUsersPage.css';
 import { useEffect } from "react";
 import GoBackButton from "../GoBackButtonComp/GoBackButton";
 import NavBarService from "../../Services/NavBarService";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AllUsersPage(){
 
     const [allUsers,setAllUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [error, setError] = useState(null);
+    const location = useLocation();
+    const [response,setResponse] = useState(location.state?.response);
     const navigate = useNavigate();
     
 
@@ -34,6 +36,9 @@ function AllUsersPage(){
     }, []);
 
     const handleFilterUsers = (e) => {
+        if(response){
+            setResponse('');
+        }
         const newUsers = allUsers.filter(user => {
             const matchToInput = user.firstName.toLowerCase() + " " 
                                  + user.lastName.toLowerCase() + " " 
@@ -69,6 +74,13 @@ function AllUsersPage(){
                                     Add New User
                             </button>
                         </div>
+                        {response && (
+                            <div className="response-part">
+                                <div className="response-container">
+                                    <p>{response}</p>
+                                </div>
+                            </div>
+                        )}
                         {filteredUsers.length===0 && (
                             <div className="information-container">
                                 {allUsers.length!==0 ? (
@@ -80,7 +92,7 @@ function AllUsersPage(){
                         )}
                             <ul>
                             {filteredUsers.slice(0,10).map((user, index) => (
-                                <li key={user.id} className="user-item">
+                                <li key={user.id} className="user-item" onClick={() => navigate('/user-data', {state: {user: user}})}>
                                     {index + 1}.
                                     First name: <b> { user.firstName}</b>&nbsp;
                                     Last name: <b>{ user.lastName}</b>  &nbsp;

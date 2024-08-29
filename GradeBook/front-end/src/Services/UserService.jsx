@@ -1,3 +1,7 @@
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const API_URL = "http://localhost:8080/api/";
 
 export function authHeader() {
     const user = JSON.parse(localStorage.getItem('user_data'));
@@ -10,7 +14,18 @@ export function authHeader() {
 }
 
 class UserService{
-    
+  async deleteUser(id) {
+    return axios.delete(API_URL + 'delete/user/' + id, {
+        headers: authHeader(),
+    });
+  }
+  async editUserData(dataToChange){
+    return axios.put(API_URL + 'edit/user', dataToChange, {
+      headers: authHeader(),
+    })
+  }
+
+
 }
 
 export default new UserService();

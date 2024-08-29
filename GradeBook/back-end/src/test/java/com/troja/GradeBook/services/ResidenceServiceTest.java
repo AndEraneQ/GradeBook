@@ -2,6 +2,7 @@ package com.troja.GradeBook.services;
 
 import com.troja.GradeBook.dto.ResidenceDto;
 import com.troja.GradeBook.entity.Residence;
+import com.troja.GradeBook.entity.User;
 import com.troja.GradeBook.mapper.ResidenceMapper;
 import com.troja.GradeBook.repository.ResidenceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,8 +43,8 @@ class ResidenceServiceTest {
     void getUserResidence_ShouldReturnResidenceDto_WhenResidenceExists() {
         // given
         Long userId = 1L;
-        Residence residence = new Residence(1L, "Cracow", "Jana Matejki", 54L, 32L, userId);
-        ResidenceDto residenceDto = new ResidenceDto("Cracow", "Jana Matejki", 54L, 32L);
+        Residence residence = new Residence(1L, "Cracow", "Jana Matejki", 54L, 32L, new User());
+        ResidenceDto residenceDto = new ResidenceDto(1L,"Cracow", "Jana Matejki", 54L, 32L);
         when(residenceRepository.findByUserId(userId)).thenReturn(Optional.of(residence));
         when(residenceMapper.toDto(residence)).thenReturn(residenceDto);
 

@@ -20,5 +20,7 @@ public class Residence {
     private String street;
     private Long buildingNumber;
     private Long apartmentNumber;
-    private Long userId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

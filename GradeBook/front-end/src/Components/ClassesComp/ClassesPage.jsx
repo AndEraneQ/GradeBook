@@ -34,15 +34,15 @@ function ClassesPage(){
         <div className="classes-page">
             <GoBackButton path='/home'/>
             <div className="classes-container">
+                <div className="header-container">
+                    <h1>All classes:</h1>
+                </div>
                 <div className="button-container">
                     <button 
                         className="add-class-button"
                         onClick={() => {navigate("/class-add")}}>
                             Add New Class
                     </button>
-                </div>
-                <div className="header-container">
-                    <h1>All classes:</h1>
                 </div>
                 <div className="display-classes">
                     <ul>

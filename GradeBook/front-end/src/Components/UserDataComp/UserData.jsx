@@ -3,20 +3,28 @@ import NavBarService from "../../Services/NavBarService";
 import { getUser } from "../../utils/userUtils";
 import './UserData.css';
 import GoBackButton from "../GoBackButtonComp/GoBackButton";
+import { useLocation, useNavigate } from "react-router-dom";
+import UserService from "../../Services/UserService";
 
 function UserData() {
-    const [user, setUser] = useState(null); 
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [userToCheckData, setUserToCheckData] = useState(location.state?.user || null); 
     const [residence, setResidence] = useState(null);
     const [error, setError] = useState(null); 
     const [loading, setLoading] = useState(true);
-    const user_data = getUser(); 
+    const currentUser = getUser(); 
+    
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const fetchedUser = await NavBarService.getUserData(user_data.id); 
-                const fetchedResidence = await NavBarService.getUserResidence(user_data.id);
-                setUser(fetchedUser.data); 
+                const id = userToCheckData!== null && currentUser.id!==userToCheckData.id ? userToCheckData.id : currentUser.id; 
+                const fetchedUser = await NavBarService.getUserData(id); 
+                const fetchedResidence = await NavBarService.getUserResidence(id);
+                console.log(fetchedUser);
+                console.log(fetchedResidence);
+                setUserToCheckData(fetchedUser.data); 
                 setResidence(fetchedResidence.data);
             } catch (err) {
                 setError(err.global || "Failed to fetch user data.");
@@ -26,10 +34,16 @@ function UserData() {
         };
 
         fetchUserData(); 
-    }, [user_data.id]); 
+    }, [currentUser.id]); 
 
-    const handleEditData = () => {
-        
+    const handleDeleteUser = async () => {
+        try{
+        const response = await UserService.deleteUser(userToCheckData.id);
+        console.log(response.data);
+        navigate('/users', {state: {response: response.data} });
+        } catch(err){
+            setError(err.response.data);
+        }
     }
 
     if (loading) {
@@ -40,20 +54,20 @@ function UserData() {
         return <div className="error-message">{error}</div>; 
     }
 
-    if (!user) {
+    if (!userToCheckData) {
         return <div className="error-message"><h1>Try login one more time.</h1></div>;
     }
 
     return (
-        <div className="user-data-page">            
-            <GoBackButton path='/home'/>            
+        <div className="user-data-page">
+            {location.state?.user ? ( <GoBackButton path='/users'/> ) : (<GoBackButton path='/home'/> )}                                
             <div className="user-data-container">
                 <h1 className="header">User Data:</h1>
                 <ul>
-                    <li><strong>First name:</strong> {user.firstName}</li>
-                    <li><strong>Last name:</strong> {user.lastName}</li>
-                    <li><strong>Email:</strong> {user.email}</li>
-                    <li><strong>Role:</strong> {user.role}</li>
+                    <li><strong>First name:</strong> {userToCheckData.firstName}</li>
+                    <li><strong>Last name:</strong> {userToCheckData.lastName}</li>
+                    <li><strong>Email:</strong> {userToCheckData.email}</li>
+                    <li><strong>Role:</strong> {userToCheckData.role}</li>
                 </ul>
                 <h1 className="header">Residence:</h1>
                 <ul>
@@ -62,17 +76,24 @@ function UserData() {
                     <li><strong>Building number:</strong> {residence.buildingNumber}</li>
                     <li><strong>Apartment number:</strong> {residence.apartmentNumber}</li>
                 </ul>
-                {user.role=="ADMIN" &&
-                    <div className="edit-data-container">
-                        <div className="edit-data-button-container">
-                            <button 
-                            className="edit-button"
-                            onClick={handleEditData}>
-                                Edit data
-                            </button>
+                <div className="buttons-container">
+                    {currentUser.role=="ADMIN" &&
+                        <div>
+                        {currentUser.id!==userToCheckData.id && (
+                            <button
+                            className="delete-button"
+                            onClick={handleDeleteUser}>
+                                Delete user
+                                </button>
+                            )}  
                         </div>
-                    </div>
-                }
+                    }
+                    <button 
+                        className="edit-button"
+                        onClick={() => navigate('/edit-data', { state: { user: userToCheckData, residence } })}>
+                            Edit data
+                    </button>
+                </div>
             </div>
         </div>
     );

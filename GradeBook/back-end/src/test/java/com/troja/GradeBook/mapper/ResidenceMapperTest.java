@@ -2,6 +2,7 @@ package com.troja.GradeBook.mapper;
 
 import com.troja.GradeBook.dto.ResidenceDto;
 import com.troja.GradeBook.entity.Residence;
+import com.troja.GradeBook.entity.User;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +17,7 @@ class ResidenceMapperTest {
         residence.setStreet("5th Avenue");
         residence.setBuildingNumber(10L);
         residence.setApartmentNumber(20L);
-        residence.setUserId(1L);
+        residence.setUser(new User());
 
         // when
         ResidenceDto residenceDto = ResidenceMapper.INSTANCE.toDto(residence);

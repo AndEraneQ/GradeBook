@@ -19,9 +19,9 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToOne(optional = true)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "teacher_id", nullable = true)
     private Teacher teacher;
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "classroom")
     private List<User> students;
 }

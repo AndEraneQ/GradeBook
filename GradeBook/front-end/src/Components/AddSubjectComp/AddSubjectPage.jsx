@@ -169,6 +169,7 @@ function AddSubjectPage() {
                         />
                         
                             <datalist id="teachers">
+                                {console.log(filteredTeachers)}
                                 {filteredTeachers.slice(0, 5).map((teacher) => (
                                     <option key={teacher.id} value={`${teacher.firstName} ${teacher.lastName} ${teacher.email}`}/>
                                 ))}

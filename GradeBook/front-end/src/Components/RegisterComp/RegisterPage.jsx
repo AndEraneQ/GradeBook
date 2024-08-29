@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import GoBackButton from "../GoBackButtonComp/GoBackButton";
 import './RegisterPage.css';
+import AuthService from "../../Services/AuthService";
 
 function RegisterPage(){
 
@@ -45,17 +46,24 @@ function RegisterPage(){
         });
     }
 
-    const handleRegisterUser = () => {
-        
-        const userIsCorrect = user.role === 'STUDENT' ? areAllFieldsFilled(user) : areAllFieldsFilled(user,'class');
+    const handleRegisterUser = async () => {
+        setResponse('');
+        const userIsCorrect = user.role === 'STUDENT' ? areAllFieldsFilled(user) : areAllFieldsFilled(user,'className');
         if(userIsCorrect && areAllFieldsFilled(residence)){
             setError('');
+            try{
+                const response = await AuthService.register(user,residence);
+                setResponse(response.data);
+            } catch (err){
+                console.log("coudn't register user");
+                setResponse('');
+                setError(err.response.data);
+            }
 
         } else {
             setResponse('');
             setError('You need to complete all fields!')
         }
-    
     }
 
     return(
@@ -94,7 +102,7 @@ function RegisterPage(){
                         value={user.email} 
                         onChange={handleUserDataChange}
                         placeholder="Email:"/>
-                    {user.role==="Student" && (
+                    {user.role==="STUDENT" && (
                         <input 
                             type="text" 
                             name="className"

@@ -11,6 +11,7 @@ import SubjectDetails from "./Components/SubjectDetailsComp/SubjectDetails";
 import ClassesPage from "./Components/ClassesComp/ClassesPage";
 import ProtectedRoute from "./Components/ProtectRoute/ProtectedRoute";
 import AddClass from "./Components/AddClassComp/AddClassPage";
+import EditUserDataPage from "./Components/EditUserDataComp/EditUserDataPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                   <Route path="/subject-details" element={<ProtectedRoute element={<SubjectDetails />} />} />
                   <Route path="/classes" element={<ProtectedRoute element={<ClassesPage />} />} />
                   <Route path="/class-add" element={<ProtectedRoute element={<AddClass />} />} />
+                  <Route path="/edit-data" element={<ProtectedRoute element={<EditUserDataPage />} />} />
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="*" element={<Navigate to="/home" />} />
               </Routes>

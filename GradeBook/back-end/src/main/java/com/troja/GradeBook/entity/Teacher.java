@@ -17,7 +17,7 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
     @ManyToMany
@@ -27,4 +27,9 @@ public class Teacher {
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
     private Set<Subject> subjects;
+
+    @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL)
+    private Classroom classroom;
+
+
 }

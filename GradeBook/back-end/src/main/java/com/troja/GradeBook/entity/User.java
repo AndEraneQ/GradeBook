@@ -22,6 +22,8 @@ public class User {
     private String lastName;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Residence residence;
     @ManyToOne(optional = true)
     @JoinColumn(name = "classroom_id", nullable = true)
     private Classroom classroom;

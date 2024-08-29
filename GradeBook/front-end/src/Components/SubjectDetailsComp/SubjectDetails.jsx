@@ -153,7 +153,7 @@ function SubjectDetails() {
                     {!wantChangeData ? (
                         <div className="subject-details-container">
                             {response && 
-                            <div className="response-container">
+                            <div className="resp-container">
                                 <p>{response}</p>
                             </div>}
                             <div className="subject-details-header">
@@ -279,7 +279,7 @@ function SubjectDetails() {
                                     <p>{error}</p>
                                 </div>
                             }
-                            <div className="buttons-container">
+                            <div className="button-container">
                                 <button className="cancel-edit-button" onClick={handleEditData}>Cancel</button>
                                 <button className="update-button" onClick={handleUpdateData}>Update</button>
                             </div>

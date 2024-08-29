@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResidenceDto {
+    private Long id;
     private String city;
     private String street;
     private Long buildingNumber;

@@ -4,6 +4,7 @@ import com.troja.GradeBook.dto.SubjectDto;
 import com.troja.GradeBook.dto.TeacherDto;
 import com.troja.GradeBook.dto.requests.AddSubjectRequest;
 import com.troja.GradeBook.dto.requests.EditSubjectRequest;
+import com.troja.GradeBook.entity.Classroom;
 import com.troja.GradeBook.entity.Subject;
 import com.troja.GradeBook.entity.Teacher;
 import com.troja.GradeBook.entity.User;
@@ -84,7 +85,7 @@ class SubjectServiceTest {
     @Test
     public void testAddSubject_Success() {
         // given
-        Teacher teacher = new Teacher(1L, new User(), new HashSet<>());
+        Teacher teacher = new Teacher(1L, new User(), new HashSet<>(), new Classroom());
 
         TeacherMapper teacherMapper = new TeacherMapper();
         TeacherDto teacherDto = teacherMapper.toDto(teacher);
@@ -156,8 +157,8 @@ class SubjectServiceTest {
     public void testEditSubjectData_Success() {
         // given
         Subject existingSubject = new Subject(1L, "Math", new HashSet<>());
-        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>());
-        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>());
+        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(),new Classroom());
+        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(),new Classroom());
 
         TeacherMapper teacherMapper = new TeacherMapper();
         List<TeacherDto> teachersToAdd = Arrays.asList(teacherMapper.toDto(teacher1));
@@ -259,10 +260,10 @@ class SubjectServiceTest {
     void testDeleteSubject_DeletedCorrectlyWithTeachers() {
         // given
         Subject subject = new Subject(1L,"Math",new HashSet<>());
-        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>());
+        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(),new Classroom());
         teacher1.getSubjects().add(subject);
         subject.getTeachers().add(teacher1);
-        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>());
+        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(),new Classroom());
 
         teacher2.getSubjects().add(subject);
         subject.getTeachers().add(teacher2);

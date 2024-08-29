@@ -1,6 +1,7 @@
 package com.troja.GradeBook.controllers;
 
 import com.troja.GradeBook.dto.UserDto;
+import com.troja.GradeBook.dto.requests.EditUserDataRequest;
 import com.troja.GradeBook.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,15 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    @DeleteMapping("/delete/user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        return userService.deleteUser(id);
+    }
+
+    @PutMapping("/edit/user")
+    public ResponseEntity<?> editUserData(@RequestBody EditUserDataRequest editUserDataRequest){
+        return userService.editUserData(editUserDataRequest);
     }
 }
