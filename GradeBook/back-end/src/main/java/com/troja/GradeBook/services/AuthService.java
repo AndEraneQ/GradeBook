@@ -83,8 +83,6 @@ public class AuthService {
                     .body("Class " + userDto.getClassName() + " not exists!");
         }
 
-
-
         User user = userMapper.toEntity(userDto);
         Classroom classroom = classroomRepository.findByName(userDto.getClassName());
         user.setPassword(passwordEncoder.encode("Password"));

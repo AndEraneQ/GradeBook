@@ -3,24 +3,33 @@ import GoBackButton from "../GoBackButtonComp/GoBackButton";
 import { useState } from "react";
 import "./ClassesPage.css";
 import ClassService from "../../Services/ClassService";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ClassesPage(){
-
+    const location = useLocation();
     const [error,setError] = useState("");
+    const resp = location.state?.response;
     const [classes,setClasses] = useState([]);
+    const [information,setInformation] = useState("");
     const navigate = useNavigate();
 
     const getAllClasses = async () => {
-        try{
+        try {
             const response = await ClassService.getAllClasses();
-            setClasses(response.data);
+    
+            if (response && response.data && response.data.length > 0) {
+                setClasses(response.data);
+            } else {
+                setInformation("No class added.");
+            }
+    
             console.log(response.data);
-        }   
-        catch(err){
-            setError("Failed to load classes, try again later");
+        } catch (err) {
+            setError("Failed to load classes, try again later.");
+            console.error(err);
         }
-    }
+    };
+    
 
     useEffect(() => {
         getAllClasses();
@@ -40,6 +49,16 @@ function ClassesPage(){
                             Add New Class
                     </button>
                 </div>
+                {resp && (
+                    <div className="resp-container">
+                        <p>{resp}</p>
+                    </div>
+                )}
+                {information ? (
+                    <div className="information-container">
+                        <p>{information}</p>
+                    </div>
+                ) : (
                 <div className="display-classes">
                     <ul>
                         {classes.map((classroom, index) => (
@@ -50,6 +69,7 @@ function ClassesPage(){
                         ))}
                     </ul>
                 </div>
+                )}
             </div>
         </div>
     );

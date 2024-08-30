@@ -90,7 +90,7 @@ function AllUsersPage(){
                                 )}
                             </div>
                         )}
-                            <ul>
+                        <ul>
                             {filteredUsers.slice(0,10).map((user, index) => (
                                 <li key={user.id} className="user-item" onClick={() => navigate('/user-data', {state: {user: user}})}>
                                     {index + 1}.

@@ -50,15 +50,26 @@ function AddClass(){
 
     const handleAddClass = async () => {
         let response = '';
+        if(className==''){
+            setError("Class name can't be empty!");
+            return;
+        }
         try {
             response = await ClassService.addClass(className,teacherOfClass)
             setError('');
             setResponse(response.data);
         } catch (err){
-            setResponse('');
-            setError(err.response.data.message)
+            if (err.response) {
+                if (err.response.status === 409) {
+                    console.error("Conflict: ", err.response.data); 
+                    setError(err.response.data); 
+                } else {
+                    console.error("Error: ", err.response.data);
+                    setError("An error occurred: " + err.response.data.message);
+                }
         }
     }
+}
 
     return(
         <div className="add-class-page">

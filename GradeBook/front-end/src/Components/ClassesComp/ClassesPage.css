@@ -45,18 +45,6 @@
     outline: none; 
     box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5); 
 }
-
-/* .classroom-item {
-    border-radius: 5px;
-    margin: 10px 0; 
-    padding: 15px; 
-    transition: background-color 0.3s ease; 
-    cursor: pointer; 
-
-.classroom-item:hover {
-    background-color: #636464; 
-}
-*/
 .classroom-item:last-child {
     margin-bottom: 0; 
 } 
@@ -82,4 +70,18 @@
 .classroom-item:hover {
     background-color: rgba(255, 255, 255, 0.2); 
     color: #ffff00; 
+}
+
+.information-container{
+    padding: 5px;
+}
+
+.resp-container{
+    margin-top: -15px;
+    margin-bottom: 30px;
+    height: 1px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    
 }

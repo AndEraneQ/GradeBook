@@ -13,6 +13,7 @@ import ProtectedRoute from "./Components/ProtectRoute/ProtectedRoute";
 import AddClass from "./Components/AddClassComp/AddClassPage";
 import EditUserDataPage from "./Components/EditUserDataComp/EditUserDataPage";
 import ClassDetailsPage from "./Components/ClassDetailsComp/ClassDetailsPage";
+import EditClassPage from "./Components/EditClassComp/EditClassPage";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
                   <Route path="/class-add" element={<ProtectedRoute element={<AddClass />} />} />
                   <Route path="/edit-data" element={<ProtectedRoute element={<EditUserDataPage />} />} />
                   <Route path="/class-details" element={<ProtectedRoute element={<ClassDetailsPage />} />} />
+                  <Route path="/edit-class" element={<ProtectedRoute element={<EditClassPage />} />} />
+
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="*" element={<Navigate to="/home" />} />
               </Routes>

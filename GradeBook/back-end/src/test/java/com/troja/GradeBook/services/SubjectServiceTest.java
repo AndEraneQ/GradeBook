@@ -85,7 +85,7 @@ class SubjectServiceTest {
     @Test
     public void testAddSubject_Success() {
         // given
-        Teacher teacher = new Teacher(1L, new User(), new HashSet<>(), new Classroom());
+        Teacher teacher = new Teacher(1L, new User(), new HashSet<>());
 
         TeacherMapper teacherMapper = new TeacherMapper();
         TeacherDto teacherDto = teacherMapper.toDto(teacher);
@@ -157,8 +157,8 @@ class SubjectServiceTest {
     public void testEditSubjectData_Success() {
         // given
         Subject existingSubject = new Subject(1L, "Math", new HashSet<>());
-        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(),new Classroom());
-        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(),new Classroom());
+        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>());
+        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>());
 
         TeacherMapper teacherMapper = new TeacherMapper();
         List<TeacherDto> teachersToAdd = Arrays.asList(teacherMapper.toDto(teacher1));
@@ -260,10 +260,10 @@ class SubjectServiceTest {
     void testDeleteSubject_DeletedCorrectlyWithTeachers() {
         // given
         Subject subject = new Subject(1L,"Math",new HashSet<>());
-        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(),new Classroom());
+        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>());
         teacher1.getSubjects().add(subject);
         subject.getTeachers().add(teacher1);
-        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(),new Classroom());
+        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>());
 
         teacher2.getSubjects().add(subject);
         subject.getTeachers().add(teacher2);

@@ -12,9 +12,7 @@ public interface ClassroomMapper {
 
     ClassroomMapper INSTANCE = Mappers.getMapper(ClassroomMapper.class);
 
-    @Mapping(source = "teacher", target = "teacherDto")
     ClassroomDto toDto(Classroom classroom);
 
-    @Mapping(source = "teacherDto", target = "teacher")
     Classroom toEntity(ClassroomDto classroomDto);
 }

@@ -3,6 +3,7 @@ package com.troja.GradeBook.services;
 import com.troja.GradeBook.dto.UserDto;
 import com.troja.GradeBook.dto.requests.EditUserDataRequest;
 import com.troja.GradeBook.entity.Residence;
+import com.troja.GradeBook.entity.Role;
 import com.troja.GradeBook.entity.User;
 import com.troja.GradeBook.exception.MyCustomException;
 import com.troja.GradeBook.mapper.UserMapper;
@@ -85,5 +86,13 @@ public class UserService {
 
         return ResponseEntity.ok("Updated Data Correctly");
 
+    }
+
+    public ResponseEntity<?> getStudents() {
+        List<User> students = userRepository.findByRole(Role.STUDENT);
+        return ResponseEntity.ok(students
+                .stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toSet()));
     }
 }

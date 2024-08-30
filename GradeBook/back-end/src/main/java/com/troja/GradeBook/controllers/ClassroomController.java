@@ -2,6 +2,7 @@ package com.troja.GradeBook.controllers;
 
 import com.troja.GradeBook.dto.TeacherDto;
 import com.troja.GradeBook.dto.requests.AddClassRequest;
+import com.troja.GradeBook.dto.requests.EditClassRequest;
 import com.troja.GradeBook.services.ClassroomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,15 @@ public class ClassroomController {
     @GetMapping("/find/students/{id}")
     public ResponseEntity<?> findStudentsOfClass(@PathVariable("id") Long subjectId){
         return classService.findStudentsOfClass(subjectId);
+    }
+
+    @DeleteMapping("/delete/classroom/{id}")
+    public ResponseEntity<?> deleteClass(@PathVariable("id") Long classId){
+        return classService.deleteClass(classId);
+    }
+
+    @PutMapping("edit/classroom")
+    public ResponseEntity<?> editClassroom(@RequestBody EditClassRequest editClassRequest){
+        return classService.editClassroom(editClassRequest);
     }
 }

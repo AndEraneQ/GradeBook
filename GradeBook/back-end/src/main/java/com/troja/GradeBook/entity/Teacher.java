@@ -28,8 +28,5 @@ public class Teacher {
     )
     private Set<Subject> subjects;
 
-    @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL)
-    private Classroom classroom;
-
 
 }

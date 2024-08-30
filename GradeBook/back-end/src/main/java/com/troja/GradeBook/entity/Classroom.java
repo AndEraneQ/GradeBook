@@ -19,9 +19,15 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "teacher_id", nullable = true)
-    private Teacher teacher;
     @OneToMany(mappedBy = "classroom")
-    private List<User> students;
+    private List<User> membersOfClass;
+
+    @PreRemove
+    public void preRemove() {
+        if (membersOfClass != null) {
+            for (User user : membersOfClass) {
+                user.setClassroom(null);
+            }
+        }
+    }
 }

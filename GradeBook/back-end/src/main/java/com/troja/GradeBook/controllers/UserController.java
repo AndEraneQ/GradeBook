@@ -35,4 +35,9 @@ public class UserController {
     public ResponseEntity<?> editUserData(@RequestBody EditUserDataRequest editUserDataRequest){
         return userService.editUserData(editUserDataRequest);
     }
+
+    @GetMapping("/students")
+    public ResponseEntity<?> getStudents(){
+        return userService.getStudents();
+    }
 }

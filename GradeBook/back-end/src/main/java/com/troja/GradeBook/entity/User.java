@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +28,7 @@ public class User {
     private Residence residence;
     @ManyToOne(optional = true)
     @JoinColumn(name = "classroom_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Classroom classroom;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Teacher teacher;
