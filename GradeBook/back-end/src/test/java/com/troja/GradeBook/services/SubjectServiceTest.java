@@ -48,6 +48,9 @@ class SubjectServiceTest {
     @Mock
     private SubjectMapper subjectMapper;
 
+    @Mock
+    private TeacherMapper teacherMapper;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -85,9 +88,8 @@ class SubjectServiceTest {
     @Test
     public void testAddSubject_Success() {
         // given
-        Teacher teacher = new Teacher(1L, new User(), new HashSet<>());
+        Teacher teacher = new Teacher(1L, new User(), new HashSet<>(), new HashSet<>());
 
-        TeacherMapper teacherMapper = new TeacherMapper();
         TeacherDto teacherDto = teacherMapper.toDto(teacher);
 
         AddSubjectRequest request = new AddSubjectRequest();
@@ -156,17 +158,16 @@ class SubjectServiceTest {
     @Test
     public void testEditSubjectData_Success() {
         // given
-        Subject existingSubject = new Subject(1L, "Math", new HashSet<>());
-        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>());
-        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>());
+        Subject existingSubject = new Subject(1L, "Math", new HashSet<>(), new HashSet<>());
+        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(), new HashSet<>());
+        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(), new HashSet<>());
 
-        TeacherMapper teacherMapper = new TeacherMapper();
         List<TeacherDto> teachersToAdd = Arrays.asList(teacherMapper.toDto(teacher1));
         List<TeacherDto> teachersToDelete = Arrays.asList(teacherMapper.toDto(teacher2));
 
         existingSubject.getTeachers().add(teacher2);
 
-        Subject newSubject = new Subject(1L, "Mathematic", new HashSet<>());
+        Subject newSubject = new Subject(1L, "Mathematic", new HashSet<>(), new HashSet<>());
 
         EditSubjectRequest request = new EditSubjectRequest(
                 newSubject,
@@ -197,6 +198,7 @@ class SubjectServiceTest {
         EditSubjectRequest request = new EditSubjectRequest(new Subject(
                 1L,
                 "Math",
+                new HashSet<>(),
                 new HashSet<>()),
                 List.of(),
                 List.of()
@@ -212,12 +214,12 @@ class SubjectServiceTest {
     @Test
     public void testEditSubjectData_TeacherNotFound() {
         // given
-        Subject existingSubject = new Subject(1L, "Math", new HashSet<>());
+        Subject existingSubject = new Subject(1L, "Math", new HashSet<>(), new HashSet<>());
 
         TeacherDto teacherToAdd = new TeacherDto(2L,"test@gmail.com","Joe","Smith");
 
         EditSubjectRequest request = new EditSubjectRequest(
-                new Subject(1L, "Math", new HashSet<>()),
+                new Subject(1L, "Math", new HashSet<>(), new HashSet<>()),
                 Arrays.asList(teacherToAdd),
                 List.of()
         );
@@ -244,7 +246,7 @@ class SubjectServiceTest {
     @Test
     void testDeleteSubject_DeletedCorrectlyWithoutTeachers() {
         // given
-        Subject subject = new Subject(1L,"Math",new HashSet<>());
+        Subject subject = new Subject(1L,"Math",new HashSet<>(), new HashSet<>());
         when(subjectRepository.findById(1L)).thenReturn(Optional.of(subject));
 
         // when
@@ -259,11 +261,11 @@ class SubjectServiceTest {
     @Test
     void testDeleteSubject_DeletedCorrectlyWithTeachers() {
         // given
-        Subject subject = new Subject(1L,"Math",new HashSet<>());
-        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>());
+        Subject subject = new Subject(1L,"Math",new HashSet<>(), new HashSet<>());
+        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(), new HashSet<>());
         teacher1.getSubjects().add(subject);
         subject.getTeachers().add(teacher1);
-        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>());
+        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(), new HashSet<>());
 
         teacher2.getSubjects().add(subject);
         subject.getTeachers().add(teacher2);

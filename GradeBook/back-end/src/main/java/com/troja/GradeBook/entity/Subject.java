@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +22,8 @@ public class Subject {
     private String name;
     @ManyToMany(mappedBy = "subjects")
     private Set<Teacher> teachers;
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TeacherSubjectClass> teacherSubjectClasses = new HashSet<>();
 
     public Subject(String name) {
         this.name = name;

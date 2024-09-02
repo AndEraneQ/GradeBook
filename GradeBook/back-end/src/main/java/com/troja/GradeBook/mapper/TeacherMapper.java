@@ -4,43 +4,21 @@ import com.troja.GradeBook.dto.TeacherDto;
 import com.troja.GradeBook.entity.Teacher;
 import com.troja.GradeBook.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public class TeacherMapper {
+public interface TeacherMapper {
 
-    public TeacherDto toDto(Teacher teacher) {
-        if (teacher == null) {
-            return null;
-        }
+    TeacherMapper INSTANCE = Mappers.getMapper(TeacherMapper.class);
 
-        TeacherDto dto = new TeacherDto();
-        dto.setId(teacher.getId());
+    @Mapping(target = "email", source = "user.email")
+    @Mapping(target = "firstName", source = "user.firstName")
+    @Mapping(target = "lastName", source = "user.lastName")
+    TeacherDto toDto(Teacher teacher);
 
-        if (teacher.getUser() != null) {
-            dto.setEmail(teacher.getUser().getEmail());
-            dto.setFirstName(teacher.getUser().getFirstName());
-            dto.setLastName(teacher.getUser().getLastName());
-        }
-
-        return dto;
-    }
-
-    public Teacher toEntity(TeacherDto dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        Teacher teacher = new Teacher();
-        teacher.setId(dto.getId());
-
-        if (dto.getEmail() != null) {
-            User user = new User();
-            user.setEmail(dto.getEmail());
-            user.setFirstName(dto.getFirstName());
-            user.setLastName(dto.getLastName());
-            teacher.setUser(user);
-        }
-
-        return teacher;
-    }
+    @Mapping(target = "user.email", source = "email")
+    @Mapping(target = "user.firstName", source = "firstName")
+    @Mapping(target = "user.lastName", source = "lastName")
+    Teacher toEntity(TeacherDto dto);
 }

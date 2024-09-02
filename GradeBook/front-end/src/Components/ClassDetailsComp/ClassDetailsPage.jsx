@@ -82,7 +82,8 @@ function ClassDetailsPage(){
                         Edit Data
                         </button>
                     <button 
-                    className="button manage">
+                    className="button manage"
+                    onClick={() => navigate('/manage-teachers-in-class', {state: {classroom: classroom}})}>
                         Manage teachers learning in class
                     </button>
                     <button

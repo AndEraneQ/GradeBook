@@ -14,6 +14,10 @@ import AddClass from "./Components/AddClassComp/AddClassPage";
 import EditUserDataPage from "./Components/EditUserDataComp/EditUserDataPage";
 import ClassDetailsPage from "./Components/ClassDetailsComp/ClassDetailsPage";
 import EditClassPage from "./Components/EditClassComp/EditClassPage";
+import ManageTracherInClassPage from "./Components/ManageTeachersInClassComp/ManageTeacherInClassPage";
+import StudentGradesPage from "./Components/StudentGradesComp/StudentGradesPage";
+import ChooseClassToManageGradesPage from "./Components/ChooseClassToManageGradesComp/ChooseClassToManageGradesPage";
+import ManageGradesPage from "./Components/ManageGradesComp/ManageGradesPage";
 
 function App() {
   return (
@@ -33,7 +37,10 @@ function App() {
                   <Route path="/edit-data" element={<ProtectedRoute element={<EditUserDataPage />} />} />
                   <Route path="/class-details" element={<ProtectedRoute element={<ClassDetailsPage />} />} />
                   <Route path="/edit-class" element={<ProtectedRoute element={<EditClassPage />} />} />
-
+                  <Route path="/manage-teachers-in-class" element={<ProtectedRoute element={<ManageTracherInClassPage />} />} />
+                  <Route path="/grades" element={<ProtectedRoute element={<StudentGradesPage />} />} />
+                  <Route path="/choose-class" element={<ProtectedRoute element={<ChooseClassToManageGradesPage />} />} />
+                  <Route path="/manage-grades" element={<ProtectedRoute element={<ManageGradesPage />} />} />
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="*" element={<Navigate to="/home" />} />
               </Routes>

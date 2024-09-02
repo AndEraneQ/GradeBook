@@ -58,12 +58,18 @@ public class AuthService {
 
         UserDetails userDetails = new UserDetailsImpl(authenticatedUser);
         String jwtToken = jwtUtils.generateToken(userDetails);
+
+        String classroomName = (authenticatedUser.getClassroom() != null)
+                ? authenticatedUser.getClassroom().getName()
+                : null;
+
         LoginResponse loginResponse = new LoginResponse(
                 authenticatedUser.getId(),
                 jwtToken,
                 authenticatedUser.getFirstName(),
                 authenticatedUser.getLastName(),
                 authenticatedUser.getEmail(),
+                classroomName,
                 authenticatedUser.getRole()
         );
 

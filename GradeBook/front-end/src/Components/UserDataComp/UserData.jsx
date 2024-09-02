@@ -60,7 +60,7 @@ function UserData() {
 
     return (
         <div className="user-data-page">
-            {location.state?.user ? ( <GoBackButton path='/users'/> ) : (<GoBackButton path='/home'/> )}                                
+            {location.state?.user && currentUser.role==="ADMIN" ? ( <GoBackButton path='/users'/> ) : (<GoBackButton path='/home'/> )}                                
             <div className="user-data-container">
                 <h1 className="header">User Data:</h1>
                 <ul>

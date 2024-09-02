@@ -17,7 +17,7 @@ const Homepage = () => {
     };
     
     const handleCheckData = () => {
-        navigate('/user-data');
+        navigate('/user-data', {state: {fromHomePage: true}});
     };
 
     const handleManageSubjects = () => {
@@ -31,14 +31,28 @@ const Homepage = () => {
     const handleClasses = () => {
         navigate('/classes');
     }
-
+    console.log(user);
     return (
         <div className="admin-homepage-container">
             <h1>Welcome {name}</h1>
             <div className="cards">
-                <Card imagePath="src/assets/manageClasses.png" text="Manage Class" onClick={handleClasses}/>
-                <Card imagePath="src/assets/managePersons.png" text="Manage Persons" onClick={handleManageUsers}/>
-                <Card imagePath="src/assets/manageSubjects.png" text="Manage Subjects" onClick={handleManageSubjects}/>
+                {user.role==="ADMIN" && (
+                    <>
+                    <Card imagePath="src/assets/manageClasses.png" text="Manage Class" onClick={handleClasses}/>
+                    <Card imagePath="src/assets/managePersons.png" text="Manage Persons" onClick={handleManageUsers}/>
+                    <Card imagePath="src/assets/manageSubjects.png" text="Manage Subjects" onClick={handleManageSubjects}/>
+                    </>
+                )}
+                {user.role==="TEACHER" && (
+                    <>
+                    <Card imagePath="src/assets/myClassPhoto.png" text="Your class" onClick={() => navigate('/my-class')}/>
+                    <Card imagePath="src/assets/gradesPhoto.png" text="Manage grades" onClick={() => navigate('/choose-class')}/>
+                    </>
+                )}
+                {user.role==="STUDENT" && (
+                    <Card imagePath="src/assets/gradesPhoto.png" text="Your grades" onClick={() => navigate('/grades')}/>
+                )}
+                <Card imagePath="src/assets/mailBoxPhoto.png" text="Mail" onClick={() => navigate('/mail-box')}/>
                 <Card imagePath="src/assets/checkYourData.png" text="Check Your Data" onClick={handleCheckData}/>
                 <Card imagePath="src/assets/Logout.png" text="Logout" onClick={handleLogout}/>
             </div>

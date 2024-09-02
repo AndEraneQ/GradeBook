@@ -21,7 +21,7 @@ class SubjectRepositoryTest extends BaseTest{
 
     @BeforeEach
     void setData(){
-        Subject subject = new Subject(1L,"Mathematic",new HashSet<>());
+        Subject subject = new Subject(1L,"Mathematic",new HashSet<>(), new HashSet<>());
         underTest.save(subject);
     }
 

@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,6 +23,9 @@ public class Classroom {
     private String name;
     @OneToMany(mappedBy = "classroom")
     private List<User> membersOfClass;
+
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TeacherSubjectClass> teacherSubjectClasses = new HashSet<>();
 
     @PreRemove
     public void preRemove() {

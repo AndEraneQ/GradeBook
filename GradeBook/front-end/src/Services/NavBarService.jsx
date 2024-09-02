@@ -31,5 +31,13 @@ class NavBarService {
     async getAllTeachers(){
       return axios.get(API_URL + 'teachers', {headers: authHeader()});
     }
+
+    async getTeacherSubjectClassConnection(classId){
+      return axios.get(API_URL + `connection/class/${classId}`, {headers: authHeader()});
+    }
+
+    async getSubjectsAndClassesOfTeacher(teacherId){
+      return axios.get(API_URL + `teacher/${teacherId}/classes-and-subjects`, {headers: authHeader()});
+    }
 }
 export default new NavBarService();

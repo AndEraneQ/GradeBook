@@ -31,6 +31,15 @@ class ClassService{
             headers: authHeader()
         })
     }
+    async updateTeacherSubjectClassConnection(classId,subjectId,teacherId){
+        return axios.put(API_URL + 'connection/update', {
+            subjectId: subjectId,
+            classId: classId,
+            teacherId: teacherId
+        }, {
+            headers: authHeader()
+        })
+    }
 }
 
 export default new ClassService;

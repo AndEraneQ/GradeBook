@@ -29,4 +29,9 @@ public class TeacherController {
     public ResponseEntity<?> getAllTeachersOfSubject(@PathVariable("id") Long subjectId){
         return teacherService.getAllTeachersOfSubject(subjectId);
     }
+
+    @GetMapping("/teacher/{userId}")
+    public ResponseEntity<?> getTeacherFromUserId(@PathVariable("userId") Long userId){
+        return teacherService.getTeacherFromUserId(userId);
+    }
 }

@@ -27,6 +27,9 @@ class UserService{
   async getStudents(){
     return axios.get(API_URL + 'students', {headers: authHeader()});
   }
+  async getTeacher(userId){
+    return axios.get(API_URL + `teacher/${userId}`, {headers: authHeader()});
+  }
 
 }
 
