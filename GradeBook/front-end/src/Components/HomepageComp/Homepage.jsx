@@ -50,7 +50,7 @@ const Homepage = () => {
                     </>
                 )}
                 {user.role==="STUDENT" && (
-                    <Card imagePath="src/assets/gradesPhoto.png" text="Your grades" onClick={() => navigate('/grades')}/>
+                    <Card imagePath="src/assets/gradesPhoto.png" text="Your grades" onClick={() => navigate('/grades', {state: {user:user}})}/>
                 )}
                 <Card imagePath="src/assets/mailBoxPhoto.png" text="Mail" onClick={() => navigate('/mail-box')}/>
                 <Card imagePath="src/assets/checkYourData.png" text="Check Your Data" onClick={handleCheckData}/>

@@ -49,7 +49,6 @@ function App() {
                   <Route path="/add-grade" element={<ProtectedRoute element={<AddGradePage />} />} />
                   <Route path="/mail-box" element={<ProtectedRoute element={<MailPage />} />} />
                   <Route path="/mail-details" element={<ProtectedRoute element={<MailDetailsPage />} />} />
-
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="*" element={<Navigate to="/home" />} />
               </Routes>

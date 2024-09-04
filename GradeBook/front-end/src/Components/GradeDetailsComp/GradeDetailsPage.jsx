@@ -45,9 +45,10 @@ function GradeDetailsPage() {
 
     return (
         <div className="grade-details-page">
-            <GoBackButton path='/manage-grades' state={{subjectAndClass: subjectAndClass}}/>
+            
             {user.role==="STUDENT" ? (
                 <div className="grade-details-container">
+                    <GoBackButton path='/grades' state={{user: user}}/>
                 <p>Grade: {grade.value} </p>
                 <p>Date: {grade.date} </p>
                 <p>Description: {grade.description} </p>
@@ -55,6 +56,7 @@ function GradeDetailsPage() {
             ) : (
                 
                 <div className="grade-details-possible-to-edit-container">
+                    <GoBackButton path='/manage-grades' state={{subjectAndClass: subjectAndClass}}/>
                 {response && (
                     <p>{response}</p>
                 )}
