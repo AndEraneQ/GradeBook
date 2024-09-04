@@ -89,15 +89,18 @@ public class ClassroomService {
 
     }
 
-    public ResponseEntity<?> findStudentsOfClass(Long subjectId) {
+    public ResponseEntity<?> findStudentsOfClass(Long classId) {
         Classroom classroom = classRepository
-                .findById(subjectId)
+                .findById(classId)
                 .orElseThrow(() -> new RuntimeException("Couldn't find class!"));
 
-        Set<UserDto> students = classroom.getMembersOfClass().stream()
+        ArrayList<UserDto> students = (ArrayList<UserDto>) classroom.getMembersOfClass()
+                .stream()
                 .filter(user -> !user.getRole().equals(Role.TEACHER))
                 .map(userMapper::toDto)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(UserDto::getFirstName)
+                        .thenComparing(UserDto::getLastName))
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(students);
     }

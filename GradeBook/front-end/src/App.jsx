@@ -18,6 +18,10 @@ import ManageTracherInClassPage from "./Components/ManageTeachersInClassComp/Man
 import StudentGradesPage from "./Components/StudentGradesComp/StudentGradesPage";
 import ChooseClassToManageGradesPage from "./Components/ChooseClassToManageGradesComp/ChooseClassToManageGradesPage";
 import ManageGradesPage from "./Components/ManageGradesComp/ManageGradesPage";
+import GradeDetailsPage from "./Components/GradeDetailsComp/GradeDetailsPage";
+import AddGradePage from "./Components/AddGradeComp/AddGradePage";
+import MailPage from "./Components/MailComp/MailPage";
+import MailDetailsPage from "./Components/MailDetailsComp/MailDetailsPage";
 
 function App() {
   return (
@@ -41,6 +45,11 @@ function App() {
                   <Route path="/grades" element={<ProtectedRoute element={<StudentGradesPage />} />} />
                   <Route path="/choose-class" element={<ProtectedRoute element={<ChooseClassToManageGradesPage />} />} />
                   <Route path="/manage-grades" element={<ProtectedRoute element={<ManageGradesPage />} />} />
+                  <Route path="/grades-details" element={<ProtectedRoute element={<GradeDetailsPage />} />} />
+                  <Route path="/add-grade" element={<ProtectedRoute element={<AddGradePage />} />} />
+                  <Route path="/mail-box" element={<ProtectedRoute element={<MailPage />} />} />
+                  <Route path="/mail-details" element={<ProtectedRoute element={<MailDetailsPage />} />} />
+
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="*" element={<Navigate to="/home" />} />
               </Routes>

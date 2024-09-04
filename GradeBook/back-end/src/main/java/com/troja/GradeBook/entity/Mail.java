@@ -6,32 +6,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
-@Table(name = "grades")
-public class Grade {
-
+@Getter
+public class Mail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int value;
+    @ManyToOne
+    private User fromUser;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User toUser;
 
-    @ManyToOne
-    @JoinColumn(name = "subject_id", nullable = false)
-    private Subject subject;
-
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
-    private String description;
+    private String subject;
+    private String content;
+    private boolean isRead;
+    private LocalDateTime sentAt;
 }

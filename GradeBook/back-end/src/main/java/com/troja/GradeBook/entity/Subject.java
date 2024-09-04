@@ -24,6 +24,8 @@ public class Subject {
     private Set<Teacher> teachers;
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TeacherSubjectClass> teacherSubjectClasses = new HashSet<>();
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Grade> grades;
 
     public Subject(String name) {
         this.name = name;

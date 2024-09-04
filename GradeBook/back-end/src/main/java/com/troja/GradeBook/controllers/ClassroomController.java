@@ -26,8 +26,8 @@ public class ClassroomController {
     }
 
     @GetMapping("/find/students/{id}")
-    public ResponseEntity<?> findStudentsOfClass(@PathVariable("id") Long subjectId){
-        return classService.findStudentsOfClass(subjectId);
+    public ResponseEntity<?> findStudentsOfClass(@PathVariable("id") Long classId){
+        return classService.findStudentsOfClass(classId);
     }
 
     @DeleteMapping("/delete/classroom/{id}")

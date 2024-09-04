@@ -17,8 +17,8 @@ class ClassService{
             headers: authHeader()
         });
     }
-    async getStudentLists(subjectId){
-        return axios.get(API_URL + `find/students/${subjectId}`, {headers: authHeader()});
+    async getStudentLists(classId){
+        return axios.get(API_URL + `find/students/${classId}`, {headers: authHeader()});
     }
     async deleteClass(classId){
         return axios.delete(API_URL + `delete/classroom/${classId}`, {headers: authHeader()});

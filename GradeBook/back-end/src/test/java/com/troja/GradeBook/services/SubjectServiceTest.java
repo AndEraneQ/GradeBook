@@ -158,7 +158,7 @@ class SubjectServiceTest {
     @Test
     public void testEditSubjectData_Success() {
         // given
-        Subject existingSubject = new Subject(1L, "Math", new HashSet<>(), new HashSet<>());
+        Subject existingSubject = new Subject(1L, "Math", new HashSet<>(), new HashSet<>(), new HashSet<>());
         Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(), new HashSet<>());
         Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(), new HashSet<>());
 
@@ -167,7 +167,7 @@ class SubjectServiceTest {
 
         existingSubject.getTeachers().add(teacher2);
 
-        Subject newSubject = new Subject(1L, "Mathematic", new HashSet<>(), new HashSet<>());
+        Subject newSubject = new Subject(1L, "Mathematic", new HashSet<>(), new HashSet<>(), new HashSet<>());
 
         EditSubjectRequest request = new EditSubjectRequest(
                 newSubject,
@@ -199,6 +199,7 @@ class SubjectServiceTest {
                 1L,
                 "Math",
                 new HashSet<>(),
+                new HashSet<>(),
                 new HashSet<>()),
                 List.of(),
                 List.of()
@@ -214,12 +215,12 @@ class SubjectServiceTest {
     @Test
     public void testEditSubjectData_TeacherNotFound() {
         // given
-        Subject existingSubject = new Subject(1L, "Math", new HashSet<>(), new HashSet<>());
+        Subject existingSubject = new Subject(1L, "Math", new HashSet<>(), new HashSet<>(), new HashSet<>());
 
         TeacherDto teacherToAdd = new TeacherDto(2L,"test@gmail.com","Joe","Smith");
 
         EditSubjectRequest request = new EditSubjectRequest(
-                new Subject(1L, "Math", new HashSet<>(), new HashSet<>()),
+                new Subject(1L, "Math", new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 Arrays.asList(teacherToAdd),
                 List.of()
         );
@@ -246,7 +247,7 @@ class SubjectServiceTest {
     @Test
     void testDeleteSubject_DeletedCorrectlyWithoutTeachers() {
         // given
-        Subject subject = new Subject(1L,"Math",new HashSet<>(), new HashSet<>());
+        Subject subject = new Subject(1L,"Math",new HashSet<>(), new HashSet<>(), new HashSet<>());
         when(subjectRepository.findById(1L)).thenReturn(Optional.of(subject));
 
         // when
@@ -261,7 +262,7 @@ class SubjectServiceTest {
     @Test
     void testDeleteSubject_DeletedCorrectlyWithTeachers() {
         // given
-        Subject subject = new Subject(1L,"Math",new HashSet<>(), new HashSet<>());
+        Subject subject = new Subject(1L,"Math",new HashSet<>(), new HashSet<>(), new HashSet<>());
         Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(), new HashSet<>());
         teacher1.getSubjects().add(subject);
         subject.getTeachers().add(teacher1);

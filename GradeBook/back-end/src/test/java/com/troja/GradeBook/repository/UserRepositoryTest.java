@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,10 @@ class UserRepositoryTest extends BaseTest{
                 Role.STUDENT,
                 null,
                 null,
-                null
+                null,
+                new ArrayList<>(),
+                new HashSet<>(),
+                new HashSet<>()
                 );
         savedUserId = underTest.save(user).getId();
     }
@@ -86,7 +91,10 @@ class UserRepositoryTest extends BaseTest{
                 Role.ADMIN,
                 null,
                 null,
-                null
+                null,
+                new ArrayList<>(),
+                new HashSet<>(),
+                new HashSet<>()
         );
         User student = new User(null,
                 "cristiano@gmail.com",
@@ -96,7 +104,10 @@ class UserRepositoryTest extends BaseTest{
                 Role.STUDENT,
                 null,
                 null,
-                null
+                null,
+                new ArrayList<>(),
+                new HashSet<>(),
+                new HashSet<>()
         );
         underTest.save(admin);
         underTest.save(student);
