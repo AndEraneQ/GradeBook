@@ -22,6 +22,7 @@ import GradeDetailsPage from "./Components/GradeDetailsComp/GradeDetailsPage";
 import AddGradePage from "./Components/AddGradeComp/AddGradePage";
 import MailPage from "./Components/MailComp/MailPage";
 import MailDetailsPage from "./Components/MailDetailsComp/MailDetailsPage";
+import TeacherClassPage from "./Components/TeacherClassComp/TeacherClassPage";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
                   <Route path="/add-grade" element={<ProtectedRoute element={<AddGradePage />} />} />
                   <Route path="/mail-box" element={<ProtectedRoute element={<MailPage />} />} />
                   <Route path="/mail-details" element={<ProtectedRoute element={<MailDetailsPage />} />} />
+                  <Route path="/my-class" element={<ProtectedRoute element={<TeacherClassPage />} />} />
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="*" element={<Navigate to="/home" />} />
               </Routes>

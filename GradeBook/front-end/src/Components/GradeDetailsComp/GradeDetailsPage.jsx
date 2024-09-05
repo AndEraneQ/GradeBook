@@ -12,11 +12,9 @@ function GradeDetailsPage() {
     const navigate = useNavigate();
     const [grade,setGrade] = useState(location.state?.grade);
     const subjectAndClass = location.state?.subjectAndClass;
-    const user = getUser();
+    const user = location.state?.user;
     const [error,setError] = useState('');
     const [response,setResponse] = useState('');
-
-    console.log(grade);
     
     const handleEditGrade = async () => {
         setResponse('');
@@ -46,7 +44,7 @@ function GradeDetailsPage() {
     return (
         <div className="grade-details-page">
             
-            {user.role==="STUDENT" ? (
+            {!subjectAndClass || user.role==="STUDENT" ? (
                 <div className="grade-details-container">
                     <GoBackButton path='/grades' state={{user: user}}/>
                 <p>Grade: {grade.value} </p>

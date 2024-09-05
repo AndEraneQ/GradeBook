@@ -45,7 +45,10 @@ const Homepage = () => {
                 )}
                 {user.role==="TEACHER" && (
                     <>
-                    <Card imagePath="src/assets/myClassPhoto.png" text="Your class" onClick={() => navigate('/my-class')}/>
+                    {user.className!==null && (
+                        <Card imagePath="src/assets/myClassPhoto.png" text="Your class" onClick={() => navigate('/my-class')}/>
+                        )
+                    }
                     <Card imagePath="src/assets/gradesPhoto.png" text="Manage grades" onClick={() => navigate('/choose-class')}/>
                     </>
                 )}

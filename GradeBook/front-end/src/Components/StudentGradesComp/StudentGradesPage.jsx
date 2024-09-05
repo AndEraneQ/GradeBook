@@ -14,6 +14,7 @@ function StudentGradesPage(){
     const user = location.state?.user;
     const [subjects,setSubjects] = useState([]);
     const [grades, setGrades] = useState({});
+    const currentUser = getUser();
     console.log(subjects);
     console.log(grades);
 
@@ -47,7 +48,7 @@ function StudentGradesPage(){
 
     return (
         <div className="student-grades-page">
-            <GoBackButton path='/home'/>
+            <GoBackButton  path = {currentUser.role==="TEACHER" ? '/my-class' : '/home'}/>
             <div className="student-grades-container">
                 <h1>{user.firstName} {user.lastName} Grades</h1>
                     {subjects.map((subject, index) => (
@@ -56,8 +57,9 @@ function StudentGradesPage(){
                             <div>
                                 {grades[subject.id] && grades[subject.id].length > 0 ? (
                                 <>
+                                Grades:
                                     {grades[subject.id].map((grade, idx) => (
-                                        <span key={grade.id} onClick={() => navigate('/grades-details', { state: { grade: grade } })}>
+                                        <span key={grade.id} onClick={() => navigate('/grades-details', { state: { grade: grade, user: user } })}>
                                             {grade.value}{idx < grades[subject.id].length - 1 ? ', ' : ''}
                                         </span>
                                     ))}

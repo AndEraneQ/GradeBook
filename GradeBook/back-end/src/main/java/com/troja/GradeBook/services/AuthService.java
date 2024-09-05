@@ -59,9 +59,10 @@ public class AuthService {
         UserDetails userDetails = new UserDetailsImpl(authenticatedUser);
         String jwtToken = jwtUtils.generateToken(userDetails);
 
-        String classroomName = (authenticatedUser.getClassroom() != null)
-                ? authenticatedUser.getClassroom().getName()
-                : null;
+        Classroom classroom = authenticatedUser.getClassroom();
+        String classroomName = (classroom != null) ? classroom.getName() : null;
+        Long classroomId = (classroom != null) ? classroom.getId() : null;
+
 
         LoginResponse loginResponse = new LoginResponse(
                 authenticatedUser.getId(),
@@ -70,6 +71,7 @@ public class AuthService {
                 authenticatedUser.getLastName(),
                 authenticatedUser.getEmail(),
                 classroomName,
+                classroomId,
                 authenticatedUser.getRole()
         );
 
