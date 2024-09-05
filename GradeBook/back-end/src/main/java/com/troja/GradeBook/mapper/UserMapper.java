@@ -14,6 +14,6 @@ public interface UserMapper {
     @Mapping(source = "classroom.name", target = "className")
     UserDto toDto(User user);
 
-    @Mapping(target = "classroom", ignore = true)
+    @Mapping(target = "classroom.name", source = "className")
     User toEntity(UserDto userDto);
 }

@@ -5,9 +5,8 @@ import com.troja.GradeBook.dto.requests.EditUserDataRequest;
 import com.troja.GradeBook.entity.Residence;
 import com.troja.GradeBook.entity.Role;
 import com.troja.GradeBook.entity.User;
-import com.troja.GradeBook.exception.MyCustomException;
+import com.troja.GradeBook.exception.user.UserNotFoundException;
 import com.troja.GradeBook.mapper.UserMapper;
-import com.troja.GradeBook.repository.ResidenceRepository;
 import com.troja.GradeBook.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class UserService {
 
     public ResponseEntity<UserDto> getCurrentUser(Long id){
         User currentUser = userRepository.findById(id)
-                .orElseThrow(() -> new MyCustomException("error","couldn't find user"));
+                .orElseThrow(() -> new UserNotFoundException("couldn't find user"));
         return ResponseEntity.ok(userMapper.toDto(currentUser));
     }
 

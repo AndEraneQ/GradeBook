@@ -4,8 +4,14 @@ import com.troja.GradeBook.dto.AuthenticateDto;
 import com.troja.GradeBook.dto.ResidenceDto;
 import com.troja.GradeBook.dto.UserDto;
 import com.troja.GradeBook.dto.requests.RegisterUserRequest;
-import com.troja.GradeBook.entity.*;
-import com.troja.GradeBook.exception.MyCustomException;
+import com.troja.GradeBook.entity.Classroom;
+import com.troja.GradeBook.entity.Residence;
+import com.troja.GradeBook.entity.Role;
+import com.troja.GradeBook.entity.Teacher;
+import com.troja.GradeBook.entity.User;
+import com.troja.GradeBook.exception.user.UserNotFoundException;
+import com.troja.GradeBook.exception.user.UserRegistrationException;
+import com.troja.GradeBook.exception.validation.ValidationException;
 import com.troja.GradeBook.mapper.ResidenceMapper;
 import com.troja.GradeBook.mapper.UserMapper;
 import com.troja.GradeBook.repository.ClassroomRepository;
@@ -13,24 +19,23 @@ import com.troja.GradeBook.repository.ResidenceRepository;
 import com.troja.GradeBook.repository.TeacherRepository;
 import com.troja.GradeBook.repository.UserRepository;
 import com.troja.GradeBook.security.LoginResponse;
-//import com.troja.GradeBook.security.UserDetails.UserDetailsImpl;
 import com.troja.GradeBook.security.UserDetails.UserDetailsImpl;
 import com.troja.GradeBook.security.jwt.JwtUtils;
+import com.troja.GradeBook.services.IServices.IAuthService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @AllArgsConstructor
 @Service
-public class AuthService {
+public class AuthService implements IAuthService {
+
     private final UserMapper userMapper;
     private final ResidenceMapper residenceMapper;
     private final UserRepository userRepository;
@@ -42,7 +47,43 @@ public class AuthService {
     private final JwtUtils jwtUtils;
 
     public ResponseEntity<LoginResponse> login(AuthenticateDto authenticateDto) {
-        User authenticatedUser;
+        User authenticatedUser = authenticateUser(authenticateDto);
+        String jwtToken = generateJwtToken(authenticatedUser);
+
+        LoginResponse loginResponse = createLoginResponse(authenticatedUser, jwtToken);
+        return ResponseEntity.ok(loginResponse);
+    }
+
+    public ResponseEntity<String> register(RegisterUserRequest registerUserRequest) {
+        validateUserEmail(registerUserRequest.getUser().getEmail());
+        validateStudentClass(registerUserRequest.getUser());
+
+        User user = mapAndPrepareUser(registerUserRequest);
+        userRepository.save(user);
+
+        handleTeacherRegistration(user);
+        handleResidenceRegistration(user, registerUserRequest.getResidence());
+
+        return ResponseEntity.ok("Registered successfully.");
+    }
+
+    private User mapAndPrepareUser(RegisterUserRequest registerUserRequest) {
+        User user = userMapper.toEntity(registerUserRequest.getUser());
+        Classroom classroom = findClassroomIfStudent(user);
+        user.setClassroom(classroom);
+        user.setPassword(passwordEncoder.encode("Password"));
+        return user;
+    }
+
+    private Classroom findClassroomIfStudent(User user) {
+        if (user.getRole().equals(Role.STUDENT)) {
+            return classroomRepository.findByName(user.getClassroom().getName());
+        }
+        return null;
+    }
+
+
+    private User authenticateUser(AuthenticateDto authenticateDto) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -50,21 +91,24 @@ public class AuthService {
                             authenticateDto.getPassword()
                     )
             );
-            authenticatedUser = userRepository.findByEmail(authenticateDto.getEmail())
-                    .orElseThrow(() -> new MyCustomException("email", "User not found"));
+            return userRepository.findByEmail(authenticateDto.getEmail())
+                    .orElseThrow(() -> new UserNotFoundException("User not found with email: " + authenticateDto.getEmail()));
         } catch (AuthenticationException e) {
-            throw new MyCustomException("password", "Invalid credentials");
+            throw new ValidationException("Invalid credentials");
         }
+    }
 
+    private String generateJwtToken(User authenticatedUser) {
         UserDetails userDetails = new UserDetailsImpl(authenticatedUser);
-        String jwtToken = jwtUtils.generateToken(userDetails);
+        return jwtUtils.generateToken(userDetails);
+    }
 
+    private LoginResponse createLoginResponse(User authenticatedUser, String jwtToken) {
         Classroom classroom = authenticatedUser.getClassroom();
         String classroomName = (classroom != null) ? classroom.getName() : null;
         Long classroomId = (classroom != null) ? classroom.getId() : null;
 
-
-        LoginResponse loginResponse = new LoginResponse(
+        return new LoginResponse(
                 authenticatedUser.getId(),
                 jwtToken,
                 authenticatedUser.getFirstName(),
@@ -74,46 +118,31 @@ public class AuthService {
                 classroomId,
                 authenticatedUser.getRole()
         );
-
-        return ResponseEntity.ok(loginResponse);
     }
 
-    public ResponseEntity<?> register(RegisterUserRequest registerUserRequest) {
-        UserDto userDto = registerUserRequest.getUser();
-        ResidenceDto residenceDto = registerUserRequest.getResidence();
-
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Email already exists.");
+    private void validateUserEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new UserRegistrationException("Email already exists.");
         }
-        if(userDto.getRole().equals(Role.STUDENT) && !classroomRepository.existsByName(userDto.getClassName())){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Class " + userDto.getClassName() + " not exists!");
+    }
+
+    private void validateStudentClass(UserDto userDto) {
+        if (userDto.getRole().equals(Role.STUDENT) && !classroomRepository.existsByName(userDto.getClassName())) {
+            throw new ValidationException("Class " + userDto.getClassName() + " does not exist!");
         }
+    }
 
-        User user = userMapper.toEntity(userDto);
-        Classroom classroom = classroomRepository.findByName(userDto.getClassName());
-        user.setPassword(passwordEncoder.encode("Password"));
-        user.setClassroom(classroom);
-        userRepository.save(user);
-        Optional<User> savedUser = userRepository.findByEmail(userDto.getEmail());
-
+    private void handleTeacherRegistration(User user) {
         if (user.getRole().equals(Role.TEACHER)) {
             Teacher teacher = new Teacher();
-            teacher.setUser(savedUser.get());
+            teacher.setUser(user);
             teacherRepository.save(teacher);
         }
+    }
 
-        if (savedUser.isPresent()) {
-            Residence residence = residenceMapper.toEntity(residenceDto);
-            residence.setUser(savedUser.get());
-            residenceRepository.save(residence);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("User registration failed.");
-        }
-
-        return ResponseEntity.ok("Registered successfully.");
+    private void handleResidenceRegistration(User user, ResidenceDto residenceDto) {
+        Residence residence = residenceMapper.toEntity(residenceDto);
+        residence.setUser(user);
+        residenceRepository.save(residence);
     }
 }
-

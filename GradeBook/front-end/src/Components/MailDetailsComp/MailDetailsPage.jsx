@@ -3,19 +3,23 @@ import "./MailDetailsPage.css";
 import GoBackButton from "../GoBackButtonComp/GoBackButton";
 import { useLocation } from "react-router-dom";
 import MailService from "../../Services/MailService";
+import { getUser } from "../../utils/userUtils";
 
 function MailDetailsPage(){
 
     const location = useLocation();
     const mail = location.state?.mail;
     console.log(mail);
+    const user = getUser();
 
     useEffect(() => {
         const setMessageWasReaded = async () => {
-            try{
-                await MailService.setMailOpen(mail.id);
-            } catch(err){
-                console.log(err);
+            if(user.email === mail.toUserEmail){
+                try{
+                    await MailService.setMailOpen(mail.id);
+                } catch(err){
+                    console.log(err);
+                }
             }
         }
         setMessageWasReaded();
