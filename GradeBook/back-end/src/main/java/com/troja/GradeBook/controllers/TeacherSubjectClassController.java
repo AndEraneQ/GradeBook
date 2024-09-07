@@ -2,6 +2,7 @@ package com.troja.GradeBook.controllers;
 
 import com.troja.GradeBook.dto.TeacherSubjectClassDto;
 import com.troja.GradeBook.services.TeacherSubjectClassService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class TeacherSubjectClassController {
     }
 
     @PutMapping("/connection/update")
-    public ResponseEntity<String> updateConnection(@RequestBody TeacherSubjectClassDto teacherSubjectClassDto){
+    public ResponseEntity<String> updateConnection(@RequestBody @Valid TeacherSubjectClassDto teacherSubjectClassDto){
         return teacherSubjectClassService.updateConnection(teacherSubjectClassDto);
     }
 

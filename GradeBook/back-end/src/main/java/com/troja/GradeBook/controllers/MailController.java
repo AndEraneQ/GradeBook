@@ -2,6 +2,7 @@ package com.troja.GradeBook.controllers;
 
 import com.troja.GradeBook.dto.requests.SendMailRequest;
 import com.troja.GradeBook.services.MailService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class MailController {
     private MailService mailService;
 
     @PostMapping("/send/mail")
-    public ResponseEntity<?> sendMail(@RequestBody SendMailRequest sendMailRequest){
+    public ResponseEntity<?> sendMail(@RequestBody @Valid SendMailRequest sendMailRequest){
         return mailService.sendMail(sendMailRequest);
     }
 

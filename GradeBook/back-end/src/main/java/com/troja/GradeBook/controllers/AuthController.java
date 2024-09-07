@@ -4,6 +4,7 @@ import com.troja.GradeBook.dto.AuthenticateDto;
 import com.troja.GradeBook.dto.requests.RegisterUserRequest;
 import com.troja.GradeBook.security.LoginResponse;
 import com.troja.GradeBook.services.AuthService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +19,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/auth")
-    public ResponseEntity<LoginResponse> login(@RequestBody AuthenticateDto authenticateDto) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid AuthenticateDto authenticateDto) {
         return authService.login(authenticateDto);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterUserRequest registerUserRequest){
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterUserRequest registerUserRequest){
         return  authService.register(registerUserRequest);
     }
 }

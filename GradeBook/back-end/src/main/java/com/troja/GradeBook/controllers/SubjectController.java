@@ -5,6 +5,7 @@ import com.troja.GradeBook.dto.requests.EditSubjectRequest;
 import com.troja.GradeBook.dto.SubjectDto;
 import com.troja.GradeBook.entity.Subject;
 import com.troja.GradeBook.services.SubjectService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,12 @@ public class SubjectController {
     }
 
     @PostMapping("/add/subject")
-    public ResponseEntity<?> addSubject(@RequestBody AddSubjectRequest addSubjectRequest){
+    public ResponseEntity<?> addSubject(@RequestBody @Valid AddSubjectRequest addSubjectRequest){
         return subjectService.addSubject(addSubjectRequest);
     }
 
     @PutMapping("/edit/subjectData")
-    public ResponseEntity<?> editSubjectData(@RequestBody EditSubjectRequest editSubjectRequest){
+    public ResponseEntity<?> editSubjectData(@RequestBody @Valid EditSubjectRequest editSubjectRequest){
         return subjectService.editSubjectData(editSubjectRequest);
     }
 

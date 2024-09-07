@@ -19,5 +19,4 @@ public class LoginResponse {
     private Long classId;
     private boolean passwordWasChanged;
     private Role role;
-
 }

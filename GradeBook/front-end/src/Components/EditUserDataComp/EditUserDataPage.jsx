@@ -56,7 +56,7 @@ function EditUserDataPage() {
             }
         } catch (err){
             setResponse('');
-            console.log(err);
+            console.log(err.response.data);
             setError(err.response.data);
         }
         

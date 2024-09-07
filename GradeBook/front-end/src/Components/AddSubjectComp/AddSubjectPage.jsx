@@ -60,7 +60,7 @@ function AddSubjectPage() {
         } else {
             setError(`Teacher doesn't exist`);
         }
-        setSelectedTeacherData(''); // Reset the input field after adding
+        setSelectedTeacherData('');
     };
 
     const handleRemoveTeacher = (id) => {
@@ -90,17 +90,6 @@ function AddSubjectPage() {
 
     const handleAddSubject = async () => {
         clearMessages();
-
-        if (!subject) {
-            setError("You need to type subject!");
-            return;
-        }
-
-        if (wantAddTeachers && selectedTeachers.length < 1) {
-            setError("You need to add teacher!");
-            return;
-        }
-
         try {
             const resp = await SubjectService.addSubject(subject, selectedTeachers);
             console.log(resp.data);
@@ -110,6 +99,7 @@ function AddSubjectPage() {
         setResponse(resp.data);
         } catch (error) {
             setError(error.response.data);
+            console.log(error);
         }
     };
 

@@ -4,6 +4,7 @@ import com.troja.GradeBook.dto.TeacherDto;
 import com.troja.GradeBook.dto.requests.AddClassRequest;
 import com.troja.GradeBook.dto.requests.EditClassRequest;
 import com.troja.GradeBook.services.ClassroomService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ClassroomController {
     }
 
     @PostMapping("/add/class")
-    public ResponseEntity<?> addClass(@RequestBody AddClassRequest addClassRequest){
+    public ResponseEntity<?> addClass(@RequestBody @Valid AddClassRequest addClassRequest){
         return classService.addClass(addClassRequest.getClassName(),addClassRequest.getTeacher());
     }
 
@@ -36,7 +37,7 @@ public class ClassroomController {
     }
 
     @PutMapping("edit/classroom")
-    public ResponseEntity<?> editClassroom(@RequestBody EditClassRequest editClassRequest){
+    public ResponseEntity<?> editClassroom(@RequestBody @Valid EditClassRequest editClassRequest){
         return classService.editClassroom(editClassRequest);
     }
 }

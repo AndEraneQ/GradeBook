@@ -4,6 +4,7 @@ import com.troja.GradeBook.dto.GradeDto;
 import com.troja.GradeBook.dto.requests.AddGradeRequest;
 import com.troja.GradeBook.entity.Grade;
 import com.troja.GradeBook.services.GradesService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,12 @@ public class GradesController {
     }
 
     @PutMapping("/edit/grade")
-    public ResponseEntity<?> editGrade(@RequestBody GradeDto gradeDto){
+    public ResponseEntity<?> editGrade(@RequestBody @Valid GradeDto gradeDto){
         return gradesService.editGrade(gradeDto);
     }
 
     @PostMapping("/add/grade")
-    public ResponseEntity<?> addGrade(@RequestBody AddGradeRequest addGradeRequest){
+    public ResponseEntity<?> addGrade(@RequestBody @Valid AddGradeRequest addGradeRequest){
         return gradesService.addGrade(addGradeRequest);
     }
 
