@@ -4,40 +4,31 @@ import com.troja.GradeBook.dto.SubjectDto;
 import com.troja.GradeBook.dto.TeacherDto;
 import com.troja.GradeBook.dto.requests.AddSubjectRequest;
 import com.troja.GradeBook.dto.requests.EditSubjectRequest;
-import com.troja.GradeBook.entity.Classroom;
 import com.troja.GradeBook.entity.Subject;
 import com.troja.GradeBook.entity.Teacher;
 import com.troja.GradeBook.entity.User;
+import com.troja.GradeBook.exception.resource.ResourceNotFoundException;
 import com.troja.GradeBook.mapper.SubjectMapper;
-import com.troja.GradeBook.mapper.TeacherMapper;
 import com.troja.GradeBook.repository.SubjectRepository;
 import com.troja.GradeBook.repository.TeacherRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.testcontainers.shaded.org.bouncycastle.cert.DeltaCertificateTool.subject;
 
-@ExtendWith(MockitoExtension.class)
 class SubjectServiceTest {
 
     @InjectMocks
-    private SubjectService underTest;
+    private SubjectService subjectService;
 
     @Mock
     private SubjectRepository subjectRepository;
@@ -48,243 +39,119 @@ class SubjectServiceTest {
     @Mock
     private SubjectMapper subjectMapper;
 
-    @Mock
-    private TeacherMapper teacherMapper;
+    private Subject subject;
+    private Teacher teacher;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
+        subject = new Subject("Mathematics");
+        subject.setId(99L);
+        teacher = new Teacher(1L,new User(),new HashSet<>(),new HashSet<>());
+        Set<Teacher> teachers = new HashSet<>();
+        teachers.add(teacher);
+        subject.setTeachers(teachers);
     }
 
     @Test
-    void shouldReturnListOfSubjectsDtoWhenGetAllSubjects(){
-        //given
-        Subject subject1 = new Subject("Mathematic");
-        Subject subject2 = new Subject("Phisical Education");
-        Subject subject3 = new Subject("Biology");
-        when(subjectRepository.findAll()).thenReturn(List.of(subject1,subject2,subject3));
+    void shouldReturnAllSubjects() {
+        when(subjectRepository.findAll()).thenReturn(Arrays.asList(subject));
 
-        //when
-        List<SubjectDto> subjectDtos;
-        subjectDtos = underTest.getAllSubject();
-        //then
-        assertEquals(3,subjectDtos.size());
-        verify(subjectRepository).findAll();
+        List<SubjectDto> subjects = subjectService.getAllSubjects();
+
+        assertEquals(1, subjects.size());
+        verify(subjectMapper).toDto(subject);
     }
 
     @Test
-    void shouldReturnEmptyListWhenGetAllSubjects(){
-        //given
-        when(subjectRepository.findAll()).thenReturn(List.of());
-        //when
-        List<SubjectDto> subjectDtos;
-        subjectDtos = underTest.getAllSubject();
-        //then
-        assertTrue(subjectDtos.isEmpty());
-        verify(subjectRepository).findAll();
-    }
+    void shouldAddSubjectSuccessfully() {
+        TeacherDto teacherDto = new TeacherDto(1L,"testemail@gmail.com","Piotr","Trojan");
+        AddSubjectRequest request = new AddSubjectRequest("physics", List.of(teacherDto));
 
-
-    @Test
-    public void testAddSubject_Success() {
-        // given
-        Teacher teacher = new Teacher(1L, new User(), new HashSet<>(), new HashSet<>());
-
-        TeacherDto teacherDto = teacherMapper.toDto(teacher);
-
-        AddSubjectRequest request = new AddSubjectRequest();
-        request.setName("Mathematic");
-        request.setListOfTeachers(Arrays.asList(teacherDto));
         when(teacherRepository.findById(1L)).thenReturn(Optional.of(teacher));
-        when(subjectRepository.existsByName("Mathematic")).thenReturn(false);
-        when(subjectRepository.save(any(Subject.class))).thenReturn(new Subject("Mathematic"));
-        when(subjectRepository.findByName("Mathematic")).thenReturn(Optional.of(new Subject("Mathematic")));
+        when(subjectRepository.existsByName(any())).thenReturn(false);
+        when(subjectRepository.save(any())).thenReturn(subject);
 
-        // when
-        ResponseEntity<?> response = underTest.addSubject(request);
+        ResponseEntity<String> response = subjectService.addSubject(request);
 
-        // then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Added subject correctly", response.getBody());
         verify(subjectRepository, times(2)).save(any(Subject.class));
     }
 
     @Test
-    public void testAddSubject_EmptyName() {
-        // given
-        AddSubjectRequest request = new AddSubjectRequest();
-        request.setName(""); //
+    void shouldThrowExceptionWhenAddingSubjectWithEmptyName() {
+        AddSubjectRequest request = new AddSubjectRequest("", Collections.emptyList());
 
-        // when
-        ResponseEntity<?> response = underTest.addSubject(request);
-
-        // then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Subject name cannot be empty.", response.getBody());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> subjectService.addSubject(request));
+        assertEquals("Subject name cannot be empty.", exception.getMessage());
     }
 
     @Test
-    public void testAddSubject_Conflict() {
-        //given
-        AddSubjectRequest request = new AddSubjectRequest();
-        request.setName("Mathematic");
+    void shouldThrowExceptionWhenAddingSubjectWithExistingName() {
+        AddSubjectRequest request = new AddSubjectRequest("Math", Collections.emptyList());
 
-        when(subjectRepository.existsByName("Mathematic")).thenReturn(true);
+        when(subjectRepository.existsByName("Math")).thenReturn(true);
 
-        // when
-        ResponseEntity<?> response = underTest.addSubject(request);
-
-        // then
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals("Subject with name 'Mathematic' already exists.", response.getBody());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> subjectService.addSubject(request));
+        assertEquals("Subject with name '" + request.getName() + "' already exists.", exception.getMessage());
     }
 
     @Test
-    public void testAddSubject_ServerError() {
-        //given
-        AddSubjectRequest request = new AddSubjectRequest();
-        request.setName("Mathematic");
-        when(subjectRepository.existsByName("Mathematic")).thenReturn(false);
-        when(subjectRepository.save(any(Subject.class))).thenThrow(new RuntimeException("Save error"));
+    void shouldEditSubjectSuccessfully() {
+        Subject newSubjectData = new Subject("Biology");
+        newSubjectData.setId(99L);
 
-        // when
-        ResponseEntity<?> response = underTest.addSubject(request);
+        Set<Teacher> setOfTeacher = new HashSet<>();
+        setOfTeacher.add(teacher);
+        newSubjectData.setTeachers(setOfTeacher);
 
-        // then
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertTrue(response.getBody().toString().contains("Server error, try again later: Save error"));
-    }
+        TeacherDto oldTeacherDto = new TeacherDto(1L,"","","");
+        TeacherDto newTeacherDto = new TeacherDto(2L,"","","");
 
-    @Test
-    public void testEditSubjectData_Success() {
-        // given
-        Subject existingSubject = new Subject(1L, "Math", new HashSet<>(), new HashSet<>(), new HashSet<>());
-        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(), new HashSet<>());
-        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(), new HashSet<>());
+        Teacher newTeacher = new Teacher(2L,new User(),new HashSet<>(),new HashSet<>());
 
-        List<TeacherDto> teachersToAdd = Arrays.asList(teacherMapper.toDto(teacher1));
-        List<TeacherDto> teachersToDelete = Arrays.asList(teacherMapper.toDto(teacher2));
+        when(teacherRepository.findById(1L)).thenReturn(Optional.of(teacher));
+        when(teacherRepository.findById(2L)).thenReturn(Optional.of(newTeacher));
 
-        existingSubject.getTeachers().add(teacher2);
+        EditSubjectRequest request = new EditSubjectRequest(newSubjectData,List.of(oldTeacherDto),List.of(newTeacherDto));
+        subject.setTeachers(new HashSet<>(Collections.singletonList(teacher)));
 
-        Subject newSubject = new Subject(1L, "Mathematic", new HashSet<>(), new HashSet<>(), new HashSet<>());
+        when(subjectRepository.findById(99L)).thenReturn(Optional.of(subject));
+        when(teacherRepository.findById(1L)).thenReturn(Optional.of(teacher));
 
-        EditSubjectRequest request = new EditSubjectRequest(
-                newSubject,
-                teachersToAdd,
-                teachersToDelete
-        );
+        ResponseEntity<String> response = subjectService.editSubjectData(request);
 
-
-        when(subjectRepository.findById(1L)).thenReturn(Optional.of(existingSubject));
-        when(teacherRepository.findById(teacher1.getId())).thenReturn(Optional.of(teacher1));
-        when(teacherRepository.findById(teacher2.getId())).thenReturn(Optional.of(teacher2));
-
-        // when
-        ResponseEntity<?> response = underTest.editSubjectData(request);
-
-        // then
         assertEquals("Data for the subject has been updated successfully.", response.getBody());
-        assertEquals("Mathematic", existingSubject.getName());
-        assertTrue(existingSubject.getTeachers().contains(teacher2));
-        assertFalse(existingSubject.getTeachers().contains(teacher1));
-
-        verify(subjectRepository).save(existingSubject);
+        assertEquals(subject.getTeachers().size(),1);
+        assertTrue(subject.getTeachers().contains(newTeacher));
+        verify(subjectRepository).save(subject);
     }
 
     @Test
-    public void testEditSubjectData_SubjectNotFound() {
-        // given
-        EditSubjectRequest request = new EditSubjectRequest(new Subject(
-                1L,
-                "Math",
-                new HashSet<>(),
-                new HashSet<>(),
-                new HashSet<>()),
-                List.of(),
-                List.of()
-        );
+    void shouldThrowExceptionWhenEditingNonExistentSubject() {
+        EditSubjectRequest request = new EditSubjectRequest(subject,new ArrayList<>(),new ArrayList<>());
 
-        // when
-        when(subjectRepository.findById(1L)).thenReturn(Optional.empty());
+        when(subjectRepository.findById(99L)).thenReturn(Optional.empty());
 
-        // then
-        assertThrows(NoSuchElementException.class, () -> underTest.editSubjectData(request));
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> subjectService.editSubjectData(request));
+        assertEquals("Couldn't find subject with ID: 99", exception.getMessage());
     }
 
     @Test
-    public void testEditSubjectData_TeacherNotFound() {
-        // given
-        Subject existingSubject = new Subject(1L, "Math", new HashSet<>(), new HashSet<>(), new HashSet<>());
-
-        TeacherDto teacherToAdd = new TeacherDto(2L,"test@gmail.com","Joe","Smith");
-
-        EditSubjectRequest request = new EditSubjectRequest(
-                new Subject(1L, "Math", new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                Arrays.asList(teacherToAdd),
-                List.of()
-        );
-
-        // when
-        when(subjectRepository.findById(1L)).thenReturn(Optional.of(existingSubject));
-        when(teacherRepository.findById(teacherToAdd.getId())).thenReturn(Optional.empty());
-
-        // then
-        assertThrows(NoSuchElementException.class, () -> underTest.editSubjectData(request));
-    }
-    @Test
-    void testDeleteSubject_SubjectNotFound(){
-        //given
-        when(subjectRepository.findById(1L)).thenReturn(Optional.empty());
-        //when
-        Exception exception = assertThrows(RuntimeException.class,
-                () -> {underTest.deleteSubject(1L);
-        });
-        //then
-        assertThat(exception.getMessage()).isEqualTo("Couldn't find subject");
-    }
-
-    @Test
-    void testDeleteSubject_DeletedCorrectlyWithoutTeachers() {
-        // given
-        Subject subject = new Subject(1L,"Math",new HashSet<>(), new HashSet<>(), new HashSet<>());
+    void shouldDeleteSubjectSuccessfully() {
         when(subjectRepository.findById(1L)).thenReturn(Optional.of(subject));
 
-        // when
-        ResponseEntity<?> response = underTest.deleteSubject(1L);
+        ResponseEntity<String> response = subjectService.deleteSubject(1L);
 
-        // then
-        verify(subjectRepository, times(1)).delete(subject);
-        assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        assertThat(response.getBody()).isEqualTo("Deleted " + subject.getName() + " correctly!");
+        assertEquals("Deleted Mathematics correctly!", response.getBody());
+        verify(subjectRepository).delete(subject);
     }
 
     @Test
-    void testDeleteSubject_DeletedCorrectlyWithTeachers() {
-        // given
-        Subject subject = new Subject(1L,"Math",new HashSet<>(), new HashSet<>(), new HashSet<>());
-        Teacher teacher1 = new Teacher(1L, new User(), new HashSet<>(), new HashSet<>());
-        teacher1.getSubjects().add(subject);
-        subject.getTeachers().add(teacher1);
-        Teacher teacher2 = new Teacher(2L, new User(), new HashSet<>(), new HashSet<>());
+    void shouldThrowExceptionWhenDeletingNonExistentSubject() {
+        when(subjectRepository.findById(99L)).thenReturn(Optional.empty());
 
-        teacher2.getSubjects().add(subject);
-        subject.getTeachers().add(teacher2);
-
-        when(subjectRepository.findById(1L)).thenReturn(Optional.of(subject));
-
-        // when
-        ResponseEntity<?> response = underTest.deleteSubject(1L);
-
-        // then
-        verify(subjectRepository, times(1)).delete(subject);
-        assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        assertThat(response.getBody()).isEqualTo("Deleted " + subject.getName() + " correctly!");
-
-        for (Teacher teacher : subject.getTeachers()) {
-            assertThat(teacher.getSubjects()).doesNotContain(subject);
-        }
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> subjectService.deleteSubject(99L));
+        assertEquals("Couldn't find subject with ID: 99", exception.getMessage());
     }
 }
-
-

@@ -1,26 +1,33 @@
 package com.troja.GradeBook.services;
 
 import com.troja.GradeBook.dto.ResidenceDto;
-import com.troja.GradeBook.entity.Residence;
+import com.troja.GradeBook.exception.resource.ResourceNotFoundException;
 import com.troja.GradeBook.mapper.ResidenceMapper;
 import com.troja.GradeBook.repository.ResidenceRepository;
-import lombok.AllArgsConstructor;
+import com.troja.GradeBook.services.IServices.IResidenceService;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-
-
 @Service
-@AllArgsConstructor
-public class ResidenceService {
+@RequiredArgsConstructor
+public class ResidenceService implements IResidenceService {
 
-    private ResidenceRepository residenceRepository;
-    private ResidenceMapper residenceMapper;
+    private static final Logger logger = LoggerFactory.getLogger(ResidenceService.class);
 
+    private final ResidenceRepository residenceRepository;
+    private final ResidenceMapper residenceMapper;
+
+    @Override
     public ResponseEntity<ResidenceDto> getUserResidence(Long userId) {
-        Residence residence = residenceRepository.findByUserId(userId)
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find residence. Try again later"));
-        return ResponseEntity.ok(residenceMapper.toDto(residence));
+        return residenceRepository.findByUserId(userId)
+                .map(residenceMapper::toDto)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> {
+                    logger.error("Residence not found for userId: {}", userId);
+                    return new ResourceNotFoundException("Couldn't find residence for userId: " + userId);
+                });
     }
 }

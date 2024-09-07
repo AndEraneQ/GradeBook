@@ -21,7 +21,7 @@ public class SubjectController {
 
     @GetMapping("/subjects")
     public List<SubjectDto> getAllSubjects(){
-        return subjectService.getAllSubject();
+        return subjectService.getAllSubjects();
     }
 
     @PostMapping("/add/subject")

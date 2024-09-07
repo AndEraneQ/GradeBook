@@ -1,50 +1,46 @@
 package com.troja.GradeBook.services;
 
-import com.troja.GradeBook.dto.SubjectAndClassroomDto;
 import com.troja.GradeBook.dto.TeacherDto;
 import com.troja.GradeBook.entity.Teacher;
 import com.troja.GradeBook.mapper.TeacherMapper;
 import com.troja.GradeBook.repository.TeacherRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.troja.GradeBook.services.IServices.ITeacherService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
-public class TeacherService {
+@RequiredArgsConstructor
+public class TeacherService implements ITeacherService {
 
-    @Autowired
-    private TeacherRepository teacherRepository;
-    @Autowired
-    private TeacherMapper teacherMapper;
+    private final TeacherRepository teacherRepository;
+    private final TeacherMapper teacherMapper;
 
-    public ResponseEntity<?> getAllTeachers() {
-        List<Teacher> teachers = teacherRepository.findAll();
-        List<TeacherDto> teacherDtos = teachers
+    @Override
+    public ResponseEntity<List<TeacherDto>> getAllTeachers() {
+        List<TeacherDto> teacherDtos = teacherRepository.findAll()
                 .stream()
                 .map(teacherMapper::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(teacherDtos);
     }
 
-    public ResponseEntity<?> getAllTeachersOfSubject(Long subjectId){
-        List<Teacher> listOfTeachers = teacherRepository.findTeachersBySubjectId(subjectId);
-        List<TeacherDto> teachersDtos = listOfTeachers
+    @Override
+    public ResponseEntity<List<TeacherDto>> getAllTeachersOfSubject(Long subjectId) {
+        List<TeacherDto> teacherDtos = teacherRepository.findTeachersBySubjectId(subjectId)
                 .stream()
                 .map(teacherMapper::toDto)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(teachersDtos);
+        return ResponseEntity.ok(teacherDtos);
     }
 
-    public ResponseEntity<?> getTeacherFromUserId(Long userId){
-        Teacher teacher = teacherRepository
-                .findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Couldn't find teacher"));
+    @Override
+    public ResponseEntity<TeacherDto> getTeacherFromUserId(Long userId) {
+        Teacher teacher = teacherRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Couldn't find teacher with user ID: " + userId));
         return ResponseEntity.ok(teacherMapper.toDto(teacher));
     }
 }

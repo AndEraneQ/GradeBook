@@ -17,5 +17,7 @@ public class LoginResponse {
     private String email;
     private String className;
     private Long classId;
+    private boolean passwordWasChanged;
     private Role role;
+
 }

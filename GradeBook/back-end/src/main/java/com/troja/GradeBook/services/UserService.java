@@ -8,10 +8,10 @@ import com.troja.GradeBook.entity.User;
 import com.troja.GradeBook.exception.user.UserNotFoundException;
 import com.troja.GradeBook.mapper.UserMapper;
 import com.troja.GradeBook.repository.UserRepository;
+import com.troja.GradeBook.services.IServices.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,24 +21,29 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<UserDto> getCurrentUser(Long id){
+    @Override
+    public ResponseEntity<UserDto> getCurrentUser(Long id) {
         User currentUser = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("couldn't find user"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         return ResponseEntity.ok(userMapper.toDto(currentUser));
     }
 
-    public ResponseEntity<List<UserDto>> getAllUsers(){
-        return ResponseEntity.ok(userRepository.findAll()
+    @Override
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userRepository.findAll()
                 .stream()
                 .map(userMapper::toDto)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
     }
 
+    @Override
     public ResponseEntity<?> deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
@@ -47,52 +52,43 @@ public class UserService {
         return ResponseEntity.ok("User deleted successfully.");
     }
 
+    @Override
     public ResponseEntity<?> editUserData(EditUserDataRequest editUserDataRequest) {
-
-        if(!editUserDataRequest.getPassword().equals(editUserDataRequest.getConfirmPassword())) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Passwords need to be the same!");
+        if (!editUserDataRequest.getPassword().equals(editUserDataRequest.getConfirmPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords need to be the same!");
         }
 
-        User user = new User();
-        if(!editUserDataRequest.getPassword().isEmpty()){
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        User user = userRepository.findById(editUserDataRequest.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (!editUserDataRequest.getPassword().isEmpty()) {
             String newPassword = passwordEncoder.encode(editUserDataRequest.getPassword());
             user.setPassword(newPassword);
         }
 
-        try{
-        user = userRepository.findById(editUserDataRequest.getUserId())
-                .orElseThrow();
-        } catch (Exception ex){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Couldn't edit user data.");
-        }
-
         Residence residence = user.getResidence();
-        residence.setApartmentNumber(editUserDataRequest.getApartmentNumber());
-        residence.setCity(editUserDataRequest.getCity());
-        residence.setBuildingNumber(editUserDataRequest.getBuildingNumber());
-        residence.setStreet(editUserDataRequest.getStreet());
+        if (residence != null) {
+            residence.setApartmentNumber(editUserDataRequest.getApartmentNumber());
+            residence.setCity(editUserDataRequest.getCity());
+            residence.setBuildingNumber(editUserDataRequest.getBuildingNumber());
+            residence.setStreet(editUserDataRequest.getStreet());
+            user.setResidence(residence);
+        }
 
         user.setFirstName(editUserDataRequest.getFirstName());
         user.setLastName(editUserDataRequest.getLastName());
-        user.setResidence(residence);
 
         userRepository.save(user);
 
-        return ResponseEntity.ok("Updated Data Correctly");
-
+        return ResponseEntity.ok("Updated data successfully.");
     }
 
+    @Override
     public ResponseEntity<?> getStudents() {
-        List<User> students = userRepository.findByRole(Role.STUDENT);
-        return ResponseEntity.ok(students
+        List<UserDto> students = userRepository.findByRole(Role.STUDENT)
                 .stream()
                 .map(userMapper::toDto)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(students);
     }
-
 }

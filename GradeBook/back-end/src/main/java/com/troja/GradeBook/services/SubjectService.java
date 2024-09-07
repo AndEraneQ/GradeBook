@@ -6,120 +6,123 @@ import com.troja.GradeBook.dto.requests.AddSubjectRequest;
 import com.troja.GradeBook.dto.requests.EditSubjectRequest;
 import com.troja.GradeBook.entity.Subject;
 import com.troja.GradeBook.entity.Teacher;
+import com.troja.GradeBook.exception.resource.ResourceNotFoundException;
 import com.troja.GradeBook.mapper.SubjectMapper;
 import com.troja.GradeBook.repository.SubjectRepository;
 import com.troja.GradeBook.repository.TeacherRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import com.troja.GradeBook.services.IServices.ISubjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
-public class SubjectService {
+@RequiredArgsConstructor
+public class SubjectService implements ISubjectService {
 
-    private SubjectRepository subjectRepository;
-    private TeacherRepository teacherRepository;
-    private SubjectMapper subjectMapper;
+    private final SubjectRepository subjectRepository;
+    private final TeacherRepository teacherRepository;
+    private final SubjectMapper subjectMapper;
 
-    private String formatSubjectName(String name) {
-        if (name == null || name.isEmpty()) return null;
-        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-    }
-
-    private void associateTeachersWithSubject(List<TeacherDto> listOfTeachers, Subject subject) {
-        Set<Teacher> teachersOfSubject = new HashSet<>();
-
-        for (TeacherDto teacherDto : listOfTeachers) {
-            Teacher teacher = teacherRepository.findById(teacherDto.getId())
-                    .orElseThrow(() -> new RuntimeException("Teacher not found with ID: " + teacherDto.getId()));
-
-            teachersOfSubject.add(teacher);
-
-            teacher.getSubjects().add(subject);
-        }
-
-        subject.setTeachers(teachersOfSubject);
-        subjectRepository.save(subject);
-    }
-
-    public List<SubjectDto> getAllSubject() {
+    @Override
+    public List<SubjectDto> getAllSubjects() {
         return subjectRepository.findAll().stream()
                 .map(subjectMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public ResponseEntity<?> addSubject(AddSubjectRequest addSubjectRequest) {
-        String name = formatSubjectName(addSubjectRequest.getName());
-        if (name == null || name.isEmpty()) {
-            return ResponseEntity.badRequest().body("Subject name cannot be empty.");
-        }
-
-        if (subjectRepository.existsByName(name)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Subject with name '" + name + "' already exists.");
-        }
+    @Override
+    public ResponseEntity<String> addSubject(AddSubjectRequest addSubjectRequest) {
+        String name = validateSubjectName(addSubjectRequest.getName());
 
         Subject subject = new Subject(name);
-        try {
-            subjectRepository.save(subject);
-            Subject subjectFromDatabase = subjectRepository.findByName(name)
-                    .orElseThrow(() -> new RuntimeException("Failed to retrieve the subject from the database."));
-
-            associateTeachersWithSubject(addSubjectRequest.getListOfTeachers(), subjectFromDatabase);
-        } catch (Exception ex) {
-            String error = "Server error, try again later: " + ex.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-        }
+        subjectRepository.save(subject);
+        associateTeachersWithSubject(addSubjectRequest.getListOfTeachers(), subject);
 
         return ResponseEntity.ok("Added subject correctly");
     }
 
+    @Override
+    public ResponseEntity<String> editSubjectData(EditSubjectRequest editSubjectRequest) {
+        Subject subject = findSubjectById(editSubjectRequest.getSubject().getId());
 
-    public ResponseEntity<?> editSubjectData(EditSubjectRequest editSubjectRequest) {
-        Subject subject = subjectRepository.findById(editSubjectRequest.getSubject().getId())
-                .orElseThrow(() -> new NoSuchElementException("Subject not found"));
+        updateSubjectName(subject, editSubjectRequest.getSubject().getName());
+        updateSubjectTeachers(subject, editSubjectRequest.getAddedTeachers(), editSubjectRequest.getDeletedTeachers());
 
-        String newName = editSubjectRequest.getSubject().getName();
+        subjectRepository.save(subject);
+        return ResponseEntity.ok("Data for the subject has been updated successfully.");
+    }
+
+    @Override
+    public ResponseEntity<String> deleteSubject(Long subjectId) {
+        Subject subject = findSubjectById(subjectId);
+        removeTeachersFromSubject(subject);
+        subjectRepository.delete(subject);
+
+        return ResponseEntity.ok("Deleted " + subject.getName() + " correctly!");
+    }
+
+    private String validateSubjectName(String name) {
+        if ("".equals(name)) {
+            throw new IllegalArgumentException("Subject name cannot be empty.");
+        }
+        name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+        if (subjectRepository.existsByName(name)) {
+            throw new IllegalArgumentException("Subject with name '" + name + "' already exists.");
+        }
+        return name;
+    }
+
+    private void updateSubjectName(Subject subject, String newName) {
         if (!subject.getName().equals(newName)) {
             subject.setName(newName);
         }
+    }
 
-        for (TeacherDto teacherDto : editSubjectRequest.getAddedTeachers()) {
-            Teacher teacher = teacherRepository.findById(teacherDto.getId())
-                    .orElseThrow(() -> new NoSuchElementException("Teacher not found"));
-
+    private void updateSubjectTeachers(Subject subject, List<TeacherDto> addedTeachers, List<TeacherDto> deletedTeachers) {
+        for (TeacherDto teacherDto : addedTeachers) {
+            Teacher teacher = findTeacherById(teacherDto.getId());
             if (!subject.getTeachers().contains(teacher)) {
                 subject.getTeachers().add(teacher);
                 teacher.getSubjects().add(subject);
             }
         }
 
-        for (TeacherDto teacherDto : editSubjectRequest.getDeletedTeachers()) {
-            Teacher teacher = teacherRepository.findById(teacherDto.getId())
-                    .orElseThrow(() -> new NoSuchElementException("Teacher not found"));
-
-            if (subject.getTeachers().contains(teacher)) {
-                subject.getTeachers().remove(teacher);
-                teacher.getSubjects().remove(subject);
-            }
-        }
-
-        subjectRepository.save(subject);
-        return ResponseEntity.ok("Data for the subject has been updated successfully.");
-    }
-
-    public ResponseEntity<?> deleteSubject(Long subjectId){
-        Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow( () -> new RuntimeException("Couldn't find subject"));
-
-        for (Teacher teacher : subject.getTeachers()){
+        for (TeacherDto teacherDto : deletedTeachers) {
+            Teacher teacher = findTeacherById(teacherDto.getId());
+            subject.getTeachers().remove(teacher);
             teacher.getSubjects().remove(subject);
         }
-        subjectRepository.delete(subject);
+    }
 
-        return ResponseEntity.ok("Deleted " + subject.getName() + " correctly!");
+    private Subject findSubjectById(Long subjectId) {
+        return subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Couldn't find subject with ID: " + subjectId));
+    }
+
+    private Teacher findTeacherById(Long teacherId) {
+        return teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher not found with ID: " + teacherId));
+    }
+
+    private void associateTeachersWithSubject(List<TeacherDto> listOfTeachers, Subject subject) {
+        Set<Teacher> teachersOfSubject = new HashSet<>();
+        for (TeacherDto teacherDto : listOfTeachers) {
+            Teacher teacher = findTeacherById(teacherDto.getId());
+            teachersOfSubject.add(teacher);
+            teacher.getSubjects().add(subject);
+        }
+        subject.setTeachers(teachersOfSubject);
+        subjectRepository.save(subject);
+    }
+
+    private void removeTeachersFromSubject(Subject subject) {
+        for (Teacher teacher : subject.getTeachers()) {
+            teacher.getSubjects().remove(subject);
+        }
     }
 }

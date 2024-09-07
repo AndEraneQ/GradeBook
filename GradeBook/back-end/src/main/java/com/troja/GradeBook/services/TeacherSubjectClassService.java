@@ -5,49 +5,45 @@ import com.troja.GradeBook.dto.TeacherSubjectClassDto;
 import com.troja.GradeBook.entity.TeacherSubjectClass;
 import com.troja.GradeBook.mapper.ClassroomMapper;
 import com.troja.GradeBook.mapper.SubjectMapper;
-import com.troja.GradeBook.mapper.TeacherMapper;
 import com.troja.GradeBook.mapper.TeacherSubjectClassMapper;
 import com.troja.GradeBook.repository.ClassroomRepository;
 import com.troja.GradeBook.repository.SubjectRepository;
 import com.troja.GradeBook.repository.TeacherRepository;
 import com.troja.GradeBook.repository.TeacherSubjectClassRepository;
+import com.troja.GradeBook.services.IServices.ITeacherSubjectClassService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class TeacherSubjectClassService {
-    private TeacherSubjectClassRepository teacherSubjectClassRepository;
-    private TeacherSubjectClassMapper teacherSubjectClassMapper;
-    private TeacherRepository teacherRepository;
-    private SubjectRepository subjectRepository;
-    private ClassroomRepository classroomRepository;
-    private TeacherMapper teacherMapper;
-    private SubjectMapper subjectMapper;
-    private ClassroomMapper classroomMapper;
+public class TeacherSubjectClassService implements ITeacherSubjectClassService {
 
-    public ResponseEntity<?> findConnectionByClassId(Long classId){
-        List<TeacherSubjectClass> teacherSubjectClass =
-                teacherSubjectClassRepository.findByClassroomId(classId);
+    private final TeacherSubjectClassRepository teacherSubjectClassRepository;
+    private final TeacherSubjectClassMapper teacherSubjectClassMapper;
+    private final TeacherRepository teacherRepository;
+    private final SubjectRepository subjectRepository;
+    private final ClassroomRepository classroomRepository;
+    private final ClassroomMapper classroomMapper;
+    private final SubjectMapper subjectMapper;
 
-        return ResponseEntity.ok(teacherSubjectClass
-                .stream()
+    @Override
+    public ResponseEntity<List<TeacherSubjectClassDto>> findConnectionByClassId(Long classId) {
+        List<TeacherSubjectClass> teacherSubjectClasses = teacherSubjectClassRepository.findByClassroomId(classId);
+        List<TeacherSubjectClassDto> teacherSubjectClassDtos = teacherSubjectClasses.stream()
                 .map(teacherSubjectClassMapper::toDto)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(teacherSubjectClassDtos);
     }
 
+    @Override
     public ResponseEntity<String> updateConnection(TeacherSubjectClassDto teacherSubjectClassDto) {
         TeacherSubjectClass teacherSubjectClass = teacherSubjectClassRepository
-                .findByClassroomIdAndSubjectId(
-                        teacherSubjectClassDto.getClassId(),
-                        teacherSubjectClassDto.getSubjectId()
-                )
-                .orElseGet(TeacherSubjectClass::new);
+                .findByClassroomIdAndSubjectId(teacherSubjectClassDto.getClassId(), teacherSubjectClassDto.getSubjectId())
+                .orElse(new TeacherSubjectClass());
 
         if (teacherSubjectClassDto.getTeacherId() == null) {
             if (teacherSubjectClass.getId() != null) {
@@ -55,39 +51,28 @@ public class TeacherSubjectClassService {
                 return ResponseEntity.ok("Teacher assignment removed successfully");
             }
         } else {
-            teacherSubjectClass.setTeacher(
-                    teacherRepository.findById(teacherSubjectClassDto.getTeacherId())
-                            .orElseThrow(() -> new RuntimeException("Teacher not found"))
-            );
+            teacherSubjectClass.setTeacher(teacherRepository.findById(teacherSubjectClassDto.getTeacherId())
+                    .orElseThrow(() -> new RuntimeException("Teacher not found")));
 
             if (teacherSubjectClass.getId() == null) {
-                teacherSubjectClass.setClassroom(
-                        classroomRepository.findById(teacherSubjectClassDto.getClassId())
-                                .orElseThrow(() -> new RuntimeException("Classroom not found"))
-                );
-                teacherSubjectClass.setSubject(
-                        subjectRepository.findById(teacherSubjectClassDto.getSubjectId())
-                                .orElseThrow(() -> new RuntimeException("Subject not found"))
-                );
+                teacherSubjectClass.setClassroom(classroomRepository.findById(teacherSubjectClassDto.getClassId())
+                        .orElseThrow(() -> new RuntimeException("Classroom not found")));
+                teacherSubjectClass.setSubject(subjectRepository.findById(teacherSubjectClassDto.getSubjectId())
+                        .orElseThrow(() -> new RuntimeException("Subject not found")));
             }
 
             teacherSubjectClassRepository.save(teacherSubjectClass);
-            return ResponseEntity.ok("Updated Teacher correctly");
+            return ResponseEntity.ok("Updated Teacher successfully");
         }
         return ResponseEntity.ok("No changes made");
     }
 
-    public ResponseEntity<?> getAllClassesAndSubjectsLearningByTeacher(Long teacherId){
+    @Override
+    public ResponseEntity<List<SubjectAndClassroomDto>> getAllClassesAndSubjectsLearningByTeacher(Long teacherId) {
         List<TeacherSubjectClass> teacherSubjectClasses = teacherSubjectClassRepository.findByTeacherId(teacherId);
-        List<SubjectAndClassroomDto> subjectAndClassroomDtos = new ArrayList<>();
-        for(TeacherSubjectClass tsc : teacherSubjectClasses){
-            SubjectAndClassroomDto subjectAndClassroomDto =
-                    new SubjectAndClassroomDto(
-                            classroomMapper.toDto(tsc.getClassroom()),
-                            subjectMapper.toDto(tsc.getSubject())
-                    );
-            subjectAndClassroomDtos.add(subjectAndClassroomDto);
-        }
+        List<SubjectAndClassroomDto> subjectAndClassroomDtos = teacherSubjectClasses.stream()
+                .map(tsc -> new SubjectAndClassroomDto(classroomMapper.toDto(tsc.getClassroom()), subjectMapper.toDto(tsc.getSubject())))
+                .collect(Collectors.toList());
         return ResponseEntity.ok(subjectAndClassroomDtos);
     }
 }

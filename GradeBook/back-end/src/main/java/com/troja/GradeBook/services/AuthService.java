@@ -46,6 +46,7 @@ public class AuthService implements IAuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
 
+    @Override
     public ResponseEntity<LoginResponse> login(AuthenticateDto authenticateDto) {
         User authenticatedUser = authenticateUser(authenticateDto);
         String jwtToken = generateJwtToken(authenticatedUser);
@@ -54,6 +55,7 @@ public class AuthService implements IAuthService {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @Override
     public ResponseEntity<String> register(RegisterUserRequest registerUserRequest) {
         validateUserEmail(registerUserRequest.getUser().getEmail());
         validateStudentClass(registerUserRequest.getUser());
@@ -103,10 +105,12 @@ public class AuthService implements IAuthService {
         return jwtUtils.generateToken(userDetails);
     }
 
-    private LoginResponse createLoginResponse(User authenticatedUser, String jwtToken) {
+    public LoginResponse createLoginResponse(User authenticatedUser, String jwtToken) {
         Classroom classroom = authenticatedUser.getClassroom();
         String classroomName = (classroom != null) ? classroom.getName() : null;
         Long classroomId = (classroom != null) ? classroom.getId() : null;
+
+        boolean passwordWasChanged = !passwordEncoder.matches("Password", authenticatedUser.getPassword());
 
         return new LoginResponse(
                 authenticatedUser.getId(),
@@ -116,6 +120,7 @@ public class AuthService implements IAuthService {
                 authenticatedUser.getEmail(),
                 classroomName,
                 classroomId,
+                passwordWasChanged,
                 authenticatedUser.getRole()
         );
     }

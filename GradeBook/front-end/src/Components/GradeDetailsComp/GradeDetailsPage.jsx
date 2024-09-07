@@ -44,7 +44,7 @@ function GradeDetailsPage() {
     return (
         <div className="grade-details-page">
             
-            {!subjectAndClass || user.role==="STUDENT" ? (
+            {!subjectAndClass && (user.role && user.role === "STUDENT") ? (
                 <div className="grade-details-container">
                     <GoBackButton path='/grades' state={{user: user}}/>
                 <p>Grade: {grade.value} </p>

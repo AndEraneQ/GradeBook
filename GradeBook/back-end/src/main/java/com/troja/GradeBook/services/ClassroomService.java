@@ -8,6 +8,7 @@ import com.troja.GradeBook.entity.Classroom;
 import com.troja.GradeBook.entity.Role;
 import com.troja.GradeBook.entity.Teacher;
 import com.troja.GradeBook.entity.User;
+import com.troja.GradeBook.exception.resource.ResourceNotFoundException;
 import com.troja.GradeBook.mapper.ClassroomMapper;
 
 import com.troja.GradeBook.mapper.TeacherMapper;
@@ -15,30 +16,32 @@ import com.troja.GradeBook.mapper.UserMapper;
 import com.troja.GradeBook.repository.ClassroomRepository;
 import com.troja.GradeBook.repository.TeacherRepository;
 import com.troja.GradeBook.repository.UserRepository;
+import com.troja.GradeBook.services.IServices.IClassroomService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 
 @AllArgsConstructor
 @Service
-public class ClassroomService {
+public class ClassroomService implements IClassroomService {
 
     private ClassroomRepository classRepository;
     private ClassroomMapper classroomMapper;
     private TeacherRepository teacherRepository;
-    private TeacherMapper teacherMapper;
     private UserRepository userRepository;
     private UserMapper userMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(ClassroomService.class);
+
+    @Override
     public ResponseEntity<?> findAllClasses() {
         List<Classroom> classes = classRepository.findAll();
 
@@ -49,53 +52,40 @@ public class ClassroomService {
         }
 
         List<ClassroomDto> classesDto = classes.stream()
-                .map(classroom -> {
-                    ClassroomDto classroomDto = classroomMapper.toDto(classroom);
-                    User teacher = classroom.getMembersOfClass().stream()
-                            .filter(user -> user.getRole().equals(Role.TEACHER))
-                            .findFirst()
-                            .orElse(null);
-                    if (teacher != null) {
-                        TeacherDto teacherDto = new TeacherDto(
-                                teacher.getId(),
-                                teacher.getEmail(),
-                                teacher.getFirstName(),
-                                teacher.getLastName());
-                        classroomDto.setTeacherDto(teacherDto);
-                    }
-                    return classroomDto;
-                })
+                .map(this::mapClassroomWithTeacher)
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(classesDto);
     }
 
-
+    @Override
     public ResponseEntity<?> addClass(String className, TeacherDto teacherDto) {
-
         if (classRepository.existsByName(className)) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body("Subject with this name exists!");
+                    .body("Class with this name exists!");
         }
+
         Classroom classroom = new Classroom();
         classroom.setName(className);
+
         if (teacherDto != null) {
-            Teacher teacher = teacherRepository.findById(teacherDto.getId())
-                    .orElseThrow(() -> new RuntimeException("Couldn't find teacher!"));
-            teacher.getUser().setClassroom(classroom);
+            Optional<Teacher> teacher = teacherRepository.findById(teacherDto.getId());
+            teacher.get().getUser().setClassroom(classroom);
         }
+
         classRepository.save(classroom);
         return ResponseEntity.ok("Added class correctly!");
-
     }
 
+    @Override
     public ResponseEntity<?> findStudentsOfClass(Long classId) {
-        Classroom classroom = classRepository
-                .findById(classId)
-                .orElseThrow(() -> new RuntimeException("Couldn't find class!"));
+        Optional<Classroom> classroom = classRepository.findById(classId);
+        if(classroom.isEmpty()){
+            throw new ResourceNotFoundException("Couldn't find class!");
+        }
 
-        ArrayList<UserDto> students = (ArrayList<UserDto>) classroom.getMembersOfClass()
-                .stream()
+        List<UserDto> students = classroom.get().getMembersOfClass().stream()
                 .filter(user -> !user.getRole().equals(Role.TEACHER))
                 .map(userMapper::toDto)
                 .sorted(Comparator.comparing(UserDto::getFirstName)
@@ -105,78 +95,114 @@ public class ClassroomService {
         return ResponseEntity.ok(students);
     }
 
+    @Override
     public ResponseEntity<?> deleteClass(Long classId) {
         try {
             classRepository.deleteById(classId);
+            return ResponseEntity.ok("Deleted class correctly!");
         } catch (Exception ex) {
-            System.out.println(ex);
+            logger.error("Error while deleting class", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error while deleting class.");
         }
-        return ResponseEntity.ok("Deleted class correctly!");
     }
 
+    @Override
     public ResponseEntity<?> editClassroom(EditClassRequest editClassRequest) {
         ClassroomDto classroomDto = editClassRequest.getClassroomDto();
+        Classroom existingClassroom = classRepository
+                .findById(classroomDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Couldn't find class!"));
 
-        Classroom existingClassroom = classRepository.findById(classroomDto.getId())
-                .orElseThrow(() -> new RuntimeException("Classroom not found"));
-
-        if (!classroomDto.getName().equals(existingClassroom.getName())){
-            if (!classRepository.existsByName(classroomDto.getName())) {
-                existingClassroom.setName(classroomDto.getName());
-            } else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("This class already exists!");
-            }
-        }
-
-        List<User> existingClassMembers = new ArrayList<>(existingClassroom.getMembersOfClass());
-
-        List<User> newClassMembers = editClassRequest.getStudents()
-                .stream()
-                .map(userMapper::toEntity)
-                .collect(Collectors.toList());
-
-        for (User user : newClassMembers) {
-
-            User newUser = userRepository.findById(user.getId()).orElseThrow();
-            if(existingClassMembers.contains(newUser)){
-                existingClassMembers.remove(newUser);
-            } else {
-                newUser.setClassroom(existingClassroom);
-                userRepository.save(newUser);
-            }
-        }
-
-        for (User user : existingClassMembers){
-            user.setClassroom(null);
-            userRepository.save(user);
-        }
-
-        User existingTeacher = existingClassMembers.stream()
-                .filter(user -> user.getRole().equals(Role.TEACHER))
-                .findFirst()
-                .orElse(null);
-
-        if (existingTeacher != null && !existingTeacher.getEmail().equals(classroomDto.getTeacherDto().getEmail())) {
-            existingTeacher.setClassroom(null);
-            userRepository.save(existingTeacher);
-            existingClassMembers.remove(existingTeacher);
-        }
-
-        User newTeacher = userRepository.findByEmail(classroomDto.getTeacherDto().getEmail())
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
-
-        newTeacher.setClassroom(existingClassroom);
-
-        if (!newClassMembers.contains(newTeacher)) {
-            newClassMembers.add(newTeacher);
-        }
-
-        existingClassroom.setMembersOfClass(newClassMembers);
+        updateClassNameIfNeeded(existingClassroom, classroomDto);
+        updateTeacherIfNeeded(existingClassroom, classroomDto);
+        updateStudents(existingClassroom, editClassRequest.getStudents());
 
         classRepository.save(existingClassroom);
 
         return ResponseEntity.ok("Updated data correctly!");
     }
 
+    private ClassroomDto mapClassroomWithTeacher(Classroom classroom) {
+        ClassroomDto classroomDto = classroomMapper.toDto(classroom);
+        TeacherDto teacherDto = mapTeacherFromClassroom(classroom);
+        classroomDto.setTeacherDto(teacherDto);
+        return classroomDto;
+    }
+
+    private TeacherDto mapTeacherFromClassroom(Classroom classroom) {
+        User teacher = classroom.getMembersOfClass().stream()
+                .filter(user -> user.getRole().equals(Role.TEACHER))
+                .findFirst()
+                .orElse(null);
+
+        if (teacher != null) {
+            return new TeacherDto(
+                    teacher.getId(),
+                    teacher.getEmail(),
+                    teacher.getFirstName(),
+                    teacher.getLastName()
+            );
+        }
+        return null;
+    }
+
+    private void updateClassNameIfNeeded(Classroom existingClassroom, ClassroomDto classroomDto) {
+        if (!classroomDto.getName().equals(existingClassroom.getName())) {
+            if (!classRepository.existsByName(classroomDto.getName())) {
+                existingClassroom.setName(classroomDto.getName());
+            } else {
+                throw new RuntimeException("This class already exists!");
+            }
+        }
+    }
+
+    private void updateTeacherIfNeeded(Classroom existingClassroom, ClassroomDto classroomDto) {
+        User currentTeacher = existingClassroom.getMembersOfClass().stream()
+                .filter(user -> user.getRole().equals(Role.TEACHER))
+                .findFirst()
+                .orElse(null);
+
+        if (currentTeacher != null && !currentTeacher.getEmail().equals(classroomDto.getTeacherDto().getEmail())) {
+            currentTeacher.setClassroom(null);
+            userRepository.save(currentTeacher);
+            existingClassroom.getMembersOfClass().remove(currentTeacher);
+        }
+
+        User newTeacher = userRepository.findByEmail(classroomDto.getTeacherDto().getEmail())
+                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+
+        newTeacher.setClassroom(existingClassroom);
+        existingClassroom.getMembersOfClass().add(newTeacher);
+    }
+
+    private void updateStudents(Classroom existingClassroom, List<UserDto> studentsDto) {
+        List<User> currentStudents = new ArrayList<>(existingClassroom.getMembersOfClass());
+        List<User> newStudents = studentsDto.stream()
+                .map(userMapper::toEntity)
+                .collect(Collectors.toList());
+
+        for (User newUser : newStudents) {
+            User existingUser = userRepository.findById(newUser.getId())
+                    .orElseThrow(() -> new RuntimeException("Student not found: " + newUser.getId()));
+
+            existingUser.setClassroom(existingClassroom);
+            userRepository.save(existingUser);
+
+            currentStudents.remove(existingUser);
+        }
+
+        for (User userToRemove : currentStudents) {
+            if(userToRemove.getRole()!=Role.TEACHER) {
+                userToRemove.setClassroom(null);
+                userRepository.save(userToRemove);
+            }
+        }
+
+        existingClassroom.setMembersOfClass(newStudents);
+    }
+
 }
+
+
 

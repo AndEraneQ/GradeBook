@@ -16,6 +16,5 @@ import java.util.Set;
 public class SubjectDto {
     private Long id;
     private String name;
-    private Role role;
     Set<TeacherDto> teachersDto;
 }

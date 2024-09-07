@@ -129,13 +129,11 @@ public class AuthServiceTest {
 
     @Test
     public void testLogin_UserNotFound_Failure() {
-        // Arrange
         AuthenticateDto authenticateDto = new AuthenticateDto("test@example.com", "wrongPassword");
         when(userRepository.findByEmail(authenticateDto.getEmail())).thenReturn(Optional.empty());
 
-        // Act & Assert
         UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class, () -> {
-            authService.login(authenticateDto); // Assuming login method in UserService
+            authService.login(authenticateDto);
         });
 
         assertEquals("User not found with email: " + authenticateDto.getEmail(), userNotFoundException.getMessage());
@@ -143,19 +141,15 @@ public class AuthServiceTest {
 
     @Test
     public void testLogin_BadCredentials_Failure() {
-        // Arrange
         AuthenticateDto authenticateDto = new AuthenticateDto("test@example.com", "wrongPassword");
 
-        // Mock the authentication manager to throw an AuthenticationException for invalid credentials
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(new AuthenticationException("Invalid credentials") {});
 
-        // Act & Assert
         ValidationException thrown = assertThrows(ValidationException.class, () -> {
             authService.login(authenticateDto);
         });
 
-        // Verify the exception message is as expected
         assertEquals("Invalid credentials", thrown.getMessage());
     }
 
