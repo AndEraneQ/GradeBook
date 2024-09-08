@@ -1,5 +1,7 @@
 package com.troja.GradeBook.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.troja.GradeBook.dto.AuthenticateDto;
 import com.troja.GradeBook.security.jwt.AuthEntryPointJwt;
 import com.troja.GradeBook.security.jwt.JwtAuthFilter;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,12 +12,15 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationProvider;
 
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -34,18 +39,15 @@ class SecurityConfigTest {
     @Mock
     private AuthEntryPointJwt authEntryPointJwt;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @InjectMocks
     private SecurityConfig securityConfig;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void givenAnonymousUser_whenAccessingPublicEndpoint_thenSuccess() throws Exception {
-        mockMvc.perform(get("/api/auth"))
-                .andExpect(status().isOk());
     }
 
     @Test
