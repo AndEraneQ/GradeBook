@@ -96,7 +96,7 @@ public class AuthService implements IAuthService {
             return userRepository.findByEmail(authenticateDto.getEmail())
                     .orElseThrow(() -> new UserNotFoundException("User not found with email: " + authenticateDto.getEmail()));
         } catch (AuthenticationException e) {
-            throw new ValidationException("Invalid credentials");
+            throw new ValidationException("Invalid credentials!");
         }
     }
 

@@ -1,0 +1,22 @@
+/* .header-container h1{
+    color: #464655;
+    font-family: 'Trebuchet MS', sans-serif;
+} */
+
+/* Container dla nagłówka */
+.header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Styl dla tekstu nagłówka */
+.header-text {
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 70px !important;
+    color: #464655;
+    text-align: center;
+    letter-spacing: 1px;
+}

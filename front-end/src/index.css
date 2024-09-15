@@ -1,3 +1,6 @@
 body {
-  background-image: url(./src/assets/wallpaper.png);
+  background: linear-gradient(135deg, #6a85b6, #bac8e0);
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
