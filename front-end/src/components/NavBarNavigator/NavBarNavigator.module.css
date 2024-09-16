@@ -1,0 +1,38 @@
+.navBarNavigatorContainer {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+    padding: 10px 20px; 
+    background: linear-gradient(145deg, #f0e0e6, #CDC4CC);
+    border-radius: 8px; 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+    margin: 20px;
+    width: 700px;
+}
+
+button {
+    background-color: transparent; 
+    border: none; 
+    cursor: pointer; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    color: #464655;
+    font-size: 12px;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+button:hover {
+    color: #6a85b6; 
+}
+
+button span {
+    margin-top: 2px;
+}
+
+svg {
+    font-size: 25px; 
+}
+

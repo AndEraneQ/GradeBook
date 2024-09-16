@@ -8,11 +8,14 @@ import ResponseHandler from '../../components/ResponseHandler/ResponseHandler';
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({ email: "", password: "", general: "" });
     const [error, setError] = useState("");
     const location = useLocation();
     const [response, setResponse] = useState(location.state?.message);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        localStorage.removeItem('user_data');
+    }, []);
 
     const handleLogin = async () => {
         try {
@@ -37,20 +40,19 @@ function Login() {
                     <p className={styles.textLabel}>Email:</p>
                     <input 
                         className={styles.loginInput} 
+                        placeholder='Type Email'
                         type="text" 
                         value={email} 
                         onChange={(e) => setEmail(e.target.value)} 
                     />
-                    {errors.email && <div className={styles.textDanger}>{errors.email}</div>}
-
                     <p className={styles.textLabel}>Password:</p>
                     <input 
                         className={styles.loginInput} 
+                        placeholder='Type Password'
                         type="password" 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                     />
-                    {errors.password && <div className={styles.textDanger}>{errors.password}</div>}
                 </div>
                 <button 
                     className={styles.loginButton}

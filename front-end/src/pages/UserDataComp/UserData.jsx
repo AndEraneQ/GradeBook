@@ -5,6 +5,7 @@ import './UserData.css';
 import GoBackButton from "../../components/GoBackButton/GoBackButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserService from "../../Services/UserService";
+import NavBarNavigator from "../../components/NavBarNavigator/NavBarNavigator";
 
 function UserData() {
     const location = useLocation();
@@ -60,7 +61,7 @@ function UserData() {
 
     return (
         <div className="user-data-page">
-            <GoBackButton/>                          
+            <NavBarNavigator/>                       
             <div className="user-data-container">
                 <h1 className="header">User Data:</h1>
                 <ul>

@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import './SubjectsPage.css';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import NavBarNavigator from "../../components/NavBarNavigator/NavBarNavigator";
+import Header from "../../components/Header/Header";
 
 function SubjectsPage(){
     const location = useLocation();
@@ -44,9 +46,10 @@ function SubjectsPage(){
     }
 
     return (
-        <div className="subjects-page">
-            <GoBackButton path='/home'/>
-            <div className="subjects-container">
+        <div className="page-container">
+            <NavBarNavigator/>
+            <Header text="All Subjects:"/>
+            <div className="background-container">
                 {error && (
                     <div className="error-message">{error}</div>
                 )}
@@ -55,10 +58,6 @@ function SubjectsPage(){
                         {deletedSubjectMessage}
                     </div>
                 )}
-                    <div>
-                        <div className="header-container">
-                            <h1>All subjects:</h1>
-                        </div>
                         <div className="search-and-add-container">
                             <input 
                                 className="search-input" 
@@ -66,7 +65,7 @@ function SubjectsPage(){
                                 placeholder="🔍 Search:"
                                 onChange={handleFilterSubject}/>
                             <button 
-                                className="add-subject-button" 
+                                className="confirm-button" 
                                 onClick={handleAddSubject}>
                                     Add New Subject
                             </button>
@@ -80,16 +79,17 @@ function SubjectsPage(){
                                 )}
                             </div>
                         )}
+                        <div className="display-items">
                         <ul>
-                            {filteredSubjects.slice(0,10).map((subject, index) => (
-                                <li key={subject.id} className="subject-item" onClick={() => handleSubjectDetails(subject)}>
-                                    {index + 1}. {subject.name}
+                            {filteredSubjects.slice(0,8).map((subject, index) => (
+                                <li key={subject.id} className="list-item" onClick={() => handleSubjectDetails(subject)}>
+                                    {index + 1}. <b>Subject Name: </b>{subject.name}
                                 </li>
                             ))}
                         </ul>
+                        </div>
                     </div>
             </div>
-        </div>
     );
 }
 

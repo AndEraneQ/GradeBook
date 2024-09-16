@@ -11,7 +11,7 @@ class AuthService {
       email,
       password
   });
-}
+  }
       
     logout(navigate) {
         localStorage.removeItem("user_data");

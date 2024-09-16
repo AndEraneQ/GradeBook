@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import GoBackButton from "../../components/GoBackButton/GoBackButton";
 import NavBarService from "../../Services/NavBarService";
 import { useLocation, useNavigate } from "react-router-dom";
+import NavBarNavigator from "../../components/NavBarNavigator/NavBarNavigator";
+import Header from "../../components/Header/Header";
+import Dots from "../../components/Dots/Dots";
 
 function AllUsersPage(){
 
@@ -51,29 +54,22 @@ function AllUsersPage(){
     }
     
     return (
-        <div className="all-users-page">
-            <GoBackButton path='/home'/>
-            
-            <div className="all-users-container">
-                <div className="header-container">
-                    <h1>Users:</h1>
+        <div className="page-container">
+            <NavBarNavigator/>
+            <Header text="All users: "/>
+            <div className="background-container">
+                <div className="search-and-add-container">
+                    <input 
+                        className="search-input" 
+                        type="text" 
+                        placeholder="🔍 Search:"
+                        onChange={handleFilterUsers}/>
+                    <button 
+                        className="confirm-button" 
+                        onClick={handleAddUser}>
+                            Add New User
+                    </button>
                 </div>
-                {error ? (
-                    <div className="error-message">{error}</div>
-                ) : (
-                    <div>
-                        <div className="search-and-add-container">
-                            <input 
-                                className="search-input" 
-                                type="text" 
-                                placeholder="🔍 Search:"
-                                onChange={handleFilterUsers}/>
-                            <button 
-                                className="add-user-button" 
-                                onClick={handleAddUser}>
-                                    Add New User
-                            </button>
-                        </div>
                         {response && (
                             <div className="response-part">
                                 <div className="response-container">
@@ -90,21 +86,24 @@ function AllUsersPage(){
                                 )}
                             </div>
                         )}
-                        <ul>
-                            {filteredUsers.slice(0,10).map((user, index) => (
-                                <li key={user.id} className="user-item" onClick={() => navigate('/user-data', {state: {user: user}})}>
-                                    {index + 1}.
-                                    First name: <b> { user.firstName}</b>&nbsp;
-                                    Last name: <b>{ user.lastName}</b>  &nbsp;
-                                    Email: <b>{ user.email}</b> &nbsp;
-                                    Role: <b>{ user.role}</b>
-                                </li>
-                            ))}
-                        </ul>
+                        <div className="display-items">
+                            <ul className="single-item">
+                                {filteredUsers.slice(0,7).map((user, index) => (
+                                    <li key={user.id} className="list-item" onClick={() => navigate('/user-data', {state: {user: user}})}>
+                                        {index + 1}.
+                                        <b>First name:</b>  { user.firstName}&nbsp;
+                                        <b>Last name:</b> { user.lastName}  &nbsp;
+                                        <b>Email:</b> { user.email} &nbsp;
+                                        <b>Role:</b> { user.role}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        {filteredUsers.length>7 && (
+                            <Dots/>
+                        )}
                     </div>
-                )}
             </div>
-        </div>
     );
 }
 

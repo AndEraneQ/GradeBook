@@ -5,6 +5,7 @@ import NavBarService from "../../Services/NavBarService";
 import { getUser } from "../../utils/userUtils";
 import UserService from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
+import NavBarNavigator from "../../components/NavBarNavigator/NavBarNavigator";
 
 
 
@@ -30,7 +31,7 @@ function ChooseClassToManageGradesPage(){
 
     return (
         <div className="choose-class-to-manage-grades-page">
-            <GoBackButton path='home'/>
+            <NavBarNavigator/>
             <div className="choose-class-to-manage-grades-container">
                 <div className="header-container">
                     <h1>Your classes:</h1>

@@ -1,0 +1,45 @@
+.card-container {
+    background: linear-gradient(145deg, #E9E4E6, #CDC4CC);
+    border-radius: 15px;
+    padding: 50px; /* Zmniejszone padding */
+    max-width: 250px; /* Zmniejszona maksymalna szerokość */
+    margin: 20px auto;
+    box-shadow: 0 8px 16px rgba(136, 125, 125, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Subtelny cień */
+    text-align: center;
+    color: #5F5A5B;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.card-container:hover {
+    transform: translateY(-10px); /* Animacja podnoszenia przy najechaniu */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2); /* Zwiększony cień */
+    background: linear-gradient(145deg, #F0EBEF, #D1C4D3); /* Zmiana gradientu na hover */
+}
+
+.card-container img {
+    width: 150px; /* Mniejsza szerokość obrazka */
+    height: 150px;
+    border-radius: 50%; /* Obrazek w formie okręgu */
+    margin-bottom: 15px;
+    border: 2px solid rgb(98, 160, 241);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.card-container:hover img {
+    transform: rotate(5deg); 
+}
+
+.card-text {
+    margin-top: 10px;
+    font-size: 1.5em;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #4A4345;
+    transition: color 0.3s ease, font-size 0.3s ease;
+}
+
+.card-container:hover .card-text {
+    color: #28267e; 
+}

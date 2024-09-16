@@ -5,6 +5,7 @@ import { getUser } from "../../utils/userUtils";
 import MailService from "../../Services/MailService";
 import { useNavigate } from "react-router-dom";
 import ResponseHandler from "../../components/ResponseHandler/ResponseHandler";
+import NavBarNavigator from "../../components/NavBarNavigator/NavBarNavigator";
 
 function MailPage() {
     const [view, setView] = useState("received");
@@ -124,6 +125,7 @@ function MailPage() {
 
     return (
         <div className="mail-page">
+            <NavBarNavigator/>
             <GoBackButton path="/home" />
             <div className="mail-container">
                 <div className="button-container">

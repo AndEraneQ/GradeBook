@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: 'Trebuchet MS', sans-serif;
   height: 80vh;
   margin: 0;
   padding: 0;
@@ -13,17 +14,17 @@
   flex-direction: column; 
   justify-content: center; 
   align-items: center;
-  background-color: #fff;
+  background: linear-gradient(145deg, #E9E4E6, #CDC4CC);
   color: #464655;
   padding: 40px;
-  max-width: 400px;
+  max-width: 450px;
   width: 100%;
   border-radius: 15px;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .usersData {
-  width: 100%;
+  width: 95%;
   display: flex;
   flex-direction: column; 
   justify-content: center; 
@@ -31,14 +32,22 @@
   margin-top: -20px;
 }
 
+.usersData input:focus{
+  outline: none; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
 .loginInput {
+  font-family: 'Trebuchet MS', sans-serif;
   width: 100%;
-  padding: 12px;
+  padding: 10px 20px; 
   margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid #ddd; 
+  border-radius: 25px; 
+  transition: all 0.3s ease; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
   font-size: 16px;
-  background-color: #e4ebf8;
+  background-color: #eff4fd;
 }
 
 .loginButton {
@@ -57,13 +66,7 @@
 
 .loginButton:hover {
   background-color: #556a9a;
-}
-
-.textDanger {
-  color: #e74c3c;
-  font-size: 12px;
-  text-align: left;
-  margin-bottom: 10px;
+  color: #eff4fd;
 }
 
 .textLabel {

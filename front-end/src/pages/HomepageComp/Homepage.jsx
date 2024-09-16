@@ -2,11 +2,9 @@ import React from "react";
 import Card from "../CardComp/Card";
 import { useNavigate } from 'react-router-dom';
 import AuthService from "../../Services/AuthService";
-import NavBarService from "../../Services/NavBarService";
 import { getUser } from "../../utils/userUtils";
-import './Homepage.css';
+import styles from './Homepage.module.css';
 import Header from "../../components/Header/Header";
-
 
 const Homepage = () => {
     const navigate = useNavigate();
@@ -32,37 +30,38 @@ const Homepage = () => {
     const handleClasses = () => {
         navigate('/classes');
     }
-    console.log(user);
-    return (
-        <div className="admin-homepage-container">
-            <Header text = {"Welcome " + name}/>
-            <div className="cards">
-                {user.role==="ADMIN" && (
-                    <>
-                    <Card imagePath="src/assets/manageClasses.png" text="Manage Class" onClick={handleClasses}/>
-                    <Card imagePath="src/assets/managePersons.png" text="Manage Persons" onClick={handleManageUsers}/>
-                    <Card imagePath="src/assets/manageSubjects.png" text="Manage Subjects" onClick={handleManageSubjects}/>
-                    </>
-                )}
-                {user.role==="TEACHER" && (
-                    <>
-                    {user.className!==null && (
-                        <Card imagePath="src/assets/myClassPhoto.png" text="Your class" onClick={() => navigate('/my-class')}/>
-                        )
-                    }
-                    <Card imagePath="src/assets/gradesPhoto.png" text="Manage grades" onClick={() => navigate('/choose-class')}/>
-                    </>
-                )}
-                {user.role==="STUDENT" && (
-                    <Card imagePath="src/assets/gradesPhoto.png" text="Your grades" onClick={() => navigate('/grades', {state: {user:user}})}/>
-                )}
-                <Card imagePath="src/assets/mailBoxPhoto.png" text="Mail" onClick={() => navigate('/mail-box')}/>
-                <Card imagePath="src/assets/checkYourData.png" text="Check Your Data" onClick={handleCheckData}/>
-                <Card imagePath="src/assets/Logout.png" text="Logout" onClick={handleLogout}/>
-            </div>
 
+    return (
+        <div className={styles.HomepageContainer}>
+            <Header text={`Welcome, ${name}`} />
+            <h2 className={styles.HomepageInstructions}>
+                Choose what you want to do:
+            </h2>
+            <div className={styles.Cards}>
+                {user.role === "ADMIN" && (
+                    <>
+                        <Card imagePath="src/assets/manageClasses.png" text="Manage Class" onClick={handleClasses} />
+                        <Card imagePath="src/assets/managePersons.png" text="Manage Users" onClick={handleManageUsers} />
+                        <Card imagePath="src/assets/manageSubjects.png" text="Manage Subjects" onClick={handleManageSubjects} />
+                    </>
+                )}
+                {user.role === "TEACHER" && (
+                    <>
+                        {user.className && (
+                            <Card imagePath="src/assets/myClassPhoto.png" text="Your Class" onClick={() => navigate('/my-class')} />
+                        )}
+                        <Card imagePath="src/assets/gradesPhoto.png" text="Manage Grades" onClick={() => navigate('/choose-class')} />
+                    </>
+                )}
+                {user.role === "STUDENT" && (
+                    <Card imagePath="src/assets/gradesPhoto.png" text="Your Grades" onClick={() => navigate('/grades', { state: { user: user } })} />
+                )}
+                <Card imagePath="src/assets/mailBoxPhoto.png" text="Mail" onClick={() => navigate('/mail-box')} />
+                <Card imagePath="src/assets/checkYourData.png" text="Check Your Data" onClick={handleCheckData} />
+                <Card imagePath="src/assets/Logout.png" text="Logout" onClick={handleLogout} />
+            </div>
         </div>
     );
-}
+};
 
 export default Homepage;

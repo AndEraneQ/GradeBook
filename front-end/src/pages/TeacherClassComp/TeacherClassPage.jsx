@@ -4,6 +4,7 @@ import GoBackButton from "../../components/GoBackButton/GoBackButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "../../utils/userUtils";
 import ClassService from "../../Services/ClassService";
+import NavBarNavigator from "../../components/NavBarNavigator/NavBarNavigator";
 
 function TeacherClassPage(){
 
@@ -28,7 +29,7 @@ function TeacherClassPage(){
 
     return(
         <div className="teacher-class-page">
-            <GoBackButton path='/home'/>
+            <NavBarNavigator/>
             <div className="teacher-class-container">
                 <div className="header-container">
                     <h1>{`Class ${user.className}`}</h1>

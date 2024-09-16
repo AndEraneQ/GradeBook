@@ -75,7 +75,7 @@ function AddClass(){
     return(
         <div className="add-class-page">
             <div className="go-back-button">
-                <GoBackButton path='/classes'/>
+                <GoBackButton/>
             </div>
             <div className="add-class-container">
                 <div className="header-container">

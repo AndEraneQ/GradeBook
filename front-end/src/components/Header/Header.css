@@ -1,18 +1,12 @@
-/* .header-container h1{
-    color: #464655;
-    font-family: 'Trebuchet MS', sans-serif;
-} */
-
-/* Container dla nagłówka */
 .header-container {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     border-radius: 10px;
+    margin-top: -50px;
 }
 
-/* Styl dla tekstu nagłówka */
 .header-text {
     font-family: 'Trebuchet MS', sans-serif;
     font-size: 70px !important;

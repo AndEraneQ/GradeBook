@@ -67,7 +67,7 @@ public class SubjectService implements ISubjectService {
     }
 
     private String validateSubjectName(String name) {
-        if ("".equals(name)) {
+        if (name.isEmpty()) {
             throw new IllegalArgumentException("Subject name cannot be empty.");
         }
         name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();

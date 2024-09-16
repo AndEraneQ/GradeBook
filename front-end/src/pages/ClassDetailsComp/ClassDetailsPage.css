@@ -1,0 +1,128 @@
+.class-details-page {
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.class-details-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #363636;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    color: #ffffff;
+}
+
+h2{
+    font-size: 30px;
+}
+
+.class-details-header-container {
+    padding-bottom: 5px;
+}
+
+.class-details-header-container h1 {
+    color: white;
+    text-align: center;
+    font-size: 40px;
+}
+
+.class-details-class-teacher-container h2 {
+    color: white;
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+.class-details-class-teacher-container p {
+    color: #ffff00;
+    font-size: 18px;
+}
+
+.class-details-students-container {
+    margin-top: 30px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-item {
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0; 
+    font-size: 18px; 
+    color: #ffffff; 
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+.user-item:hover {
+    background-color: rgba(255, 255, 255, 0.2); 
+    color: #ffff00; 
+}
+
+.error-message {
+    color: #d9534f; 
+    text-align: center; 
+    font-size: 20px; 
+    margin-top: 20px; 
+}
+
+/* .buttons-container {
+    display: flex;
+    /* justify-content: space-between; */
+    /* margin-top: 20px; */
+/* } */ */
+
+.button {
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    height: 50px;
+    width: 300px;
+}
+
+.button.manage {
+    background-color: #0a4991;
+}
+
+.button.edit {
+    background-color: #079b07;
+}
+
+.button.delete {
+    background-color: #b90606;
+}
+
+.button.manage:hover {
+    background-color: #032288;
+    transform: translateY(-2px);
+}
+
+.button.edit:hover {
+    background-color: #015313;
+    transform: translateY(-2px);
+}
+
+.button.delete:hover {
+    background-color: #680202;
+    transform: translateY(-2px);
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.response-and-error-containers{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.response-container{
+    margin-right: 80px;
+}
+
