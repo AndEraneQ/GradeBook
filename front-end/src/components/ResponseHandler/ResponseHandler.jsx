@@ -7,6 +7,7 @@ const ResponseHandler = ({ response, error, setResponse, setError }) => {
             const timer = setTimeout(() => {
                 setResponse('');
                 setError('');
+                window.history.replaceState(null, '', window.location.pathname);
             }, 3000); 
 
             return () => clearTimeout(timer);

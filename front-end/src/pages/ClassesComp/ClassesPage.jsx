@@ -26,7 +26,11 @@ function ClassesPage(){
             console.error(err);
         }
     };
-    
+
+    const handleAddNewClass = () => {
+        window.history.replaceState(null, '', window.location.pathname);
+        navigate("/class-add");
+    };
 
     useEffect(() => {
         getAllClasses();
@@ -37,14 +41,15 @@ function ClassesPage(){
             <NavBarNavigator/>
             <Header text="All classes:"/>
             <div className="background-container">
-                <ResponseHandler response={response} error={error} setError={setError} setResponse={setResponse}/>
+                
                 <div className="button-container">
                     <button 
                         className="confirm-button"
-                        onClick={() => {navigate("/class-add")}}>
+                        onClick={handleAddNewClass}>
                             Add New Class
                     </button>
-                </div>                
+                </div>             
+                <ResponseHandler response={response} error={error} setError={setError} setResponse={setResponse}/>   
                 {information ? (
                     <div className="information-container">
                         <p>{information}</p>

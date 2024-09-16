@@ -36,7 +36,7 @@ function ClassDetailsPage(){
 
     return (
         <div className="class-details-page">
-            <GoBackButton path='/classes'/>
+            <GoBackButton/>
             <div className="class-details-container">
                 <div className="class-details-header-container">
                     <h1>Class name: {classroom.name}</h1>

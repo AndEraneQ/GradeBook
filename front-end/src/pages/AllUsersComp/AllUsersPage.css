@@ -7,7 +7,7 @@
 }
 
 .search-input {
-    color: #464655; /* Kolor tekstu na biały */
+    color: #ffffff; /* Kolor tekstu na biały */
     width: 40%; 
     max-width: 450px; /* Zwiększona maksymalna szerokość */
     padding: 12px 25px; /* Zwiększony padding */
@@ -23,7 +23,7 @@
 }
 
 .search-input::placeholder {
-    color: #353535; /* Jaśniejszy kolor placeholdera */
+    color: #ffffff; /* Jaśniejszy kolor placeholdera */
     font-style: italic; /* Kursywa dla placeholdera */
 }
 

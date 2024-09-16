@@ -48,7 +48,7 @@ function AllUsersPage(){
                                  + user.email.toLowerCase() + " " 
                                  + user.role.toLowerCase();
             
-            return matchToInput.startsWith(e.target.value);
+            return matchToInput.startsWith(e.target.value.toLowerCase());
         });
         setFilteredUsers(newUsers);
     }
@@ -62,7 +62,7 @@ function AllUsersPage(){
                     <input 
                         className="search-input" 
                         type="text" 
-                        placeholder="🔍 Search:"
+                        placeholder="Search User:"
                         onChange={handleFilterUsers}/>
                     <button 
                         className="confirm-button" 

@@ -62,7 +62,7 @@ function SubjectsPage(){
                             <input 
                                 className="search-input" 
                                 type="text" 
-                                placeholder="🔍 Search:"
+                                placeholder="Search Subject:"
                                 onChange={handleFilterSubject}/>
                             <button 
                                 className="confirm-button" 
