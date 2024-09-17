@@ -30,6 +30,7 @@ button:hover {
 
 button span {
     margin-top: 2px;
+    font-weight: bold;
 }
 
 svg {

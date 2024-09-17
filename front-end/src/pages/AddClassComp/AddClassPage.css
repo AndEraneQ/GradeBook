@@ -1,0 +1,45 @@
+.background-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    justify-content: flex-start; 
+    width: 100%; 
+    padding: 20px; 
+    box-sizing: border-box; 
+}
+
+.add-items-data {
+    width: 100%; 
+}
+
+.input-container,
+.current-class-teacher-container {
+    width: 95%;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+.class-teacher-container{
+    display: flex;
+    gap: 15px;
+    
+}
+
+.class-teacher-container button{
+    margin-bottom: 14px;
+    width: 30%;
+}
+
+.add-items-data span{
+    font-size: 25px;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+.p-header{
+    font-size: 20px;
+    margin-top: -5px;
+    margin-bottom: -3px;
+}
+
+.add-items-data input{
+    margin-top: 10px;
+}
